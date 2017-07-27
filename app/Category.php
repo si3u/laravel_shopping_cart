@@ -61,7 +61,7 @@ class Category extends Model
                 'name' => 'parent_id',
                 'id' => 'parent_id'
             ])
-            ->selected($select)
+            ->selected($select)->orderBy('sorting_order', 'asc')
             ->renderAsDropdown();
     }
 
