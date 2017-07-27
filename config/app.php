@@ -181,6 +181,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         //ide helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
+        Nestable\NestableServiceProvider::class
     ],
 
     /*
@@ -230,7 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
+        'Nestable' => Nestable\Facades\NestableService::class
     ],
 
 ];

@@ -1,7 +1,8 @@
 <?php
 
 namespace App;
-
+use Illuminate\Support\Facades\DB;
+use Nestable\NestableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin \Eloquent
  * @property int $id
- * @property string $category_name
+ * @property string $name
  * @property string|null $description
  * @property string|null $meta_title
  * @property string|null $meta_description
@@ -28,24 +29,53 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereSortingOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereUpdatedAt($value)
+ * @property string $slug
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereSlug($value)
  */
 class Category extends Model
 {
+    use NestableTrait;
     protected $primaryKey = 'id';
+    protected $parent = 'parent_id';
+
+    protected function GetSlug($id) {
+        return Category::find($id)->select('slug');
+    }
+
+    protected function SearchSlug($slug) {
+        return Category::where('slug', $slug)->count();
+    }
+
+    protected function GetItem($id) {
+        return Category::find($id);
+    }
 
     protected function GetLastItemId() {
-        return Category::orderBy('id', 'desc')->select('id')->first();
+        return DB::table('categories')->orderBy('id', 'desc')->first();
+    }
+
+    protected function GetSelectCategories($select) {
+        return Category::attr([
+                'class' => 'form-control',
+                'name' => 'parent_id',
+                'id' => 'parent_id'
+            ])
+            ->selected($select)
+            ->renderAsDropdown();
     }
 
     protected function AddItem($name,
+                               $slug,
                                $description = null,
                                $meta_title = null,
                                $meta_description = null,
                                $meta_keywords = null,
-                               $sorting_order = null,
-                               $parent_id = null) {
+                               $sorting_order,
+                               $parent_id) {
         $item = new Category();
-        $item->category_name = $name;
+        $item->name = $name;
+        $item->slug = $slug;
         if ($description != null) {
             $item->description = $description;
         }
@@ -58,10 +88,12 @@ class Category extends Model
         if ($meta_keywords != null) {
             $item->meta_keywords = $meta_keywords;
         }
-        if ($sorting_order != null) {
-            $item->sorting_order = $sorting_order;
+        $item->sorting_order = $sorting_order;
+
+        if ($parent_id == 1) {
+            $item->parent_id = 0;
         }
-        if ($parent_id != null) {
+        else {
             $item->parent_id = $parent_id;
         }
 
@@ -71,32 +103,27 @@ class Category extends Model
         return false;
     }
 
-    protected function EditItem($id,
+    protected function UpdateItem($id,
                                 $name,
-                                $description = null,
-                                $meta_title = null,
-                                $meta_description = null,
-                                $meta_keywords = null,
-                                $sorting_order = null,
-                                $parent_id = null) {
+                                $slug,
+                                $description,
+                                $meta_title,
+                                $meta_description,
+                                $meta_keywords,
+                                $sorting_order,
+                                $parent_id) {
         $item = Category::find($id);
-        $item->category_name = $name;
-        if ($description != null) {
-            $item->description = $description;
+        $item->name = $name;
+        $item->slug = $slug;
+        $item->description = $description;
+        $item->meta_title = $meta_title;
+        $item->meta_description = $meta_description;
+        $item->meta_keywords = $meta_keywords;
+        $item->sorting_order = $sorting_order;
+        if ($parent_id == 1) {
+            $item->parent_id = 0;
         }
-        if ($meta_title != null) {
-            $item->meta_title = $meta_title;
-        }
-        if ($meta_description != null) {
-            $item->meta_description = $meta_description;
-        }
-        if ($meta_keywords != null) {
-            $item->meta_keywords = $meta_keywords;
-        }
-        if ($sorting_order != null) {
-            $item->sorting_order = $sorting_order;
-        }
-        if ($parent_id != null) {
+        else {
             $item->parent_id = $parent_id;
         }
 
@@ -104,10 +131,6 @@ class Category extends Model
             return true;
         }
         return false;
-    }
-
-    protected function GetAllChildElements($id) {
-
     }
 
     protected function DeleteItem($id) {

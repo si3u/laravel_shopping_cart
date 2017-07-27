@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.30 on 2017-07-26.
+ * Generated for Laravel 5.4.30 on 2017-07-27.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -12103,6 +12103,345 @@ namespace Barryvdh\Debugbar {
  
 }
 
+namespace Nestable\Facades { 
+
+    class NestableService {
+        
+        /**
+         * Set the data to wrap class.
+         *
+         * @param mixed $data
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function make($data)
+        {
+            return \Nestable\Services\NestableService::make($data);
+        }
+        
+        /**
+         * Pass to array of all data as nesting.
+         *
+         * @param object $data Illuminate\Support\Collection
+         * @param int $parent
+         * @return \Nestable\Services\Recursion|array 
+         * @static 
+         */ 
+        public static function renderAsArray($data = false, $parent = 0)
+        {
+            return \Nestable\Services\NestableService::renderAsArray($data, $parent);
+        }
+        
+        /**
+         * Pass to json string of all data as nesting.
+         *
+         * @param object $data Illuminate\Support\Collection
+         * @param int $parent
+         * @return \Nestable\Services\Recursion|array 
+         * @static 
+         */ 
+        public static function renderAsJson($data = false, $parent = 0)
+        {
+            return \Nestable\Services\NestableService::renderAsJson($data, $parent);
+        }
+        
+        /**
+         * Pass to html (ul:li) as nesting.
+         *
+         * @param object $data Illuminate\Support\Collection
+         * @param int $parent Current parent id
+         * @param bool $first First run
+         * @return string 
+         * @static 
+         */ 
+        public static function renderAsHtml($data = false, $parent = 0, $first = true)
+        {
+            return \Nestable\Services\NestableService::renderAsHtml($data, $parent, $first);
+        }
+        
+        /**
+         * Convert to dropdown.
+         *
+         * @param object $data Illuminate\Support\Collection
+         * @param int $parent Current parent id
+         * @param bool $first first run
+         * @param int $level nest counter
+         * @return string 
+         * @static 
+         */ 
+        public static function renderAsDropdown($data = false, $parent = 0, $first = true, $level = 0)
+        {
+            return \Nestable\Services\NestableService::renderAsDropdown($data, $parent, $first, $level);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function renderAsMultiple()
+        {
+            return \Nestable\Services\NestableService::renderAsMultiple();
+        }
+        
+        /**
+         * Set the attributes of generated dropdown.
+         *
+         * @param array $attributes
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function attr($attributes)
+        {
+            return \Nestable\Services\NestableService::attr($attributes);
+        }
+        
+        /**
+         * Child menu checker.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param object $data Illuminate\Support\Collection as Collect
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasChild($key = null, $value = null, $data = null)
+        {
+            return \Nestable\Services\NestableService::hasChild($key, $value, $data);
+        }
+        
+        /**
+         * Save the will select values.
+         *
+         * @param int|array $values
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function selected($values)
+        {
+            return \Nestable\Services\NestableService::selected($values);
+        }
+        
+        /**
+         * Set dropdown placeholder
+         *
+         * @param string $value
+         * @param string|int $label
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function placeholder($value = '', $label = '')
+        {
+            return \Nestable\Services\NestableService::placeholder($value, $label);
+        }
+        
+        /**
+         * Attribute insert helper for html render.
+         *
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function active()
+        {
+            return \Nestable\Services\NestableService::active();
+        }
+        
+        /**
+         * Multiple dropdown menu.
+         *
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function multiple()
+        {
+            return \Nestable\Services\NestableService::multiple();
+        }
+        
+        /**
+         * Set the parent id for child elements.
+         *
+         * @param int $parent
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function parent($parent = false)
+        {
+            return \Nestable\Services\NestableService::parent($parent);
+        }
+        
+        /**
+         * Add attribute to <li> element.
+         *
+         * @param mixed $attr
+         * @param mixed $value
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function addAttr($attr, $value = '')
+        {
+            return \Nestable\Services\NestableService::addAttr($attr, $value);
+        }
+        
+        /**
+         * Add attribute to <ul> element.
+         *
+         * @param mixed $attr
+         * @param mixed $value
+         * @return object (instance)
+         * @static 
+         */ 
+        public static function ulAttr($attr, $value = '')
+        {
+            return \Nestable\Services\NestableService::ulAttr($attr, $value);
+        }
+        
+        /**
+         * Save the parameters.
+         *
+         * @param array $params
+         * @static 
+         */ 
+        public static function save($params)
+        {
+            return \Nestable\Services\NestableService::save($params);
+        }
+        
+        /**
+         * Route generator.
+         *
+         * @param array $route
+         * @static 
+         */ 
+        public static function route($route)
+        {
+            return \Nestable\Services\NestableService::route($route);
+        }
+        
+        /**
+         * Make custom url
+         *
+         * @param string $url
+         * @return \Nestable\Services\type 
+         * @static 
+         */ 
+        public static function customUrl($url)
+        {
+            return \Nestable\Services\NestableService::customUrl($url);
+        }
+        
+        /**
+         * Generate open ul tag.
+         *
+         * @param string $items
+         * @return string 
+         * @static 
+         */ 
+        public static function ul($items = false, $parent_id = 0)
+        {
+            return \Nestable\Services\NestableService::ul($items, $parent_id);
+        }
+        
+        /**
+         * Generate close ul tag.
+         *
+         * @param string $ul
+         * @return string 
+         * @static 
+         */ 
+        public static function closeUl($ul)
+        {
+            return \Nestable\Services\NestableService::closeUl($ul);
+        }
+        
+        /**
+         * Generate open li tag.
+         *
+         * @param array $li
+         * @return string 
+         * @static 
+         */ 
+        public static function openLi($li, $extra = '')
+        {
+            return \Nestable\Services\NestableService::openLi($li, $extra);
+        }
+        
+        /**
+         * Generate close li tag.
+         *
+         * @param string $li
+         * @return string 
+         * @static 
+         */ 
+        public static function closeLi($li)
+        {
+            return \Nestable\Services\NestableService::closeLi($li);
+        }
+        
+        /**
+         * Array validator.
+         *
+         * @param string $type
+         * @param bool $return
+         * @return mixed 
+         * @static 
+         */ 
+        public static function isValid($type, $render = false)
+        {
+            return \Nestable\Services\NestableService::isValid($type, $render);
+        }
+        
+        /**
+         * New macro.
+         *
+         * @param string $name
+         * @param \Closure $macro
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+            return \Nestable\Services\NestableService::macro($name, $macro);
+        }
+        
+        /**
+         * Run the macros.
+         *
+         * @param string $name
+         * @param mixed $args
+         * @return mixed 
+         * @static 
+         */ 
+        public static function runMacro($name, $args)
+        {
+            return \Nestable\Services\NestableService::runMacro($name, $args);
+        }
+        
+        /**
+         * Remove a macro.
+         *
+         * @param string $name Macro name
+         * @static 
+         */ 
+        public static function removeMacro($name)
+        {
+            return \Nestable\Services\NestableService::removeMacro($name);
+        }
+        
+        /**
+         * Macro checker.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+            return \Nestable\Services\NestableService::hasMacro($name);
+        }
+         
+    }
+ 
+}
+
 
 namespace  { 
 
@@ -14168,6 +14507,8 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
 
     class Debugbar extends \Barryvdh\Debugbar\Facade {}
+
+    class Nestable extends \Nestable\Facades\NestableService {}
  
 }
 

@@ -47,7 +47,7 @@
                                             @endif
 
                                             @if ($page->route_name == 'admin/categories/update')
-                                                <input value="{{$page->item_id}}" type="hidden" id="item_id">
+                                                <input value="{{$page->item->id}}" type="hidden" id="item_id">
                                             @endif
 
                                             <div class="form-group">
@@ -68,6 +68,13 @@
                                             </div>
 
                                             <div class="form-group">
+                                                 <label class="col-md-2 control-label"><span class="text-danger">*</span> SEO URL</label>
+                                                 <div class="col-md-10">
+                                                    <input id="slug" name="slug" value="{{ old('slug') }}" type="text" class="form-control" placeholder="Введите SEO URL">
+                                                 </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label class="col-md-2 control-label">Описание</label>
                                                 <div class="col-md-10">
                                                     <div id="description" name="description" class="summernote">{{ old('description') }}</div>
@@ -77,9 +84,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label"><span class="text-danger">*</span> Выберите родительскую категорию</label>
                                                 <div class="col-md-10">
-                                                    <select class="form-control" id="parent_id" name="parent_id" value="{{ old('parent_id') }}">
-                                                        <option value="">Не определено</option>
-                                                    </select>
+                                                    {!! $page->parents !!}
                                                     <span class="help-block">
                                                         <small>Не определено - если хотите чтобы это была родительская категория</small>
                                                     </span>
@@ -127,9 +132,19 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-2"></label>
                                                 <div class="col-md-10">
-                                                    <div class="pull-right">
-                                                        <button onclick="category.add();" class="btn btn-success btn-lg">Добавить</button>
-                                                    </div>
+                                                    @if ($page->route_name == 'admin/categories/add')
+                                                        <div class="pull-right" id="btn_add">
+                                                            <button onclick="category.add();" class="btn btn-success btn-lg">Добавить</button>
+                                                        </div>
+                                                        <div class="pull-right" id="btn_update" style="display: none;">
+                                                            <button onclick="category.update();" class="btn btn-success btn-lg">Обновить данные</button>
+                                                        </div>
+                                                    @endif
+                                                    @if ($page->route_name == 'admin/categories/update')
+                                                        <div class="pull-right" id="btn_update">
+                                                            <button onclick="category.update();" class="btn btn-success btn-lg">Обновить данные</button>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
 

@@ -11,10 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call('AdminCreate');
+        $this->call('CreateAdmin');
+        $this->call('CreateDefaultCategory');
     }
 }
-class AdminCreate extends Seeder {
+class CreateAdmin extends Seeder {
     /**
      * Run the database seeds.
      *
@@ -35,5 +36,20 @@ class AdminCreate extends Seeder {
         DB::table('users')->delete();
         DB::table('users')->truncate();
         DB::table('users')->insert($data);
+    }
+}
+
+class CreateDefaultCategory extends Seeder {
+    public function run() {
+        DB::table('categories')->delete();
+        DB::table('categories')->truncate();
+
+        $now_date = \Carbon\Carbon::now();
+        DB::table('categories')->insert([
+            'name' => 'Не определено',
+            'slug' => 'null',
+            'created_at' => $now_date,
+            'updated_at' => $now_date,
+        ]);
     }
 }
