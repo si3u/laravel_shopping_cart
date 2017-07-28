@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\ActiveLocalization;
 use App\Category;
+use App\DataCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,41 +25,22 @@ class CategoryController extends Controller {
     }
 
     public function PageAdd() {
-        $data = (object)[
+        $active_lang = ActiveLocalization::GetActive();
+        $data = [
             'title' => 'Добавить категорию',
             'route_name' => $this->route_name,
-            'parents' => Category::GetSelectCategories(1)
+            'active_lang' => $active_lang,
+            'parents' => Category::GetTree(1,1)
         ];
-        return view('admin.categories.work_on', ['page' => $data]);
-    }
-
-    public function PageUpdate($id) {
-        $validator = Validator::make([
-                'id' => $id
-            ], [
-                'id' => 'required|int|exists:categories,id',
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
-        $item = Category::GetItem($id);
-        $data = (object)[
-            'title' => 'Изменить категорию',
-            'route_name' => $this->route_name,
-            'item' => $item,
-            'parents' => Category::GetSelectCategories($item->parent_id)
-        ];
-        return view('admin.categories.work_on', ['page' => $data]);
+        return view('admin.categories.work_on', ['page' => (object)$data]);
     }
 
     public function Add(Request $request) {
         $validator = Validator::make($request->all(), [
+            'item_id' => 'integer|nullable',
+            'lang_id' => 'required|integer|exists:active_localizations,id',
             'name' => 'required|string',
-            'slug' => 'required|string|unique:categories,slug',
+            'slug' => 'string|nullable',
             'sorting_order' => 'required|integer',
             'description' => 'string|nullable',
             'parent_id' => 'required|integer|exists:categories,id',
@@ -70,70 +53,47 @@ class CategoryController extends Controller {
                 'errors' => $validator->messages()
             ]);
         }
-
-        if (Category::AddItem($request->name,
-                              $request->slug,
-                              $request->description,
-                              $request->meta_title,
-                              $request->meta_description,
-                              $request->meta_keywords,
-                              $request->sorting_order,
-                              $request->parent_id)) {
-            return response()->json([
-                'status' => 'success',
-                'item_id' => Category::GetLastItemId()->id
-            ]);
-        }
-        return response()->json([
-            'status' => 'error',
-        ]);
-    }
-
-    public function Update(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exist:categories,id',
-            'name' => 'required|string',
-            'slug' => 'required|string',
-            'sorting_order' => 'required|integer',
-            'description' => 'string|nullable',
-            'parent_id' => 'required|integer|exists:categories,id',
-            'meta_title' => 'string|nullable',
-            'meta_description' => 'string|nullable',
-            'meta_keywords' => 'string|nullable',
-        ]);
-        if ($request->id == $request->parent_id) {
-            return response()->json([
-                'error' => 'Категория не может быть сама себе родительской категорией'
-            ]);
-        }
-        if (Category::GetSlug($request->id)->slug != $request->slug) {
-            if (Category::SearchSlug($request->slug)>0) {
-                return response()->json([
-                    'error' => 'Этот адресс уже занят'
-                ]);
+        if (isset($request->item_id)) {
+            if (DataCategory::CreateItem($request->item_id,
+                                         $request->name,
+                                         $request->lang_id,
+                                         $request->description,
+                                         $request->meta_title,
+                                         $request->meta_description,
+                                         $request->meta_keywords)) {
+                $result = [
+                    'status' => 'success',
+                    'item_id' => $request->id,
+                    'parents' => Category::GetTree($request->parent_id, 1)
+                ];
+                return response()->json($result);
             }
-        }
-        if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->messages()
+                'status' => 'error'
+            ]);
+        } else {
+            if (Category::CreateItem($request->slug,
+                                     $request->parent_id,
+                                     $request->sorting_order)) {
+                $last_id = Category::GetLastItem()->id;
+                if (DataCategory::CreateItem($last_id,
+                                             $request->name,
+                                             $request->lang_id,
+                                             $request->description,
+                                             $request->meta_title,
+                                             $request->meta_description,
+                                             $request->meta_keywords)) {
+                    $result = [
+                        'status' => 'success',
+                        'item_id' => $last_id,
+                        'parents' => Category::GetTree($request->parent_id, 1)
+                    ];
+                    return response()->json($result);
+                }
+            }
+            return response()->json([
+                'status' => 'error'
             ]);
         }
-
-        if (Category::Update($request->id,
-                             $request->name,
-                             $request->slug,
-                             $request->description,
-                             $request->meta_title,
-                             $request->meta_description,
-                             $request->meta_keywords,
-                             $request->sorting_order,
-                             $request->parent_id)) {
-            return response()->json([
-                'status' => 'success'
-            ]);
-        }
-        return response()->json([
-            'status' => 'error',
-        ]);
     }
 }

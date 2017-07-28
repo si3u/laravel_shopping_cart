@@ -32,108 +32,68 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereSlug($value)
+ * @property int $lang_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereLangId($value)
  */
 class Category extends Model
 {
     use NestableTrait;
     protected $primaryKey = 'id';
     protected $parent = 'parent_id';
+    public $timestamps = false;
 
-    protected function GetSlug($id) {
-        return Category::find($id)->select('slug');
+    protected function GetParentItem($id) {
+
     }
+    protected function GetTree($select, $lang) {
+        $data = DB::table('data_categories')
+            ->join('categories', 'data_categories.category_id', '=', 'categories.id')
+            ->where('data_categories.lang_id', 1)
+            ->orderBy('categories.sorting_order', 'asc')
+            ->select(
+                'categories.id',
+                'categories.parent_id',
+                'data_categories.name',
+                'categories.slug'
+            )
+            ->get();
+        $prepare_data = array();
+        $i = 0;
+        while ($i < count($data)) {
+            array_push($prepare_data, [
+                'id' => $data[$i]->id,
+                'parent_id' => $data[$i]->parent_id,
+                'name' => $data[$i]->name,
+                'slug' => $data[$i]->slug
+            ]);
+            $i++;
+        }
+        $result = \Nestable::make($prepare_data);
 
-    protected function SearchSlug($slug) {
-        return Category::where('slug', $slug)->count();
-    }
-
-    protected function GetItem($id) {
-        return Category::find($id);
-    }
-
-    protected function GetLastItemId() {
-        return DB::table('categories')->orderBy('id', 'desc')->first();
-    }
-
-    protected function GetSelectCategories($select) {
-        return Category::attr([
+        return $result->attr([
                 'class' => 'form-control',
                 'name' => 'parent_id',
                 'id' => 'parent_id'
-            ])
-            ->selected($select)->orderBy('sorting_order', 'asc')
-            ->renderAsDropdown();
+            ])->selected($select)->renderAsDropdown();
     }
-
-    protected function AddItem($name,
-                               $slug,
-                               $description = null,
-                               $meta_title = null,
-                               $meta_description = null,
-                               $meta_keywords = null,
-                               $sorting_order,
-                               $parent_id) {
+    protected function GetLastItem() {
+        return DB::table('categories')->orderBy('id', 'desc')->first();
+    }
+    protected function CreateItem($slug,
+                                  $parent_id,
+                                  $sorting_order) {
         $item = new Category();
-        $item->name = $name;
         $item->slug = $slug;
-        if ($description != null) {
-            $item->description = $description;
-        }
-        if ($meta_title != null) {
-            $item->meta_title = $meta_title;
-        }
-        if ($meta_description != null) {
-            $item->meta_description = $meta_description;
-        }
-        if ($meta_keywords != null) {
-            $item->meta_keywords = $meta_keywords;
-        }
-        $item->sorting_order = $sorting_order;
-
         if ($parent_id == 1) {
             $item->parent_id = 0;
         }
         else {
             $item->parent_id = $parent_id;
         }
-
-        if ($item->save()) {
-            return true;
-        }
-        return false;
-    }
-
-    protected function UpdateItem($id,
-                                $name,
-                                $slug,
-                                $description,
-                                $meta_title,
-                                $meta_description,
-                                $meta_keywords,
-                                $sorting_order,
-                                $parent_id) {
-        $item = Category::find($id);
-        $item->name = $name;
-        $item->slug = $slug;
-        $item->description = $description;
-        $item->meta_title = $meta_title;
-        $item->meta_description = $meta_description;
-        $item->meta_keywords = $meta_keywords;
         $item->sorting_order = $sorting_order;
-        if ($parent_id == 1) {
-            $item->parent_id = 0;
-        }
-        else {
-            $item->parent_id = $parent_id;
-        }
-
         if ($item->save()) {
             return true;
         }
         return false;
-    }
-
-    protected function DeleteItem($id) {
-
     }
 }

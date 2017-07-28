@@ -12,6 +12,16 @@
                         <li><a href="{{route('admin/categories')}}">Категории</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript: void(0);" aria-expanded="true">
+                        <i class="dripicons-tags"></i>
+                        <span> Настройки </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level nav" aria-expanded="true">
+                        <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализации</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>

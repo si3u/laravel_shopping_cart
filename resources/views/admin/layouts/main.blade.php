@@ -28,7 +28,7 @@
 <body>
 {{ csrf_field() }}
 @yield('content')
-
+@include('admin.active_localization.modal')
 <script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/metisMenu.min.js') }}"></script>
@@ -45,7 +45,7 @@
 <script src="{{ asset('assets/admin/plugins/summernote/summernote.min.js')}}"></script>
 <script src="{{ asset('assets/admin/plugins/responsive-table/js/rwd-table.min.js')}}" type="text/javascript"></script>
 
-<script src="{{ asset('assets/admin/js/common.js')}}"></script>
+<script src="{{ asset('assets/admin/my_js_scripts/common.js')}}"></script>
 
 <script>
     jQuery(document).ready(function(){

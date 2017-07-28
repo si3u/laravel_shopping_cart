@@ -31,6 +31,13 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/category/add', [
         'uses' => 'admin\CategoryController@Add'
     ])->name('admin/category/add');
+
+    Route::post('/admin/active_localization/get', [
+        'uses' => 'admin\ActiveLocalizationController@Get'
+    ])->name('active_localization/update');
+    Route::post('/admin/active_localization/update', [
+        'uses' => 'admin\ActiveLocalizationController@Update'
+    ])->name('active_localization/update');
 });
 
 Auth::routes();
