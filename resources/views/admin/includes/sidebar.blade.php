@@ -14,12 +14,12 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" aria-expanded="true">
-                        <i class="dripicons-tags"></i>
+                        <i class="dripicons-gear"></i>
                         <span> Настройки </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
-                        <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализации</a></li>
+                        <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализаций</a></li>
                     </ul>
                 </li>
             </ul>

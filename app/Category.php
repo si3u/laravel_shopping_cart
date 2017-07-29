@@ -42,10 +42,12 @@ class Category extends Model
     protected $parent = 'parent_id';
     public $timestamps = false;
 
-    protected function GetParentItem($id) {
-
+    public function DataLocalization() {
+        return $this->hasMany('App\DataCategory', 'category_id');
     }
-    protected function GetTree($select, $lang) {
+
+
+    protected function GetTree($select, $output) {
         $data = DB::table('data_categories')
             ->join('categories', 'data_categories.category_id', '=', 'categories.id')
             ->where('data_categories.lang_id', 1)
@@ -57,6 +59,7 @@ class Category extends Model
                 'categories.slug'
             )
             ->get();
+
         $prepare_data = array();
         $i = 0;
         while ($i < count($data)) {
@@ -69,27 +72,62 @@ class Category extends Model
             $i++;
         }
         $result = \Nestable::make($prepare_data);
+        switch ($output) {
+            case 'add_or_update':
+                return $result->attr([
+                    'class' => 'form-control',
+                    'name' => 'parent_id',
+                    'id' => 'parent_id'
+                ])->selected($select)->renderAsDropdown();
+                break;
+            case 'categories/main':
+                return $result->ulAttr(['class' => 'sitemap'])
+                    ->route(['categories/update' => 'id'])
+                    ->renderAsHtml();
+                break;
+            case 'json':
+                return $result->attr([
+                    'class' => 'form-control',
+                    'name' => 'parent_id',
+                    'id' => 'parent_id'
+                ])->selected($select)->renderAsJson();
+                break;
+            case 'array':
+                return $result->attr([
+                    'class' => 'form-control',
+                    'name' => 'parent_id',
+                    'id' => 'parent_id'
+                ])->selected($select)->renderAsArray();
+                break;
+        }
+    }
 
-        return $result->attr([
-                'class' => 'form-control',
-                'name' => 'parent_id',
-                'id' => 'parent_id'
-            ])->selected($select)->renderAsDropdown();
-    }
-    protected function GetLastItem() {
-        return DB::table('categories')->orderBy('id', 'desc')->first();
-    }
-    protected function CreateItem($slug,
-                                  $parent_id,
-                                  $sorting_order) {
-        $item = new Category();
-        $item->slug = $slug;
+    protected function CreateItem($slug, $parent_id, $sorting_order)
+    {
+        $data_insert = [
+            'slug' => $slug,
+            'sorting_order' => $sorting_order
+        ];
         if ($parent_id == 1) {
-            $item->parent_id = 0;
+            $data_insert += ['parent_id' => 0];
+        } else {
+            $data_insert += ['parent_id' => $parent_id];
         }
-        else {
-            $item->parent_id = $parent_id;
-        }
+        $id = Category::insertGetId($data_insert);
+        return $id;
+    }
+
+    protected function GetDataItem($id) {
+        return Category::find($id);
+    }
+    protected function GetDataLocalization($id) {
+        return Category::find($id)->DataLocalization;
+    }
+
+    protected function UpdateItem($id, $slug, $parent_id, $sorting_order) {
+        $item = Category::find($id);
+        $item->slug = $slug;
+        $item->parent_id = $parent_id;
         $item->sorting_order = $sorting_order;
         if ($item->save()) {
             return true;

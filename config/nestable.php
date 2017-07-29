@@ -12,7 +12,7 @@ return [
     ],
     'html' => [
         'label' => 'name',
-        'href'  => 'slug'
+        'href'  => 'id'
     ],
     'dropdown' => [
         'prefix' => '',

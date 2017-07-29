@@ -22,15 +22,23 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\CategoryController@Page'
     ])->name('admin/categories');
 
+    // // //category
     Route::get('/admin/categories/add', [
         'uses' => 'admin\CategoryController@PageAdd'
     ])->name('admin/categories/add');
-    Route::get('/admin/categories/update', [
+    Route::get('/admin/categories/update/{id}', [
         'uses' => 'admin\CategoryController@PageUpdate'
-    ])->name('admin/categories/update');
+    ])->name('categories/update');
+
     Route::post('/admin/category/add', [
         'uses' => 'admin\CategoryController@Add'
     ])->name('admin/category/add');
+    Route::post('/admin/category/update', [
+        'uses' => 'admin\CategoryController@Update'
+    ])->name('category/update');
+    Route::get('/admin/category/delete/{id}', [
+        'uses' => 'admin\CategoryController@Delete'
+    ])->name('category/delete');
 
     Route::post('/admin/active_localization/get', [
         'uses' => 'admin\ActiveLocalizationController@Get'

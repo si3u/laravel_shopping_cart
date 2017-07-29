@@ -4,6 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\DataCategory
+ *
+ * @property int $category_id
+ * @property string $name
+ * @property int $lang_id
+ * @property string|null $description
+ * @property string|null $meta_title
+ * @property string|null $meta_description
+ * @property string|null $meta_keywords
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereLangId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereMetaDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereMetaKeywords($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereMetaTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataCategory whereName($value)
+ * @mixin \Eloquent
+ */
 class DataCategory extends Model
 {
     protected $primaryKey = 'category_id';
@@ -28,5 +47,26 @@ class DataCategory extends Model
             return true;
         }
         return false;
+    }
+
+    public static function UpdateItem($category_id,
+                                      $name,
+                                      $lang_id,
+                                      $description,
+                                      $meta_title,
+                                      $meta_description,
+                                      $meta_keywords) {
+        $where = [
+            ['category_id', '=', $category_id],
+            ['lang_id', '=', $lang_id],
+        ];
+        $data = [
+            'name' => $name,
+            'description' => $description,
+            'meta_title' => $meta_title,
+            'meta_description' => $meta_description,
+            'meta_keywords' => $meta_keywords
+        ];
+        DataCategory::where($where)->update($data);
     }
 }
