@@ -117,7 +117,6 @@ class CategoryController extends Controller {
         while ($i<count($this->active_local)) {
             $validator = Validator::make($request->all(), [
                 'name_'.$this->active_local[$i]->lang => 'required|string',
-                'slug_'.$this->active_local[$i]->lang => 'string|nullable',
                 'sorting_order_'.$this->active_local[$i]->lang => 'required|integer',
                 'description_'.$this->active_local[$i]->lang => 'string|nullable',
                 'meta_title_'.$this->active_local[$i]->lang => 'string|nullable',
@@ -132,10 +131,9 @@ class CategoryController extends Controller {
             $i++;
         }
 
-        $slug = $request['slug_'.$this->active_local[0]->lang];
         $parent_id = $request['parent_id'];
         $sorting_order = $request['sorting_order_'.$this->active_local[0]->lang];
-        $last_id = Category::CreateItem($slug, $parent_id, $sorting_order);
+        $last_id = Category::CreateItem($parent_id, $sorting_order);
 
         $i = 0;
         while ($i < count($this->active_local)) {
@@ -175,11 +173,16 @@ class CategoryController extends Controller {
             ]);
         }
 
+        if ($request->parent_id == $request->item_id) {
+            return response()->json([
+                'error' => 'Категория не может быть сама себе родительской категорией'
+            ]);
+        }
+
         $i = 0;
         while ($i<count($this->active_local)) {
             $validator = Validator::make($request->all(), [
                 'name_'.$this->active_local[$i]->lang => 'required|string',
-                'slug_'.$this->active_local[$i]->lang => 'string|nullable',
                 'sorting_order_'.$this->active_local[$i]->lang => 'required|integer',
                 'description_'.$this->active_local[$i]->lang => 'string|nullable',
                 'meta_title_'.$this->active_local[$i]->lang => 'string|nullable',
@@ -194,36 +197,44 @@ class CategoryController extends Controller {
             $i++;
         }
 
-        $i = 0;
-        while ($i < count($this->active_local)) {
-            $name = $request['name_'.$this->active_local[$i]->lang];
-            $lang_id = $this->active_local[$i]->id;
-            $description = $request['description_'.$this->active_local[$i]->lang];
-            $m_title = $request['meta_title_'.$this->active_local[$i]->lang];
-            $m_description = $request['meta_description_'.$this->active_local[$i]->lang];
-            $m_keywords = $request['meta_keywords_'.$this->active_local[$i]->lang];
-            DataCategory::UpdateItem($request->item_id,
-                                     $name,
-                                     $lang_id,
-                                     $description,
-                                     $m_title,
-                                     $m_description,
-                                     $m_keywords);
-            $i++;
+        if (Category::UpdateItem($request->item_id,
+                                 $request->parent_id,
+                                 $request['sorting_order_'.$this->active_local[0]->lang])) {
+            $i = 0;
+            while ($i < count($this->active_local)) {
+                $name = $request['name_'.$this->active_local[$i]->lang];
+                $lang_id = $this->active_local[$i]->id;
+                $description = $request['description_'.$this->active_local[$i]->lang];
+                $m_title = $request['meta_title_'.$this->active_local[$i]->lang];
+                $m_description = $request['meta_description_'.$this->active_local[$i]->lang];
+                $m_keywords = $request['meta_keywords_'.$this->active_local[$i]->lang];
+                DataCategory::UpdateItem($request->item_id,
+                    $name,
+                    $lang_id,
+                    $description,
+                    $m_title,
+                    $m_description,
+                    $m_keywords);
+                $i++;
+            }
+            return response()->json([
+                'status' => 'success'
+            ]);
         }
-        return response()->json([
-            'status' => 'success'
-        ]);
     }
 
     public function Delete($id) {
-        $validator = Validator::make(
-            ['id' => $id],
-            ['id' => 'required|integer|exists:categories,id']
-        );
+        $validator = Validator::make([
+            'id' => $id
+        ], [
+            'id' => 'required|integer|exists:categories,id'
+        ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
-        echo 'true';
+        if (Category::CallDeleteItem($id)) {
+            $message = 'Категория и все ее подкатегории удалены';
+            return redirect()->route('admin/categories')->with('success', $message);
+        }
     }
 }

@@ -69,4 +69,8 @@ class DataCategory extends Model
         ];
         DataCategory::where($where)->update($data);
     }
+
+    public static function DeleteItems($ids) {
+        DataCategory::whereIn('category_id', $ids)->delete();
+    }
 }

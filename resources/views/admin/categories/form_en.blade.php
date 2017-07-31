@@ -25,16 +25,6 @@
 </div>
 
 <div class="form-group">
-    <label class="col-md-2 control-label">SEO URL</label>
-    <div class="col-md-10">
-        <input @if($page->route_name == 'categories/update')
-               value="{{$page->category->slug}}"
-               @endif
-               id="slug_en" name="slug_en" type="text" class="form-control" placeholder="Введите SEO URL">
-    </div>
-</div>
-
-<div class="form-group">
     <label class="col-md-2 control-label">Описание</label>
     <div class="col-md-10">
         <div id="description_en" name="description_en" class="summernote">@if($page->route_name == 'categories/update') @isset($page->data_local->en->description){!!$page->data_local->en->description!!}@endisset @endif</div>

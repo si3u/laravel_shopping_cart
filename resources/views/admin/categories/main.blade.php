@@ -33,7 +33,8 @@
                             </p>
                         </div>
                         <div class="panel-body">
-                            @include('admin.includes.error_alerts')
+                            @include('admin.includes.alerts.success_alerts')
+                            @include('admin.includes.alerts.error_alerts')
                             {!! $page->tree !!}
                         </div>
                     </div>

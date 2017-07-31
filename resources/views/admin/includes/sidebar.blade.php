@@ -20,6 +20,7 @@
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
                         <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализаций</a></li>
+                        <li><a href="{{route('admin/default_sizes')}}">Настройки размеров картин</a></li>
                     </ul>
                 </li>
             </ul>

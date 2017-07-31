@@ -32,7 +32,6 @@ var category = {
             data: data,
             dataType: 'JSON',
             success: function (result) {
-                console.log(result);
                 if (result.errors != undefined) {
                     insertErrorArray(form, result.errors, $('#group_errors'), $('#errors_list'));
                     callToast.error('Ошибка', 'при добавлении категории');
@@ -86,6 +85,10 @@ var category = {
             data: data,
             dataType: 'JSON',
             success: function (result) {
+                if (result.error != undefined) {
+                    callToast.success('Ошибка', result);
+                    return false;
+                }
                 if (result.status == 'success') {
                     callToast.success('Данные', 'успешно обновлены');
                 }

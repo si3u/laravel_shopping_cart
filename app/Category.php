@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereSlug($value)
  * @property int $lang_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereLangId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\DataCategory[] $DataLocalization
  */
 class Category extends Model
 {
@@ -41,11 +42,15 @@ class Category extends Model
     protected $primaryKey = 'id';
     protected $parent = 'parent_id';
     public $timestamps = false;
+    private $array_id;
 
     public function DataLocalization() {
         return $this->hasMany('App\DataCategory', 'category_id');
     }
 
+    protected function GetItem($id) {
+        return Category::find($id);
+    }
 
     protected function GetTree($select, $output) {
         $data = DB::table('data_categories')
@@ -102,19 +107,17 @@ class Category extends Model
         }
     }
 
-    protected function CreateItem($slug, $parent_id, $sorting_order)
+    protected function CreateItem($parent_id, $sorting_order)
     {
         $data_insert = [
-            'slug' => $slug,
             'sorting_order' => $sorting_order
         ];
-        if ($parent_id == 1) {
-            $data_insert += ['parent_id' => 0];
+        if ($parent_id == 0) {
+            $data_insert += ['parent_id' => 1];
         } else {
             $data_insert += ['parent_id' => $parent_id];
         }
-        $id = Category::insertGetId($data_insert);
-        return $id;
+        return Category::insertGetId($data_insert);
     }
 
     protected function GetDataItem($id) {
@@ -124,14 +127,36 @@ class Category extends Model
         return Category::find($id)->DataLocalization;
     }
 
-    protected function UpdateItem($id, $slug, $parent_id, $sorting_order) {
+    protected function UpdateItem($id, $parent_id, $sorting_order) {
         $item = Category::find($id);
-        $item->slug = $slug;
         $item->parent_id = $parent_id;
         $item->sorting_order = $sorting_order;
         if ($item->save()) {
             return true;
         }
         return false;
+    }
+
+    private function DeleteItems() {
+        Category::whereIn('id', $this->array_id)->delete();
+        DataCategory::DeleteItems($this->array_id);
+    }
+
+    private function SearchId($data) {
+        $count = count($data);
+        $i = 0;
+        while ($i < $count) {
+            $this->array_id[] = $data[$i]['id'];
+            if (count($data[$i]['child']) > 0) {
+                $this->SearchId($data[$i]['child']);
+            }
+            $i++;
+        }
+    }
+    protected function CallDeleteItem($id) {
+        $this->array_id[] = $id;
+        $this->SearchId(Category::parent($id)->renderAsArray());
+        $this->DeleteItems();
+        return true;
     }
 }
