@@ -119,5 +119,5 @@
     @endif
 @endsection
 @section('my_scripts')
-    <script src="{{ asset('assets/admin/my_js_scripts/category.js')}}"></script>
+    {!! script_ts('/assets/admin/my_js_scripts/category.js') !!}
 @endsection

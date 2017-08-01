@@ -51,6 +51,36 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\DefaultSizeController@Delete'
     ])->name('admin/default_size/delete');
 
+
+    //  // //filter by color
+    Route::get('/admin/filter_colors', [
+        'uses' => 'admin\FilterByColorController@Page'
+    ])->name('admin/filter_colors');
+
+    Route::post('/admin/filter_color/add', [
+        'uses' => 'admin\FilterByColorController@Add'
+    ])->name('admin/filter_color/add');
+    Route::post('/admin/filter_color/delete', [
+        'uses' => 'admin\FilterByColorController@Delete'
+    ])->name('admin/filter_color/delete');
+
+
+    // // //text page
+    Route::get('/admin/text_page/{id}', [
+        'uses' => 'admin\TextPageController@Get'
+    ])->name('admin/text_page');
+
+    Route::post('/admin/text_page/update', [
+        'uses' => 'admin\TextPageController@Update'
+    ])->name('admin/text_page/update');
+
+
+    // // //news
+    Route::get('/admin/news', [
+        'uses' => 'admin\NewsController@Page'
+    ])->name('admin/news');
+
+
     // // //localization
     Route::post('/admin/active_localization/get', [
         'uses' => 'admin\ActiveLocalizationController@Get'

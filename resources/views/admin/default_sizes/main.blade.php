@@ -70,5 +70,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    <script src="{{ asset('assets/admin/my_js_scripts/defaultSize.js')}}"></script>
+    {!! script_ts('/assets/admin/my_js_scripts/defaultSize.js') !!}
 @endsection

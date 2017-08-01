@@ -6,46 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <link href="{{ asset('assets/admin/plugins/c3/c3.min.css') }}" rel="stylesheet" type="text/css"  />
+    {!! style_ts('/assets/admin/plugins/c3/c3.min.css') !!}
+    {!! style_ts('/assets/admin/css/bootstrap.min.css') !!}
+    {!! style_ts('/assets/admin/css/core.css') !!}
+    {!! style_ts('/assets/admin/css/components.css') !!}
+    {!! style_ts('/assets/admin/css/icons.css') !!}
+    {!! style_ts('/assets/admin/css/pages.css') !!}
+    {!! style_ts('/assets/admin/css/menu.css') !!}
+    {!! style_ts('/assets/admin/css/responsive.css') !!}
+    {!! style_ts('/assets/admin/plugins/responsive-table/css/rwd-table.min.css') !!}
+    {!! style_ts('/assets/admin/plugins/summernote/summernote.css') !!}
+    {!! style_ts('/assets/admin/plugins/jquery-toastr/jquery.toast.min.css') !!}
+    {!! style_ts('/assets/admin/plugins/jquery.filer/css/jquery.filer.css') !!}
+    {!! style_ts('/assets/admin/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') !!}
+    {!! style_ts('/assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.css') !!}
+    {!! style_ts('/assets/admin/js/modernizr.min.js') !!}
 
-    <link href="{{ asset('assets/admin/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/core.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/components.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/icons.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/pages.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/menu.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/css/responsive.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin/plugins/responsive-table/css/rwd-table.min.css') }}" rel="stylesheet" type="text/css" media="screen">
-    <link href="{{ asset('assets/admin/plugins/summernote/summernote.css')}}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/plugins/jquery-toastr/jquery.toast.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/admin/plugins/jquery.filer/css/jquery.filer.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.css" rel="stylesheet">
-
-    <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
 </head>
 <body>
 {{ csrf_field() }}
 @yield('content')
 @include('admin.active_localization.modal')
-<script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/metisMenu.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/waves.js') }}"></script>
-<script src="{{ asset('assets/admin/js/jquery.slimscroll.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/waypoints/jquery.waypoints.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/counterup/jquery.counterup.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/admin/plugins/d3/d3.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/admin/plugins/c3/c3.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/jquery-toastr/jquery.toast.min.js') }}"></script>
-<script src="{{ asset('assets/admin/pages/jquery.dashboard.js') }}"></script>
-<script src="{{ asset('assets/admin/js/jquery.core.js') }}"></script>
-<script src="{{ asset('assets/admin/js/jquery.app.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/summernote/summernote.min.js')}}"></script>
-<script src="{{ asset('assets/admin/plugins/responsive-table/js/rwd-table.min.js')}}" type="text/javascript"></script>
+{!! script_ts('/assets/admin/js/jquery.min.js') !!}
+{!! script_ts('/assets/admin/js/bootstrap.min.js') !!}
+{!! script_ts('/assets/admin/js/metisMenu.min.js') !!}
+{!! script_ts('/assets/admin/js/waves.js') !!}
+{!! script_ts('/assets/admin/js/jquery.slimscroll.js') !!}
+{!! script_ts('/assets/admin/plugins/waypoints/jquery.waypoints.min.js') !!}
+{!! script_ts('/assets/admin/plugins/counterup/jquery.counterup.min.js') !!}
+{!! script_ts('/assets/admin/plugins/d3/d3.min.js') !!}
+{!! script_ts('/assets/admin/plugins/c3/c3.min.js') !!}
+{!! script_ts('/assets/admin/plugins/jquery-toastr/jquery.toast.min.js') !!}
+{!! script_ts('/assets/admin/pages/jquery.dashboard.js') !!}
+{!! script_ts('/assets/admin/js/jquery.core.js') !!}
+{!! script_ts('/assets/admin/js/jquery.app.js') !!}
+{!! script_ts('/assets/admin/plugins/summernote/summernote.min.js') !!}
+{!! script_ts('/assets/admin/plugins/responsive-table/js/rwd-table.min.js') !!}
 
-<script src="{{ asset('assets/admin/my_js_scripts/common.js')}}"></script>
+{!! script_ts('/assets/admin/my_js_scripts/common.js') !!}
 
 <script>
     jQuery(document).ready(function(){

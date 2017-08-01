@@ -13,6 +13,24 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="{{route('admin/news')}}">
+                        <i class="mdi mdi-newspaper"></i>
+                        <span> Новости </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" aria-expanded="true">
+                        <i class="dripicons-align-justify"></i>
+                        <span> Страницы </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level nav" aria-expanded="true">
+                        <li><a href="/admin/text_page/1">Оплата и доставка</a></li>
+                        <li><a href="/admin/text_page/2">О нас</a></li>
+                        <li><a href="/admin/text_page/3">Сотрудничество</a></li>
+                    </ul>
+                </li>
+                <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-gear"></i>
                         <span> Настройки </span>
@@ -21,6 +39,12 @@
                     <ul class="nav-second-level nav" aria-expanded="true">
                         <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализаций</a></li>
                         <li><a href="{{route('admin/default_sizes')}}">Настройки размеров картин</a></li>
+                        <li>
+                            <a href="javascript: void(0);" aria-expanded="true">Фильтры <span class="menu-arrow"></span></a>
+                            <ul class="nav-third-level nav" aria-expanded="true">
+                                <li><a href="{{route('admin/filter_colors')}}">Цвет</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>

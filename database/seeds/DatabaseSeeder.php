@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CreateAdmin');
         $this->call('CreateDefaultCategory');
         $this->call('CreateLocalization');
+        $this->call('CreateTextPages');
     }
 }
 class CreateAdmin extends Seeder {
@@ -82,15 +83,25 @@ class CreateLocalization extends Seeder {
             [
                 'lang' => 'ua',
                 'name' => 'Украинский',
-                'status' => false
-            ],
-            [
-                'lang' => 'en',
-                'name' => 'English',
-                'status' => false
+                'status' => true
             ]
         ];
 
         DB::table('active_localizations')->insert($data);
+    }
+}
+
+class CreateTextPages extends Seeder {
+    public function run() {
+        DB::table('text_pages')->delete();
+        DB::table('text_pages')->truncate();
+        $value = 'Введите текст. Используйте инструменты оформления текста. Они находятся на панеле сверху.';
+        $data = [
+            ['value' => $value, 'name' => 'Оплата и доставка'],
+            ['value' => $value, 'name' => 'О нас'],
+            ['value' => $value, 'name' => 'Сотрудничество']
+        ];
+
+        DB::table('text_pages')->insert($data);
     }
 }

@@ -15,7 +15,7 @@ class FilterByColor extends Model
     public $timestamps = false;
 
     protected function GetItems() {
-        return FilterByColor::paginate(10);
+        return FilterByColor::orderBy('id', 'desc')->paginate(10);
     }
 
     protected function CreateItem($name, $hex) {
