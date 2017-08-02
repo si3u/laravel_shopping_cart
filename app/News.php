@@ -2,40 +2,58 @@
 
 namespace App;
 
+use App\ImageBase\ImageBase;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class News extends Model
 {
-    private $image;
-    protected $primaryKey = 'id';
+    public $primaryKey = 'id';
+    public $timestamps = true;
+    private $carbon;
+
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
-        $this->image = new WorkOnImage();
+        $this->carbon = Carbon::now();
     }
 
-    protected function CreateItem($topic, $text, $image = null, $image_preview = null) {
-        $item = new News();
-        $item->topic = $topic;
-        $item->text = $text;
-        if ($image != null) {
-            $item->image = $image;
-            $item->image_preview = $image_preview;
-        }
+    protected function GetItems() {
+        return DB::table('news')
+            ->orderBy('news.created_at', 'desc')
+            ->join('data_news', 'news.id', '=', 'data_news.news_id')
+            ->where('data_news.lang_id', 1)
+            ->paginate();
+    }
+
+    protected function CreateItem($image = null, $image_preview = null) {
+        return News::insertGetId([
+            'image' => $image,
+            'image_preview' => $image_preview,
+            'created_at' => $this->carbon->toDateTimeString(),
+            'updated_at' => $this->carbon->toDateTimeString(),
+        ]);
+    }
+
+    protected function UpdateItem($id, $image, $image_preview) {
+        $item = News::find($id);
+        ImageBase::DeleteImages('/assets/images/news/', [
+            $item->image,
+            $item->image_preview
+        ]);
+
+        $item->image = $image;
+        $item->image_preview = $image_preview;
         if ($item->save()) {
             return true;
         }
         return false;
     }
 
-    protected function UpdateItem($id, $topic, $text, $image = null, $image_preview = null) {
-        $item = News::find($id);
-
-    }
-
     protected function DeleteItem($id) {
         $news = News::find($id);
         if ($news->image != null) {
-            $this->image->DeleteImages('/assets/images/items/', [
+            ImageBase::DeleteImages('/assets/images/news/', [
                 $news->image, $news->preview_image
             ]);
         }

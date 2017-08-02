@@ -110,7 +110,7 @@ var activeLocalization = {
                             '            <label for="checkbox2">'
                                             +result[i].name+
                             '            </label>' +
-                            '        </div>')
+                            '        </div>');
                     }
                     else {
                         form.append('<div class="checkbox checkbox-primary">' +

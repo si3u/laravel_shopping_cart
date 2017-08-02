@@ -46,14 +46,14 @@
                                         @if ($i == 0)
                                             <li class="active">
                                                 <a href="#{{$item->lang}}" data-toggle="tab" aria-expanded="false">
-                                                    <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                                    <span class="visible-xs">{{$item->name}}</span>
                                                     <span class="hidden-xs">{{$item->name}}</span>
                                                 </a>
                                             </li>
                                         @else
                                             <li class="">
                                                 <a href="#{{$item->lang}}" data-toggle="tab" aria-expanded="false">
-                                                    <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                                    <span class="visible-xs">{{$item->name}}</span>
                                                     <span class="hidden-xs">{{$item->name}}</span>
                                                 </a>
                                             </li>

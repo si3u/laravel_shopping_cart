@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">{{$page->title}} | {{$page->item->name}}</h4>
+                            <h4 class="page-title">{{$page->title}}</h4>
                             <div class="clearfix"></div>
                         </div>
                     </div>
@@ -21,9 +21,44 @@
                 <div class="row">
                     <div class="card-box">
                         <form id="form_save_text_page" class="form-horizontal" action="{{route('admin/text_page/update')}}" onclick="return false;">
-                            <input type="hidden" name="item_id" value="{{$page->item->id}}">
-                            <div class="form-group">
-                                <div id="value" name="value" class="summernote">{!! $page->item->value !!}</div>
+                            <input type="hidden" name="item_id" value="{{$page->id}}">
+                            <ul class="nav nav-tabs tabs-bordered nav-justified">
+                                <?php $i = 0; ?>
+                                @foreach($page->active_lang as $item)
+                                    @if ($i == 0)
+                                        <li class="active">
+                                            <a href="#{{$item->lang}}" data-toggle="tab" aria-expanded="false">
+                                                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                                <span class="hidden-xs">{{$item->name}}</span>
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="">
+                                            <a href="#{{$item->lang}}" data-toggle="tab" aria-expanded="false">
+                                                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                                <span class="hidden-xs">{{$item->name}}</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <?php $i++; ?>
+                                @endforeach
+                            </ul>
+                            <div class="tab-content">
+                                <?php $i = 0; ?>
+                                @foreach($page->active_lang as $item)
+                                    @if ($i == 0)
+                                        <div class="tab-pane active" id="{{$item->lang}}">
+                                            <?php $path = 'admin.text_page.form_'.$item->lang; ?>
+                                            @include($path)
+                                        </div>
+                                    @else
+                                        <div class="tab-pane" id="{{$item->lang}}">
+                                            <?php $path = 'admin.text_page.form_'.$item->lang; ?>
+                                            @include($path)
+                                        </div>
+                                    @endif
+                                    <?php $i++; ?>
+                                @endforeach
                             </div>
                             <div class="form-group" style="display: none;" id="group_errors">
                                 <div class="alert alert-danger alert-dismissible fade in" role="alert">

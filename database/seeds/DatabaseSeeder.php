@@ -95,11 +95,16 @@ class CreateTextPages extends Seeder {
     public function run() {
         DB::table('text_pages')->delete();
         DB::table('text_pages')->truncate();
-        $value = 'Введите текст. Используйте инструменты оформления текста. Они находятся на панеле сверху.';
         $data = [
-            ['value' => $value, 'name' => 'Оплата и доставка'],
-            ['value' => $value, 'name' => 'О нас'],
-            ['value' => $value, 'name' => 'Сотрудничество']
+            ['id' => 1, 'value' => 'Доставка и оплата', 'lang_id' => 1],
+            ['id' => 1, 'value' => 'Доставка і оплата', 'lang_id' => 2],
+            ['id' => 1, 'value' => 'Payment and delivery', 'lang_id' => 3],
+            ['id' => 2, 'value' => 'О нас', 'lang_id' => 1],
+            ['id' => 2, 'value' => 'Про нас', 'lang_id' => 2],
+            ['id' => 2, 'value' => 'About us', 'lang_id' => 3],
+            ['id' => 3, 'value' => 'Сотрудничество', 'lang_id' => 1],
+            ['id' => 3, 'value' => 'Співробітництво', 'lang_id' => 2],
+            ['id' => 3, 'value' => 'Cooperation', 'lang_id' => 3]
         ];
 
         DB::table('text_pages')->insert($data);

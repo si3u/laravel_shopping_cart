@@ -1,14 +1,24 @@
 var textPage = {
     'save': function () {
+        var data = {};
+        for (var i in local) {
+            var dataRequired = $('#value_'+local[i].lang).summernote('code');
+            data['value_'+local[i].lang] = dataRequired;
+            if (dataRequired.length < 10) {
+                callToast.error('Заполните все поля', 'На активных вкладках данные должны быть больше 10 символов');
+                return false;
+            }
+        }
+
         var form = $('#form_save_text_page');
-        var id = $('input[name="item_id"]').val();
-        var value = $('#value').summernote('code');
+        data['id'] = $('input[name="item_id"]').val();
         $.ajax({
             method: "POST",
             url: form.attr('action'),
-            data: {'id': id, 'value': value},
+            data: data,
             dataType: 'JSON',
             success: function (result) {
+                console.log(result);
                 if (result.errors != undefined) {
                     insertErrorArray(
                         form,

@@ -79,6 +79,19 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/news', [
         'uses' => 'admin\NewsController@Page'
     ])->name('admin/news');
+    Route::get('/admin/news/add', [
+        'uses' => 'admin\NewsController@PageAdd'
+    ])->name('news/add_page');
+    Route::get('/admin/news/update/{id}', [
+        'uses' => 'admin\NewsController@PageUpdate'
+    ])->name('news/update_page');
+
+    Route::post('/admin/news/add', [
+        'uses' => 'admin\NewsController@Add'
+    ])->name('news/add');
+    Route::post('/admin/news/update', [
+        'uses' => 'admin\NewsController@Update'
+    ])->name('news/update');
 
 
     // // //localization

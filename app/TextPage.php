@@ -9,16 +9,11 @@ class TextPage extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected function GetItem($id) {
-        return TextPage::find($id);
+    protected function GetItems($id) {
+        return TextPage::where('id', $id)->get();
     }
 
-    protected function UpdateItem($id, $value) {
-        $item = TextPage::find($id);
-        $item->value = $value;
-        if ($item->save()) {
-            return true;
-        }
-        return false;
+    protected function UpdateItem($id, $lang_id, $value) {
+        TextPage::where(['id' => $id, 'lang_id' => $lang_id])->update(['value' => $value]);
     }
 }

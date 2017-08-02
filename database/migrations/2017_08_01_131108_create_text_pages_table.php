@@ -14,8 +14,8 @@ class CreateTextPagesTable extends Migration
     public function up()
     {
         Schema::create('text_pages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->char('name');
+            $table->integer('id');
+            $table->integer('lang_id');
             $table->text('value');
         });
     }
