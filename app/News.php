@@ -17,6 +17,9 @@ class News extends Model
         parent::__construct($attributes);
         $this->carbon = Carbon::now();
     }
+    protected function DataLocalization() {
+        return $this->hasMany('App\DataNews', 'news_id');
+    }
 
     protected function GetItems() {
         return DB::table('news')
@@ -24,6 +27,13 @@ class News extends Model
             ->join('data_news', 'news.id', '=', 'data_news.news_id')
             ->where('data_news.lang_id', 1)
             ->paginate();
+    }
+
+    protected function GetItem($id) {
+        return News::find($id);
+    }
+    protected function GetItemAndLocalData($id, $active_local) {
+        return News::find($id)->DataLocalization()->whereIn('lang_id', $active_local)->get();
     }
 
     protected function CreateItem($image = null, $image_preview = null) {
@@ -51,12 +61,7 @@ class News extends Model
     }
 
     protected function DeleteItem($id) {
-        $news = News::find($id);
-        if ($news->image != null) {
-            ImageBase::DeleteImages('/assets/images/news/', [
-                $news->image, $news->preview_image
-            ]);
-        }
-        $news->delete();
+        $news = News::find($id)->DataLocalization();
+        return $news;
     }
 }

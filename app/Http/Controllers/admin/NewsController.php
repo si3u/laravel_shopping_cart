@@ -13,11 +13,48 @@ use Illuminate\Support\Facades\Route;
 
 class NewsController extends Controller {
     private $active_local;
+    private $active_local_id;
+    private $count_active_local;
     private $route_name;
 
     public function __construct() {
         $this->active_local = ActiveLocalization::GetActive();
         $this->route_name = Route::currentRouteName();
+        $this->count_active_local = count($this->active_local);
+        $i = 0;
+        while ($i < $this->count_active_local) {
+            $this->active_local_id[] = $this->active_local[$i]->id;
+            $i++;
+        }
+    }
+
+
+    private function PrepareDataLocal($id) {
+        $data_local = News::GetItemAndLocalData($id, $this->active_local_id);
+        $prepare_data_local = null;
+        foreach ($data_local as $item) {
+            $key = '';
+            switch ($item->lang_id) {
+                case 1:
+                    $key = 'ru';
+                    break;
+                case 2:
+                    $key = 'ua';
+                    break;
+                case 3:
+                    $key = 'en';
+                    break;
+            }
+            $prepare_data_local[$key] = (object)[
+                'topic' => $item->topic,
+                'text' => $item->text,
+                'meta_title' => $item->meta_title,
+                'meta_description' => $item->meta_description,
+                'meta_keywords' => $item->meta_keywords,
+                'tags' => $item->tags,
+            ];
+        }
+        return (object)$prepare_data_local;
     }
 
     public function Page() {
@@ -37,11 +74,24 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
-    public function PageUpdate() {
+    public function PageUpdate($id) {
+        $validator = Validator::make(
+            ['id' => $id],
+            ['id' => 'required|integer|exists:news,id']
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages()
+            ]);
+        }
+
         $data = (object)[
-            'title' => 'Добавление новости',
+            'title' => 'Обновление новости',
             'active_lang' => $this->active_local,
-            'route_name' => $this->route_name
+            'route_name' => $this->route_name,
+            'item_id' => $id,
+            'news' => News::GetItem($id),
+            'data' => $this->PrepareDataLocal($id)
         ];
         return view('admin.news.work_on', ['page' => $data]);
     }
@@ -58,12 +108,16 @@ class NewsController extends Controller {
                 ]);
             }
         }
+
         $i = 0;
-        $count = count($this->active_local);
-        while ($i<$count) {
+        while ($i<$this->count_active_local) {
             $validator = Validator::make($request->all(), [
                 'topic_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                'text_'.$this->active_local[$i]->lang => 'required|string'
+                'text_'.$this->active_local[$i]->lang => 'required|string',
+                'meta_title_'.$this->active_local[$i]->lang => 'string|max:255',
+                'meta_description_'.$this->active_local[$i]->lang => 'string',
+                'meta_keywords_'.$this->active_local[$i]->lang => 'string',
+                'tags_'.$this->active_local[$i]->lang => 'string',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -90,10 +144,16 @@ class NewsController extends Controller {
         }
 
         $i = 0;
-        while ($i<$count) {
+        while ($i<$this->count_active_local) {
             $topic = $request['topic_'.$this->active_local[$i]->lang];
             $text = $request['text_'.$this->active_local[$i]->lang];
-            DataNews::CreateItem($item_id, $this->active_local[$i]->id, $topic, $text);
+            $meta_title = $request['meta_title_'.$this->active_local[$i]->lang];
+            $meta_description = $request['meta_description_'.$this->active_local[$i]->lang];
+            $meta_keywords  = $request['meta_keywords_'.$this->active_local[$i]->lang];
+            $tags = $request['tags_'.$this->active_local[$i]->lang];
+
+            DataNews::CreateItem($item_id, $this->active_local[$i]->id, $topic, $text,
+                                 $meta_title, $meta_description, $meta_keywords, $tags);
             $i++;
         }
         if (isset($request->image)) {
@@ -130,12 +190,16 @@ class NewsController extends Controller {
                 'errors' => $validator->messages()
             ]);
         }
+
         $i = 0;
-        $count = count($this->active_local);
-        while ($i<$count) {
+        while ($i<$this->count_active_local) {
             $validator = Validator::make($request->all(), [
                 'topic_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                'text_'.$this->active_local[$i]->lang => 'required|string'
+                'text_'.$this->active_local[$i]->lang => 'required|string',
+                'meta_title_'.$this->active_local[$i]->lang => 'string|max:255',
+                'meta_description_'.$this->active_local[$i]->lang => 'string',
+                'meta_keywords_'.$this->active_local[$i]->lang => 'string',
+                'tags_'.$this->active_local[$i]->lang => 'string',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -159,10 +223,16 @@ class NewsController extends Controller {
             News::UpdateItem($request->item_id, $image_name, $preview_image_name);
         }
         $i = 0;
-        while ($i<$count) {
+        while ($i<$this->count_active_local) {
             $topic = $request['topic_'.$this->active_local[$i]->lang];
             $text = $request['text_'.$this->active_local[$i]->lang];
-            DataNews::UpdateItem($request->item_id, $this->active_local[$i]->id, $topic, $text);
+            $meta_title = $request['meta_title_'.$this->active_local[$i]->lang];
+            $meta_description = $request['meta_description_'.$this->active_local[$i]->lang];
+            $meta_keywords  = $request['meta_keywords_'.$this->active_local[$i]->lang];
+            $tags = $request['tags_'.$this->active_local[$i]->lang];
+
+            DataNews::UpdateItem($request->item_id, $this->active_local[$i]->id, $topic, $text,
+                                 $meta_title, $meta_description, $meta_keywords, $tags);
             $i++;
         }
 
@@ -175,5 +245,9 @@ class NewsController extends Controller {
         return response()->json([
             'status' => 'success',
         ]);
+    }
+
+    public function Delete(Request $request) {
+        return response()->json(News::DeleteItem($request->id));
     }
 }

@@ -10,13 +10,16 @@ var news = {
             if (topic.length > 0 && value.length > 0) {
                 formData.append('topic_' + local[i].lang, topic);
                 formData.append('text_' + local[i].lang, $('#text_' + local[i].lang).summernote('code'));
+                formData.append('meta_title_' + local[i].lang, $('#meta_title_'+local[i].lang).val());
+                formData.append('meta_description_' + local[i].lang, $('#meta_description_'+local[i].lang).val());
+                formData.append('meta_keywords_' + local[i].lang, $('#meta_keywords_'+local[i].lang).val());
+                formData.append('tags_' + local[i].lang, $('#tags_'+local[i].lang).val());
             }
             else {
                 callToast.error('Заполните все поля', 'На активных вкладках должны быть заполнены обязательные поля');
                 return false;
             }
         }
-
         $.ajax({
             method: "POST",
             url: '/admin/news/add',
@@ -58,9 +61,27 @@ var news = {
         for (var i in local) {
             var topic = $('#topic_' + local[i].lang).val();
             var value = $('#text_' + local[i].lang).summernote('code');
+            var mTitle = $('#meta_title_'+local[i].lang).val();
+            var mDescription = $('#meta_description_'+local[i].lang).val();
+            var mKeywords = $('#meta_keywords_'+local[i].lang).val();
+            var tags = $('#tags_'+local[i].lang).val();
+
             if (topic.length > 0 && value.length > 0) {
                 formData.append('topic_' + local[i].lang, topic);
                 formData.append('text_' + local[i].lang, $('#text_' + local[i].lang).summernote('code'));
+
+                if (mTitle.length > 0) {
+                    formData.append('meta_title_' + local[i].lang, mTitle);
+                }
+                if (mDescription.length > 0) {
+                    formData.append('meta_description_' + local[i].lang, mDescription);
+                }
+                if (mKeywords.length > 0) {
+                    formData.append('meta_keywords_' + local[i].lang, mKeywords);
+                }
+                if (tags.length > 0) {
+                    formData.append('tags_' + local[i].lang, tags);
+                }
             }
             else {
                 callToast.error('Заполните все поля', 'На активных вкладках должны быть заполнены обязательные поля');

@@ -61,12 +61,32 @@
                                 @endforeach
                             </ul>
                             <div class="tab-content">
-                                <div class="form-group" id="group_now_image" style="display: none;">
+                                @if ($page->route_name == 'news/add_page')
+                                <div class="form-group"
+                                     id="group_now_image"
+                                     style="display: none;">
                                     <label class="control-label col-md-3">Текущее изображение</label>
                                     <div class="col-md-9">
                                         <img src="" id="now_image" alt="image" class="img-responsive">
                                     </div>
                                 </div>
+                                @else
+                                    @if ($page->news->image_preview != null)
+                                        <div class="form-group" id="group_now_image">
+                                            <label class="control-label col-md-3">Текущее изображение</label>
+                                            <div class="col-md-9">
+                                                <img src="/assets/images/news/{{$page->news->image_preview}}" id="now_image" alt="image" class="img-responsive">
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="form-group" id="group_now_image">
+                                            <label class="control-label col-md-3">Текущее изображение</label>
+                                            <div class="col-md-9">
+                                                <img src="" id="now_image" alt="image" class="img-responsive">
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
                                 <div class="form-group">
                                     <label class="control-label col-md-3">Изображение</label>
                                     <div class="col-md-9">
@@ -74,7 +94,15 @@
                                             <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                                             <div>
                                                 <button type="button" class="btn btn-default btn-file">
-                                                    <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
+                                                    @if ($page->route_name == 'news/add_page')
+                                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
+                                                    @else
+                                                        @if ($page->news->image_preview == null)
+                                                            <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
+                                                        @else
+                                                            <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать новое изображение</span>
+                                                        @endif
+                                                    @endif
                                                     <span class="fileupload-exists"><i class="fa fa-undo"></i> Выбрать другое изображение</span>
                                                     <input id="image" name="image" type="file" class="btn-default" />
                                                 </button>

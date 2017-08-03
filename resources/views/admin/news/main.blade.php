@@ -30,9 +30,9 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">Изображение</th>
-                                    <th>Наименование</th>
-                                    <th>Дата добавления</th>
-                                    <th>Операции</th>
+                                    <th class="text-center">Наименование</th>
+                                    <th class="text-center">Дата добавления</th>
+                                    <th class="text-center">Операции</th>
                                 </tr>
                                 </thead>
                                 <tbody>

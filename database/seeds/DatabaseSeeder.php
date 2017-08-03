@@ -61,7 +61,7 @@ class CreateDefaultCategory extends Seeder {
         $data = [
             [
                 'category_id' => 1,
-                'name' => 'Не определено',
+                'name' => 'Корневая категория',
                 'lang_id' => 1,
             ]
         ];
