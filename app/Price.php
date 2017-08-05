@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Price whereNaturalCanvas($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Price whereRunningMeter($value)
  * @mixin \Eloquent
+ * @property int $id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Price whereId($value)
  */
 class Price extends Model
 {

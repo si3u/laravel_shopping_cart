@@ -112,6 +112,41 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/prices/update', [
         'uses' => 'admin\PriceController@Update'
     ])->name('prices/update');
+
+    // // //modular images
+    Route::get('/admin/modular_images', [
+        'uses' => 'admin\ModularImageController@Page'
+    ])->name('admin/modular_images');
+    Route::get('/admin/modular_images/add', [
+        'uses' => 'admin\ModularImageController@PageAdd'
+    ])->name('admin/modular_images/add');
+
+    Route::post('/admin/modular_image/add', [
+        'uses' => 'admin\ModularImageController@Add'
+    ])->name('admin/modular_image/add');
+    Route::get('/admin/modular_image/delete/{id}', [
+        'uses' => 'admin\ModularImageController@Delete'
+    ])->name('admin/modular_image/delete');
+
+
+    // // //products
+    Route::get('/admin/products', [
+        'uses' => 'admin\ProductController@Page'
+    ])->name('admin/products');
+    Route::get('/admin/product/add', [
+        'uses' => 'admin\ProductController@PageAdd'
+    ])->name('admin/product/add_page');
+    Route::get('/admin/product/update/{id}', [
+        'uses' => 'admin\ProductController@PageUpdate'
+    ])->name('admin/product/update_page');
+
+    Route::post('/admin/product/add', [
+        'uses' => 'admin\ProductController@Add'
+    ])->name('product/add');
+    Route::post('/admin/product/update', [
+        'uses' => 'admin\ProductController@Update'
+    ])->name('product/update');
+
 });
 
 Auth::routes();

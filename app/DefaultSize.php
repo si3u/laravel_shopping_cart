@@ -24,6 +24,10 @@ class DefaultSize extends Model
         return DefaultSize::orderBy('width', 'asc')->paginate(10);
     }
 
+    public static function GetItemsStatic() {
+        return DefaultSize::orderBy('width', 'asc')->get();
+    }
+
     protected function CountItem($width, $height) {
         return DefaultSize::where([['width', '=', $width],['height', '=', $height]])->count();
     }

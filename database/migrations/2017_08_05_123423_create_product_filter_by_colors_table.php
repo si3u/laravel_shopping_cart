@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateModularImagesTable extends Migration
+class CreateProductFilterByColorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateModularImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('modular_images', function (Blueprint $table) {
-            $table->increments('id');
-            $table->char('image');
-            $table->char('preview_image');
-            $table->timestamps();
+        Schema::create('product_filter_by_colors', function (Blueprint $table) {
+            $table->integer('product_id');
+            $table->integer('color_id');
         });
     }
 
@@ -28,6 +26,6 @@ class CreateModularImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modular_images');
+        Schema::dropIfExists('product_filter_by_colors');
     }
 }

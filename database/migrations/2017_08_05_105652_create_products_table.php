@@ -15,14 +15,9 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('name');
             $table->integer('vendor_code');
             $table->char('image');
             $table->char('preview_image');
-            $table->text('meta_title')->nullable();
-            $table->text('meta_description')->nullable();
-            $table->text('meta_keywords')->nullable();
-            $table->text('tags')->nullable();
             $table->integer('min_width');
             $table->integer('max_width');
             $table->integer('min_height');

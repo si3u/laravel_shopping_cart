@@ -2,18 +2,61 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\ActiveLocalization;
 use App\Http\Controllers\Controller;
+use App\ImageBase\ImageBase;
+use App\ModularImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Route;
 
-class ModularImageController extends Controller {
-    private $active_local;
-    private $route_name;
+class ModularImageController extends Controller
+{
+    public function Page() {
+        $data = (object)[
+            'title' => 'Управление модулями',
+            'modular' => ModularImage::GetItems()
+        ];
+        return view('admin.modular_image.main', ['page' => $data]);
+    }
 
-    public function __construct() {
-        $this->active_local = ActiveLocalization::GetActive();
-        $this->route_name = Route::currentRouteName();
+    public function PageAdd() {
+        $data = (object)[
+            'title' => 'Добавление модулей'
+        ];
+        return view('admin.modular_image.work_on', ['page' => $data]);
+    }
+
+    public function Add(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:jpg,jpeg,png|max:2048'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages()
+            ]);
+        }
+        $exp = $request->file('file')->getClientOriginalExtension();
+        $image = uniqid('img_').'.'.$exp;
+        $request->file('file')->move(public_path('assets/images/modular/'), $image);
+        $preview_image = ImageBase::CreatePreview(
+            'assets/images/modular/'.$image,
+            'assets/images/modular/',
+            $exp, 300, 300
+        );
+        ModularImage::CreateItem($image, $preview_image);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function Delete($id) {
+        $validator = Validator::make(
+            ['id' => $id],
+            ['id' => 'required|integer|exists:modular_images,id']
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        ModularImage::DeleteItem($id);
+        return redirect()->back()->with('success', 'Модуль успешно удален');
     }
 }

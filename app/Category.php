@@ -52,7 +52,7 @@ class Category extends Model
         return Category::find($id);
     }
 
-    protected function GetTree($select, $output) {
+    public static function GetTree($select, $output) {
         $data = DB::table('data_categories')
             ->join('categories', 'data_categories.category_id', '=', 'categories.id')
             ->where('data_categories.lang_id', 1)
@@ -97,12 +97,12 @@ class Category extends Model
                     'id' => 'parent_id'
                 ])->selected($select)->renderAsJson();
                 break;
-            case 'array':
+            case 'select_multiple':
                 return $result->attr([
                     'class' => 'form-control',
                     'name' => 'parent_id',
                     'id' => 'parent_id'
-                ])->selected($select)->renderAsArray();
+                ])->selected($select)->renderAsMultiple();
                 break;
         }
     }

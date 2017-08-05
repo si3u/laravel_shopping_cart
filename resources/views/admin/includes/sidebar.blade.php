@@ -10,6 +10,8 @@
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
                         <li><a href="{{route('admin/categories')}}">Категории</a></li>
+                        <li><a href="{{route('admin/products')}}">Товары</a></li>
+                        <li><a href="{{route('admin/modular_images')}}">Модули</a></li>
                     </ul>
                 </li>
                 <li>
