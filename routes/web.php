@@ -92,6 +92,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/news/update', [
         'uses' => 'admin\NewsController@Update'
     ])->name('news/update');
+    Route::get('/admin/news/delete/{id}', [
+        'uses' => 'admin\NewsController@Delete'
+    ])->name('news/delete');
 
 
     // // //localization
@@ -101,6 +104,14 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/active_localization/update', [
         'uses' => 'admin\ActiveLocalizationController@Update'
     ])->name('active_localization/update');
+
+    // // //price
+    Route::get('/admin/prices', [
+        'uses' => 'admin\PriceController@Page'
+    ])->name('admin/prices');
+    Route::post('/admin/prices/update', [
+        'uses' => 'admin\PriceController@Update'
+    ])->name('prices/update');
 });
 
 Auth::routes();

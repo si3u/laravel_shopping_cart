@@ -26,6 +26,8 @@
                     </div>
                     <div class="col-xs-12">
                         <div class="card-box">
+                            @include('admin.includes.alerts.success_alerts')
+                            @include('admin.includes.alerts.error_alerts')
                             <table class="table table-bordered m-0">
                                 <thead>
                                 <tr>
@@ -36,20 +38,37 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($page->news as $news)
-                                        <tr id="item_{{$news->id}}">
-                                            <td>
-                                                <img src="/assets/images/news/{{$news->image_preview}}" alt="image" class="img-responsive thumb-md">
-                                            </td>
-                                            <td>{{str_limit($news->topic, $limit = 100, $end = '...')}}</td>
-                                            <td>{{$news->created_at}}</td>
-                                            <td>
-                                                <a href="{{route('news/update_page', ['id' => $news->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
-                                                    <i class="dripicons-pencil"></i>
-                                                </a>
+                                    @if(count($page->news) > 0)
+                                        @foreach($page->news as $news)
+                                            <tr id="item_{{$news->id}}">
+                                                <td>
+                                                    @if($news->image_preview != null)
+                                                        <img src="/assets/images/news/{{$news->image_preview}}" alt="image" class="img-responsive thumb-md">
+                                                    @else
+                                                        <img src="/assets/images/default.png" alt="image" class="img-responsive thumb-md">
+                                                    @endif
+                                                </td>
+                                                <td>{{str_limit($news->topic, $limit = 100, $end = '...')}}</td>
+                                                <td>{{$news->created_at}}</td>
+                                                <td>
+                                                    <a href="{{route('news/update_page', ['id' => $news->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
+                                                        <i class="dripicons-pencil"></i>
+                                                    </a>
+                                                    <button onclick="news.delete({{$news->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
+                                                        <i class="dripicons-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="alert alert-info alert-dismissible fade in" role="alert">
+                                                    Новостей пока нет. Перейдите по ссылке "Добавить" чтобы приступить к созданию новости.
+                                                </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endif
                                 </tbody>
                             </table>
 
@@ -61,10 +80,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-
-                </div>
             </div>
         </div>
     </div>
+    @include('admin.news.modal_delete')
+@endsection
+@section('my_scripts')
+    {!! script_ts('/assets/admin/my_js_scripts/news.js') !!}
 @endsection

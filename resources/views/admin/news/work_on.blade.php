@@ -169,6 +169,9 @@
             </div>
         </div>
     </div>
+    @if($page->route_name != 'news/add_page')
+        @include('admin.news.modal_delete')
+    @endif
 @endsection
 @section('my_scripts')
     <script src="{{ asset('assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>

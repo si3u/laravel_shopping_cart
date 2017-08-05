@@ -37,12 +37,13 @@
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
-                        <li><a href="javascript:;" onclick="activeLocalization.get()">Настройки локализаций</a></li>
-                        <li><a href="{{route('admin/default_sizes')}}">Настройки размеров картин</a></li>
+                        <li><a href="{{route('admin/prices')}}"> Цены</a></li>
+                        <li><a href="javascript:;" onclick="activeLocalization.get()"> Локализаций</a></li>
+                        <li><a href="{{route('admin/default_sizes')}}"> Размеров картин</a></li>
                         <li>
                             <a href="javascript: void(0);" aria-expanded="true">Фильтры <span class="menu-arrow"></span></a>
                             <ul class="nav-third-level nav" aria-expanded="true">
-                                <li><a href="{{route('admin/filter_colors')}}">Цвет</a></li>
+                                <li><a href="{{route('admin/filter_colors')}}">По цвету</a></li>
                             </ul>
                         </li>
                     </ul>

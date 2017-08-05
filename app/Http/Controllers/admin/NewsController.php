@@ -60,6 +60,7 @@ class NewsController extends Controller {
     public function Page() {
         $data = (object)[
             'title' => 'Новости',
+            'route_name' => $this->route_name,
             'news' => News::GetItems()
         ];
         return view('admin.news.main', ['page' => $data]);
@@ -247,7 +248,14 @@ class NewsController extends Controller {
         ]);
     }
 
-    public function Delete(Request $request) {
-        return response()->json(News::DeleteItem($request->id));
+    public function Delete($id) {
+        $validator = Validator::make(
+            ['id' => $id], ['id' => 'required|integer|exists:news,id']
+        );
+        if ($validator->failed()) {
+            return redirect()->route('admin/news')->withErrors($validator);
+        }
+        News::DeleteItem($id);
+        return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
 }

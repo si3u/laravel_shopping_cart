@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CreateDefaultCategory');
         $this->call('CreateLocalization');
         $this->call('CreateTextPages');
+        $this->call('CreatePrices');
     }
 }
 class CreateAdmin extends Seeder {
@@ -108,5 +109,16 @@ class CreateTextPages extends Seeder {
         ];
 
         DB::table('text_pages')->insert($data);
+    }
+}
+
+class CreatePrices extends Seeder {
+    public function run() {
+        DB::table('prices')->delete();
+        DB::table('prices')->truncate();
+
+        DB::table('prices')->insert([
+            'natural_canvas' => null
+        ]);
     }
 }

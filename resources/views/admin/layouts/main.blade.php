@@ -20,7 +20,7 @@
     {!! style_ts('/assets/admin/plugins/jquery.filer/css/jquery.filer.css') !!}
     {!! style_ts('/assets/admin/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') !!}
     {!! style_ts('/assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.css') !!}
-    {!! style_ts('/assets/admin/js/modernizr.min.js') !!}
+    <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.css" rel="stylesheet">
 </head>
@@ -28,7 +28,7 @@
 {{ csrf_field() }}
 @yield('content')
 @include('admin.active_localization.modal')
-{!! script_ts('/assets/admin/js/jquery.min.js') !!}
+<script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
 {!! script_ts('/assets/admin/js/bootstrap.min.js') !!}
 {!! script_ts('/assets/admin/js/metisMenu.min.js') !!}
 {!! script_ts('/assets/admin/js/waves.js') !!}
