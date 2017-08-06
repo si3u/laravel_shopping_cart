@@ -24,6 +24,10 @@ class FilterByColor extends Model
         return FilterByColor::orderBy('id', 'desc')->paginate(10);
     }
 
+    public static function GetItemsStatic() {
+        return FilterByColor::orderBy('id', 'desc')->get();
+    }
+
     protected function CreateItem($name, $hex) {
         return FilterByColor::insertGetId(['name' => $name, 'hex' => $hex]);
     }

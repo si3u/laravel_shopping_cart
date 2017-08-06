@@ -100,8 +100,8 @@ class Category extends Model
             case 'select_multiple':
                 return $result->attr([
                     'class' => 'form-control',
-                    'name' => 'parent_id',
-                    'id' => 'parent_id'
+                    'name' => 'category[]',
+                    'id' => 'category'
                 ])->selected($select)->renderAsMultiple();
                 break;
         }
