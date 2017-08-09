@@ -146,6 +146,12 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/product/update', [
         'uses' => 'admin\ProductController@Update'
     ])->name('product/update');
+    Route::get('/admin/product/delete/{id}', [
+        'uses' => 'admin\ProductController@Delete'
+    ])->name('product/delete');
+    Route::get('/admin/product/search/', [
+        'uses' => 'admin\ProductController@Search'
+    ])->name('admin/product/search');
 
 });
 

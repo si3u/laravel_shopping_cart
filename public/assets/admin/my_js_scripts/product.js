@@ -1,3 +1,10 @@
+var product = {
+    'delete': function (id) {
+        console.log(id);
+        $('#href_delete').attr('href', '/admin/product/delete/'+id);
+        $('#modal_product_delete').modal('show');
+    }
+};
 $(document).ready(function () {
     $('#form_work_on').submit(function() {
         var formData = new FormData($(this)[0]);

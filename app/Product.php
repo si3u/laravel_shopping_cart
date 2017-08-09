@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\ImageBase\ImageBase;
 
 /**
  * App\Product
@@ -36,6 +37,9 @@ class Product extends Model
     public $timestamps = true;
     protected $primaryKey = 'id';
 
+    protected function Reviews() {
+        return $this->hasMany('App\ProductReview', 'product_id');
+    }
     protected function Comments() {
         return $this->hasMany('App\ProductComment', 'product_id');
     }
@@ -139,6 +143,13 @@ class Product extends Model
         return Product::find($id)->Sizes()->select('size_id')->get();
     }
 
+    protected function DeleteItem($id) {
+        $item = Product::find($id);
+        ImageBase::DeleteImages('/assets/images/products/', [
+            $item->image, $item->preview_image
+        ]);
+        $item->delete();
+    }
     protected function DeleteCategories($id) {
         Product::find($id)->Categories()->delete();
     }
@@ -148,5 +159,49 @@ class Product extends Model
     protected function DeleteSizes($id) {
         Product::find($id)->Sizes()->delete();
     }
+    protected function DeleteModularImages($id) {
+        $data = Product::find($id)->ModularImages()->get();
+        $prepare_array  = [];
+        foreach ($data as $datum) {
+            $prepare_array[] = $datum->image;
+            $prepare_array[] = $datum->preview_image;
+        }
+        ImageBase::DeleteImages('assets/images/product_modular/', $prepare_array);
+    }
+    protected function DeleteComments($id) {
+        Product::find($id)->Comments()->delete();
+    }
+    protected function DeleteReviews($id) {
+        Product::find($id)->Reviews()->delete();
+    }
 
+    protected function Search($options) {
+        $query = Product::query();
+        if ($options->has('status')) {
+            $query->where('products.status', $options->status);
+        }
+        $query->join('data_products', 'products.id', '=', 'data_products.product_id');
+        $query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
+
+        if ($options->vendor_code != null) {
+            $query->where('products.vendor_code', $options->vendor_code);
+        }
+
+        if ($options->name != null) {
+            $query->where('data_products.name', 'LIKE', '%'.$options->name.'%');
+        }
+
+        if ($options->category != null) {
+            $query->whereIn('product_categories.category_id', $options->category);
+        }
+        $query->select(
+            'products.id',
+            'products.vendor_code',
+            'products.preview_image as image',
+            'products.status',
+            'products.created_at',
+            'data_products.name'
+        );
+        return $query->paginate(10);
+    }
 }

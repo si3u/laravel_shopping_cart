@@ -90,14 +90,23 @@
                                         <input @isset($page->product->vendor_code) value="{{$page->product->vendor_code}}" @endisset name="vendor_code" id="vendor_code" class="form-control" placeholder="Введите артикул">
                                     </div>
                                 </div>
-                                <div class="form-group"
-                                     id="group_now_image"
-                                     style="display: none;">
-                                    <label class="control-label col-md-3">Текущее изображение</label>
-                                    <div class="col-md-9">
-                                        <img src="" id="now_image" alt="image" class="img-responsive">
+                                @if ($page->route_name == 'admin/product/add_page')
+                                    <div class="form-group"
+                                         id="group_now_image"
+                                         style="display: none;">
+                                        <label class="control-label col-md-3">Текущее изображение</label>
+                                        <div class="col-md-9">
+                                            <img src="" id="now_image" alt="image" class="img-responsive">
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="form-group" id="group_now_image">
+                                        <label class="control-label col-md-3">Текущее изображение</label>
+                                        <div class="col-md-9">
+                                            <img src="/assets/images/products/{{$page->product->preview_image}}" id="now_image" alt="image" class="img-responsive">
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="form-group">
                                     <label class="control-label col-md-3"><span class="text-danger">*</span> Изображение</label>
                                     <div class="col-md-9">
@@ -105,7 +114,11 @@
                                             <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                                             <div>
                                                 <button type="button" class="btn btn-block btn-primary btn-file">
-                                                    <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
+                                                    @if ($page->route_name == 'admin/product/add_page')
+                                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
+                                                    @else
+                                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать новое изображение</span>
+                                                    @endif
                                                     <span class="fileupload-exists"><i class="fa fa-undo"></i> Выбрать другое изображение</span>
                                                     <input id="image" name="image" type="file" class="btn-block btn-primary" />
                                                 </button>

@@ -16,6 +16,7 @@ use App\ProductSize;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 
@@ -134,6 +135,8 @@ class ProductController extends Controller {
         }
         $data = (object)[
             'title' => 'Управление товарами',
+            'route_name' => $this->route_name,
+            'tree' => Category::GetTree(1, 'select_multiple'),
             'products' => $products
         ];
         return view('admin.product.main', ['page' => $data]);
@@ -177,6 +180,29 @@ class ProductController extends Controller {
             'active_size' => $sizes,
         ];
         return view('admin.product.work_on', ['page' => $data]);
+    }
+
+    public function Search(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'vendor_code' => 'nullable|integer',
+            'status' => 'nullable|integer',
+            'name' => 'nullable|string',
+            'date_start' => 'nullable|date',
+            'date_end' => 'nullable|date',
+            'category.*' => 'exists:categories,id'
+        ]);
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate);
+        }
+        $products = Product::Search($request);
+
+        $data = (object)[
+            'title' => 'Поиск',
+            'route_name' => $this->route_name,
+            'tree' => Category::GetTree(1, 'select_multiple'),
+            'products' => $products
+        ];
+        return view('admin.product.main', ['page' => $data])->withInput(Input::all());
     }
 
     public function Add(Request $request) {
@@ -376,5 +402,25 @@ class ProductController extends Controller {
         return response()->json([
             'status' => 'success'
         ]);
+    }
+
+    public function Delete($id) {
+        $validator = Validator::make(
+            ['id' => $id],
+            ['id' => 'required|integer|exists:products,id']
+        );
+        if ($validator->fails()) {
+            return redirect()->route('admin/products')->withErrors($validator);
+        }
+
+        Product::DeleteCategories($id);
+        Product::DeleteFilterColors($id);
+        Product::DeleteSizes($id);
+        Product::DeleteModularImages($id);
+        Product::DeleteComments($id);
+        Product::DeleteReviews($id);
+        Product::DeleteItem($id);
+
+        return redirect()->route('admin/products')->with('success', 'Товар успешно удален');
     }
 }
