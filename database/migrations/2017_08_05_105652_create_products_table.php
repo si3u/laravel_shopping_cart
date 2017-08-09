@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('max_width');
             $table->integer('min_height');
             $table->integer('max_height');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

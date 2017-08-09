@@ -182,7 +182,7 @@ return [
         //ide helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
-        Nestable\NestableServiceProvider::class
+        Nestable\NestableServiceProvider::class,
     ],
 
     /*
