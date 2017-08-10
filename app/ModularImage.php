@@ -27,6 +27,10 @@ class ModularImage extends Model
         return ModularImage::orderBy('id', 'desc')->paginate(10);
     }
 
+    public static function GetAllItems() {
+        return ModularImage::select('id', 'image')->get();
+    }
+
     protected function CreateItem($image, $preview_image) {
         $item = new ModularImage();
         $item->image = $image;

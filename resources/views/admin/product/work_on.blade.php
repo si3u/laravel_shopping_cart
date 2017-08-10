@@ -285,7 +285,7 @@
                                                     Удалить
                                                 </button>
                                                 <button type="submit" class="btn btn-success btn-lg">
-                                                    Обновить данные
+                                                    Обновить данные @include('admin.includes.spinner')
                                                 </button>
                                             @endif
                                         </div>

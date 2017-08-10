@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\ProductTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -36,33 +37,9 @@ class Product extends Model
 {
     public $timestamps = true;
     protected $primaryKey = 'id';
+    private $whereOptions;
 
-    protected function Reviews() {
-        return $this->hasMany('App\ProductReview', 'product_id');
-    }
-    protected function Comments() {
-        return $this->hasMany('App\ProductComment', 'product_id');
-    }
-
-    protected function Categories() {
-        return $this->hasMany('App\ProductCategory', 'product_id');
-    }
-
-    protected function FilterColors() {
-        return $this->hasMany('App\ProductFilterByColor', 'product_id');
-    }
-
-    protected function Sizes() {
-        return $this->hasMany('App\ProductSize', 'product_id');
-    }
-
-    protected function ModularImages() {
-        return $this->hasMany('App\ProductModularImage', 'product_id');
-    }
-
-    protected function DataLocalization() {
-        return $this->hasMany('App\DataProduct', 'product_id');
-    }
+    use ProductTrait;
 
     protected function GetItemsForAdmin() {
         return DB::table('products')
@@ -167,6 +144,7 @@ class Product extends Model
             $prepare_array[] = $datum->preview_image;
         }
         ImageBase::DeleteImages('assets/images/product_modular/', $prepare_array);
+        Product::find($id)->ModularImages()->delete();
     }
     protected function DeleteComments($id) {
         Product::find($id)->Comments()->delete();
@@ -178,21 +156,40 @@ class Product extends Model
     protected function Search($options) {
         $query = Product::query();
         if ($options->has('status')) {
+            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('products.status', $options->status);
         }
-        $query->join('data_products', 'products.id', '=', 'data_products.product_id');
-        $query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
+        //$query->join('data_products', 'products.id', '=', 'data_products.product_id');
+        //$query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
 
-        if ($options->vendor_code != null) {
+        if ($options->has('vendor_code')) {
+            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('products.vendor_code', $options->vendor_code);
         }
 
-        if ($options->name != null) {
+        if ($options->has('name')) {
+            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('data_products.name', 'LIKE', '%'.$options->name.'%');
         }
 
-        if ($options->category != null) {
+        if ($options->has('category')) {
+            $this->whereOptions[] = ['products.status', $options->status];
             $query->whereIn('product_categories.category_id', $options->category);
+        }
+        if ($options->has('date_start') && $options->has('date_end')) {
+            $this->whereOptions[] = ['products.status', $options->status];
+            $query->where([
+                ['created_at', '>=', $options->date_start],
+                ['created_at', '<=', $options->date_end]
+            ]);
+        }
+        if ($options->has('date_start') && !$options->has('date_end')) {
+            $this->whereOptions[] = ['products.status', $options->status];
+            $query->where('created_at', '>=', $options->date_start);
+        }
+        if (!$options->has('date_start') && $options->has('date_end')) {
+            $this->whereOptions[] = ['products.status', $options->status];
+            $query->where('created_at', '<=', $options->date_end);
         }
         $query->select(
             'products.id',
@@ -201,7 +198,19 @@ class Product extends Model
             'products.status',
             'products.created_at',
             'data_products.name'
-        );
-        return $query->paginate(10);
+        )->groupBy('id');
+        return Product::with(
+            ['products' => function ($q) {
+                $q->where($this->whereOptions);
+            }])
+            ->select(
+                'products.id',
+                'products.vendor_code',
+                'products.preview_image as image',
+                'products.status',
+                'products.created_at',
+                'data_products.name'
+            )->groupBy('id')->paginate(10);
+        //return $query->paginate(10);
     }
 }

@@ -7,8 +7,10 @@ var product = {
 };
 $(document).ready(function () {
     $('#form_work_on').submit(function() {
+        var spinner = $('#spinner');
         var formData = new FormData($(this)[0]);
         var itemId = $('input[name="item_id"]');
+        spinner.show();
         if (itemId.val().length === 0) {
             $.ajax({
                 method: "POST",
@@ -17,7 +19,7 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    console.log(response);
+                    spinner.hide();
                     if (response.error !== undefined) {
                         callToast.error('Ошибка', response.error);
                         return false;
@@ -52,7 +54,7 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    console.log(response);
+                    spinner.hide();
                     if (response.error !== undefined) {
                         callToast.error('Ошибка', response.error);
                         return false;

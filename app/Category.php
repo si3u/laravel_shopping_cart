@@ -53,6 +53,9 @@ class Category extends Model
     }
 
     public static function GetTree($select, $output) {
+        if ($select == 1) {
+            $select = null;
+        }
         $data = DB::table('data_categories')
             ->join('categories', 'data_categories.category_id', '=', 'categories.id')
             ->where('data_categories.lang_id', 1)

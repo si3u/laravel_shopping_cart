@@ -1,0 +1,1 @@
+<i id="spinner" class="fa fa-spinner fa-spin" style="display: none; font-size:18px"></i>

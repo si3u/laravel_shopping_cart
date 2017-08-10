@@ -2,33 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\ActiveLocalization;
 use App\DataNews;
 use App\Http\Controllers\Controller;
 use App\ImageBase\ImageBase;
 use App\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Route;
 
 class NewsController extends Controller {
-    private $active_local;
-    private $active_local_id;
-    private $count_active_local;
-    private $route_name;
-
-    public function __construct() {
-        $this->active_local = ActiveLocalization::GetActive();
-        $this->route_name = Route::currentRouteName();
-        $this->count_active_local = count($this->active_local);
-        $i = 0;
-        while ($i < $this->count_active_local) {
-            $this->active_local_id[] = $this->active_local[$i]->id;
-            $i++;
-        }
-    }
-
-
     private function PrepareDataLocal($id) {
         $data_local = News::GetItemAndLocalData($id, $this->active_local_id);
         $prepare_data_local = null;

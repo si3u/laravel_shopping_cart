@@ -28,4 +28,23 @@ class ImageBase {
             $i++;
         }
     }
+    public static function CreateMask($url_img, $url_mask, $url_save, $exp) {
+        $image = Image::make(public_path($url_img));
+        $name = uniqid('img_').'.'.$exp;
+
+        $image->insert($url_mask, 'center');
+        $image->save(public_path($url_save.$name));
+
+        return $name;
+    }
+
+    public static function ImageCrop($url, $url_save, $exp, $width, $height, $x, $y) {
+        $img = Image::make(public_path($url));
+        $name = uniqid('img_').'.'.$exp;
+
+        $img->crop($width, $height, $x, $y);
+        $img->save(public_path($url_save.$name));
+
+        return $name;
+    }
 }

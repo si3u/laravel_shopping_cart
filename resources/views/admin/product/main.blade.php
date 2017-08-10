@@ -15,11 +15,19 @@
                         <div class="page-title-box">
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
+                                @if ($page->route_name == 'admin/products')
                                 <li>
                                     <a href="{{ url()->previous() }}">
                                         <i class="dripicons-arrow-thin-left"></i> Назад
                                     </a>
                                 </li>
+                                @else
+                                    <li>
+                                        <a href="{{route('admin/products')}}">
+                                            <i class="dripicons-arrow-thin-left"></i> Ко всем товарам
+                                        </a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="{{route('admin/product/add_page')}}">
                                         <i class="mdi mdi-plus"></i> Добавить
@@ -63,11 +71,9 @@
                                                     {{$product->name}}
                                                 </td>
                                                 <td>
-                                                    @if ($page->route_name != 'admin/product/search')
-                                                        @foreach($product->categories as $category)
-                                                            <p>{{$category->name}}</p>
-                                                        @endforeach
-                                                    @endif
+                                                    @foreach($product->categories as $category)
+                                                        <p>{{$category->name}}</p>
+                                                    @endforeach
                                                 </td>
                                                 <td class="text-center">
                                                     {{$product->created_at}}
@@ -93,7 +99,7 @@
                                         <tr>
                                             <td colspan="7">
                                                 <div class="alert alert-info alert-dismissible fade in" role="alert">
-                                                    Товаров пока нет. Перейдите по ссылке "Добавить" чтобы приступить к созданию товаров.
+                                                    Товаров по запросу нет.
                                                 </div>
                                             </td>
                                         </tr>

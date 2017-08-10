@@ -2,41 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\ActiveLocalization;
 use App\Category;
 use App\DataProduct;
 use App\DefaultSize;
 use App\FilterByColor;
 use App\Http\Controllers\Controller;
 use App\ImageBase\ImageBase;
+use App\ModularImage;
 use App\Product;
 use App\ProductCategory;
 use App\ProductFilterByColor;
+use App\ProductModularImage;
 use App\ProductSize;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Route;
 
 class ProductController extends Controller {
-    private $active_local;
-    private $active_local_id;
-    private $count_active_local;
-    private $route_name;
-
-    public function __construct() {
-        $this->active_local = ActiveLocalization::GetActive();
-        $this->route_name = Route::currentRouteName();
-        $this->count_active_local = count($this->active_local);
-        $i = 0;
-        while ($i < $this->count_active_local) {
-            $this->active_local_id[] = $this->active_local[$i]->id;
-            $i++;
-        }
-    }
-
     private function PrepareActiveData($data, $option) {
         $i = 0;
         $count = count($data);
@@ -85,48 +69,39 @@ class ProductController extends Controller {
         return (object)$prepare_data_local;
     }
 
-    public function Page() {
-        $products = Product::GetItemsForAdmin();
-        /*$prepare_data = [];
+    private function CreateModularImages($date, $item_id, $image, $exp) {
+        $modular_images = ModularImage::GetAllItems();
+        $count = count($modular_images);
         $i = 0;
-        $count = count($products);
+        $path = public_path('assets/images/product_modular/' . $item_id);
+        File::makeDirectory($path, $mode = 0777, true, true);
+        $data_product_modular = [];
         while ($i < $count) {
-            $status = false;
-            $j = 0;
-            while ($j < count($prepare_data)) {
-                if ($products[$i]->id == $prepare_data[$j]['id']) {
-                    $status = true;
-                }
-                $j++;
-            }
-            if (!$status) {
-                array_push($prepare_data, [
-                    'id' => $products[$i]->id,
-                    'vendor_code' => $products[$i]->vendor_code,
-                    'preview_image' => $products[$i]->preview_image,
-                    'status' => $products[$i]->status,
-                    'categories' => []
-                ]);
-            }
-            $status = false;
+            $url_img = 'assets/images/products/'.$date.'/'.$image;
+            $url_modular = 'assets/images/modular/'.$modular_images[$i]->image;
+            $url_save = 'assets/images/product_modular/' . $item_id . '/';
+            $name_modular_image = ImageBase::CreateMask(
+                $url_img, $url_modular, $url_save, $exp
+            );
+            $preview_modular_image = ImageBase::CreatePreview(
+                'assets/images/product_modular/'.$item_id.'/'.$name_modular_image,
+                $url_save,
+                $exp, 520, 320
+            );
+            $data_product_modular[] = [
+                'product_id' => $item_id,
+                'modular_image_id' => $modular_images[$i]->id,
+                'image' => $item_id.'/'.$name_modular_image,
+                'preview_image' => $item_id.'/'.$preview_modular_image,
+            ];
+
             $i++;
         }
+        return $data_product_modular;
+    }
 
-        $i = 0;
-        while($i < $count) {
-            $j = 0;
-            $count_prepare = count($prepare_data);
-            while($j < $count_prepare) {
-                if ($products[$i]->id == $prepare_data[$j]['id']) {
-                    array_push($prepare_data[$j]['categories'], [
-                        'id' => $products[$i]->category_id,
-                        'name' => $products[$i]->category_name,
-                    ]);
-                }
-                $j++;
-            }
-            $i++;
-        }*/
+    public function Page() {
+        $products = Product::GetItemsForAdmin();
         $i = 0;
         $count = count($products);
         while ($i < $count) {
@@ -194,15 +169,48 @@ class ProductController extends Controller {
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate);
         }
-        $products = Product::Search($request);
+        if ($request->has('category')) {
+            if(($key = array_search(1, $request->category)) !== false) {
+                $collect = new Collection($request->category);
+                $categories = $collect->toArray();
+                unset($categories[$key]);
+                $request->merge(['category' => $categories]);
+            }
+        }
 
+        $products = Product::Search($request);
+        $i = 0;
+        $count = count($products);
+        while ($i < $count) {
+            $products[$i]->categories = ProductCategory::GetCategoriesItem($products[$i]->id);
+            $i++;
+        }
+        $tree = Category::GetTree(1, 'select_multiple');
+        if ($request->has('category')) {
+            $tree = Category::GetTree($request->category, 'select_multiple');
+        }
         $data = (object)[
-            'title' => 'Поиск',
+            'title' => 'Поиск товаров',
             'route_name' => $this->route_name,
-            'tree' => Category::GetTree(1, 'select_multiple'),
-            'products' => $products
+            'tree' => $tree,
+            'products' => $products,
         ];
-        return view('admin.product.main', ['page' => $data])->withInput(Input::all());
+        if ($request->has('vendor_code')) {
+            $data->old_vendor_code = $request->vendor_code;
+        }
+        if ($request->has('status')) {
+            $data->old_status = $request->vendor_code;
+        }
+        if ($request->has('name')) {
+            $data->old_name = $request->name;
+        }
+        if ($request->has('date_start')) {
+            $data->old_date_start = $request->date_start;
+        }
+        if ($request->has('date_end')) {
+            $data->old_date_end = $request->date_end;
+        }
+        return view('admin.product.main', ['page' => $data]);
     }
 
     public function Add(Request $request) {
@@ -260,8 +268,15 @@ class ProductController extends Controller {
             $exp, 300, 300
         );
 
-        $item_id = Product::CreateItem($request->vendor_code, $date.'/'.$image, $date.'/'.$preview_image, $request->min_width,
-            $request->max_width, $request->min_height, $request->max_height, $request->status);
+        $item_id = Product::CreateItem($request->vendor_code,
+                                       $date.'/'.$image, $date.'/'.$preview_image,
+                                       $request->min_width,
+                                       $request->max_width,
+                                       $request->min_height,
+                                       $request->max_height,
+                                       $request->status);
+
+        ProductModularImage::CreateItemStatic($this->CreateModularImages($date,$item_id,$image,$exp));
 
         $i = 0;
         while ($i<$this->count_active_local) {

@@ -21,6 +21,7 @@
     {!! style_ts('/assets/admin/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') !!}
     {!! style_ts('/assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.css') !!}
     <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.css" rel="stylesheet">
 </head>
