@@ -45,6 +45,7 @@ class Product extends Model
         return DB::table('products')
             ->join('data_products', 'products.id', '=', 'data_products.product_id')
             ->where('data_products.lang_id', 1)
+            ->orderBy('created_at', 'desc')
             ->select(
                 'products.id',
                 'products.vendor_code',
@@ -143,7 +144,7 @@ class Product extends Model
             $prepare_array[] = $datum->image;
             $prepare_array[] = $datum->preview_image;
         }
-        ImageBase::DeleteImages('assets/images/product_modular/', $prepare_array);
+        ImageBase::DeleteImages('/assets/images/product_modular/', $prepare_array);
         Product::find($id)->ModularImages()->delete();
     }
     protected function DeleteComments($id) {
@@ -156,39 +157,32 @@ class Product extends Model
     protected function Search($options) {
         $query = Product::query();
         if ($options->has('status')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('products.status', $options->status);
         }
-        //$query->join('data_products', 'products.id', '=', 'data_products.product_id');
-        //$query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
+        $query->join('data_products', 'products.id', '=', 'data_products.product_id');
+        $query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
 
         if ($options->has('vendor_code')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('products.vendor_code', $options->vendor_code);
         }
 
         if ($options->has('name')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('data_products.name', 'LIKE', '%'.$options->name.'%');
         }
 
         if ($options->has('category')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->whereIn('product_categories.category_id', $options->category);
         }
         if ($options->has('date_start') && $options->has('date_end')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where([
                 ['created_at', '>=', $options->date_start],
                 ['created_at', '<=', $options->date_end]
             ]);
         }
         if ($options->has('date_start') && !$options->has('date_end')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('created_at', '>=', $options->date_start);
         }
         if (!$options->has('date_start') && $options->has('date_end')) {
-            $this->whereOptions[] = ['products.status', $options->status];
             $query->where('created_at', '<=', $options->date_end);
         }
         $query->select(
@@ -198,19 +192,7 @@ class Product extends Model
             'products.status',
             'products.created_at',
             'data_products.name'
-        )->groupBy('id');
-        return Product::with(
-            ['products' => function ($q) {
-                $q->where($this->whereOptions);
-            }])
-            ->select(
-                'products.id',
-                'products.vendor_code',
-                'products.preview_image as image',
-                'products.status',
-                'products.created_at',
-                'data_products.name'
-            )->groupBy('id')->paginate(10);
-        //return $query->paginate(10);
+        )->orderBy('created_at', 'desc')->groupBy('id');
+        return $query->paginate(10);
     }
 }

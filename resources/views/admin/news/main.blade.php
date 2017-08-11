@@ -15,6 +15,13 @@
                         <div class="page-title-box">
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
+                                @if($page->route_name == 'admin/news/search')
+                                    <li>
+                                        <a href="{{route('admin/news')}}">
+                                            <i class="dripicons-arrow-thin-left"></i> Ко всем новостям
+                                        </a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="{{route('news/add_page')}}">
                                         <i class="mdi mdi-plus"></i> Добавить
@@ -25,6 +32,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12">
+                        @include('admin.news.form_search')
                         <div class="card-box">
                             @include('admin.includes.alerts.success_alerts')
                             @include('admin.includes.alerts.error_alerts')
@@ -41,11 +49,11 @@
                                     @if(count($page->news) > 0)
                                         @foreach($page->news as $news)
                                             <tr id="item_{{$news->id}}">
-                                                <td>
+                                                <td class="text-center">
                                                     @if($news->image_preview != null)
-                                                        <img src="/assets/images/news/{{$news->image_preview}}" alt="image" class="img-responsive thumb-md">
+                                                        <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/news/{{$news->image_preview}}" alt="image">
                                                     @else
-                                                        <img src="/assets/images/default.png" alt="image" class="img-responsive thumb-md">
+                                                        <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/default.png" alt="image">
                                                     @endif
                                                 </td>
                                                 <td>{{str_limit($news->topic, $limit = 100, $end = '...')}}</td>
@@ -64,7 +72,7 @@
                                         <tr>
                                             <td colspan="4">
                                                 <div class="alert alert-info alert-dismissible fade in" role="alert">
-                                                    Новостей пока нет. Перейдите по ссылке "Добавить" чтобы приступить к созданию новости.
+                                                    По запросу новостей нет.
                                                 </div>
                                             </td>
                                         </tr>
@@ -72,10 +80,8 @@
                                 </tbody>
                             </table>
 
-                            <div class="row">
-                                <div class="pull-right">
-                                    {!! $page->news->render() !!}
-                                </div>
+                            <div class="text-center">
+                                {!! $page->news->render() !!}
                             </div>
                         </div>
                     </div>

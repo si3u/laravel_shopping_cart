@@ -95,6 +95,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/news/delete/{id}', [
         'uses' => 'admin\NewsController@Delete'
     ])->name('news/delete');
+    Route::get('/admin/news/search', [
+        'uses' => 'admin\NewsController@Search'
+    ])->name('admin/news/search');
 
 
     // // //localization

@@ -239,4 +239,35 @@ class NewsController extends Controller {
         News::DeleteItem($id);
         return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
+
+    public function Search(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'text' => 'nullable|string',
+            'option' => 'nullable|integer',
+            'date_start' => 'nullable|date',
+            'date_end' => 'nullable|date',
+        ]);
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation);
+        }
+        $news = News::Search($request);
+        $data = (object)[
+            'title' => 'Поиск новостей',
+            'route_name' => $this->route_name,
+            'news' => $news
+        ];
+        if ($request->has('text')) {
+            $data->old_text = $request->text;
+        }
+        if ($request->has('option')) {
+            $data->old_option = $request->option;
+        }
+        if ($request->has('date_start')) {
+            $data->old_date_start = $request->date_start;
+        }
+        if ($request->has('date_end')) {
+            $data->old_date_end = $request->date_end;
+        }
+        return view('admin.news.main', ['page' => $data]);
+    }
 }

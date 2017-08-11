@@ -42,7 +42,6 @@ var news = {
             processData: false,
             success: function (result) {
                 console.log(result);
-                $('#image').val(null);
                 if (result.errors != undefined) {
                     insertErrorArray(
                         $('#form_work_on'),
@@ -53,6 +52,7 @@ var news = {
                     return false;
                 }
                 if (result.status == 'success') {
+                    $('#image').val(null);
                     $('input[name="item_id"]').val(result.item_id);
                     $('#btn_add').hide();
                     $('#btn_update').show();

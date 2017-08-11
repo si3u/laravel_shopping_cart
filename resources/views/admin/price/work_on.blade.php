@@ -30,7 +30,7 @@
                         <form id="form_work_on" action="{{route('prices/update')}}" method="post" class="form-horizontal">
                             <div class="form-group">
                                 <label class="control-label col-md-3">
-                                    Цена за натуральный холст
+                                    <span class="text-danger">*</span> Цена за натуральный холст
                                 </label>
                                 <div class="col-md-9">
                                     <input @if(isset($page->data->natural_canvas))
@@ -43,7 +43,7 @@
 
                             <div class="form-group">
                                 <label class="control-label col-md-3">
-                                    Цена за исскуственный холст
+                                    <span class="text-danger">*</span> Цена за исскуственный холст
                                 </label>
                                 <div class="col-md-9">
                                     <input @if(isset($page->data->artificial_canvas))
@@ -56,7 +56,7 @@
 
                             <div class="form-group">
                                 <label class="control-label col-md-3">
-                                    Цена за погонный метр
+                                    <span class="text-danger">*</span> Цена за погонный метр
                                 </label>
                                 <div class="col-md-9">
                                     <input @if(isset($page->data->running_meter))
@@ -69,7 +69,7 @@
 
                             <div class="form-group">
                                 <label class="control-label col-md-3">
-                                    Цена за работу
+                                    <span class="text-danger">*</span> Цена за работу
                                 </label>
                                 <div class="col-md-9">
                                     <input @if(isset($page->data->for_work))
@@ -84,6 +84,11 @@
                                 <label class="control-label col-md-3">
                                 </label>
                                 <div class="col-md-9">
+                                    <span class="help-block">
+                                        <small>
+                                            * - обязательные поля для заполнения.
+                                        </small>
+                                    </span>
                                     <span class="help-block">
                                         <small>
                                             Цену можно указать как целочисленное значение так и число с плавающей точкой.

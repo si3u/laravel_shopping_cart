@@ -25,10 +25,15 @@
                                 <label for="status" class="col-md-3 control-label">Отображение в категор.</label>
                                 <div class="col-md-9">
                                     <select id="status" name="status" class="form-control">
-                                        <option value="">Не учитывать</option>
+                                        <option value=""
+                                                @isset($page->old_status)
+                                                @if($page->old_status == null)
+                                                selected
+                                                @endif
+                                                @endisset >Не учитывать</option>
                                         <option value="1"
                                                 @isset($page->old_status)
-                                                    @if($page->old_status == 1)
+                                                    @if($page->old_status)
                                                         selected
                                                     @endif
                                                 @endisset >
@@ -36,7 +41,7 @@
                                         </option>
                                         <option value="0"
                                                 @isset($page->old_status)
-                                                @if($page->old_status == 0)
+                                                @if(!$page->old_status)
                                                     selected
                                                 @endif
                                                 @endisset >Нет</option>

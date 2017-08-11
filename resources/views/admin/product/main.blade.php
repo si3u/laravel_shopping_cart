@@ -64,7 +64,7 @@
                                                 <th class="text-center">
                                                     <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/products/{{$product->image}}">
                                                 </th>
-                                                <th>
+                                                <th class="text-center">
                                                     {{$product->vendor_code}}
                                                 </th>
                                                 <td>
@@ -72,7 +72,9 @@
                                                 </td>
                                                 <td>
                                                     @foreach($product->categories as $category)
-                                                        <p>{{$category->name}}</p>
+                                                        <a href="#">
+                                                            {{$category->name}}
+                                                        </a>
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
@@ -119,12 +121,5 @@
     @include('admin.product.modal_delete')
 @endsection
 @section('my_scripts')
-    <script src="{{asset('assets/admin/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     {!! script_ts('/assets/admin/my_js_scripts/product.js') !!}
-
-    <script>
-        jQuery(document).ready(function() {
-            jQuery("#date-range").datepicker({toggleActive:!0});
-        });
-    </script>
 @endsection

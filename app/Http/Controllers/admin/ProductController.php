@@ -199,7 +199,7 @@ class ProductController extends Controller {
             $data->old_vendor_code = $request->vendor_code;
         }
         if ($request->has('status')) {
-            $data->old_status = $request->vendor_code;
+            $data->old_status = $request->status;
         }
         if ($request->has('name')) {
             $data->old_name = $request->name;
@@ -359,6 +359,7 @@ class ProductController extends Controller {
             }
         }
         if (isset($request->image)) {
+            Product::DeleteModularImages($request->item_id);
             ImageBase::DeleteImages('/assets/images/products/', [
                 $item->image, $item->preview_image
             ]);
@@ -375,6 +376,8 @@ class ProductController extends Controller {
                 'assets/images/products/'.$date.'/',
                 $exp, 300, 300
             );
+            ProductModularImage::CreateItemStatic($this->CreateModularImages($date,$request->item_id,$image,$exp));
+
 
             Product::UpdateItem($request->item_id, $request->vendor_code,
                 $date.'/'.$image, $date.'/'.$preview_image, $request->min_width,

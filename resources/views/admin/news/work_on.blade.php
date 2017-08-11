@@ -16,8 +16,8 @@
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
-                                    <a href="{{ url()->previous() }}">
-                                        <i class="dripicons-arrow-thin-left"></i> Назад
+                                    <a href="{{ route('admin/news') }}">
+                                        <i class="dripicons-arrow-thin-left"></i> К новостям
                                     </a>
                                 </li>
                                 <li>
@@ -90,24 +90,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">Изображение</label>
                                     <div class="col-md-9">
-                                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-                                            <div>
-                                                <button type="button" class="btn btn-default btn-file">
-                                                    @if ($page->route_name == 'news/add_page')
-                                                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
-                                                    @else
-                                                        @if ($page->news->image_preview == null)
-                                                            <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать изображение</span>
-                                                        @else
-                                                            <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Выбрать новое изображение</span>
-                                                        @endif
-                                                    @endif
-                                                    <span class="fileupload-exists"><i class="fa fa-undo"></i> Выбрать другое изображение</span>
-                                                    <input id="image" name="image" type="file" class="btn-default" />
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <input id="image" name="image" type="file" class="filestyle" data-buttonbefore="true" data-placeholder="Изображение не выбрано" data-buttonText="Выбрать">
                                     </div>
                                 </div>
                                 <?php $i = 0; ?>
@@ -174,6 +157,11 @@
     @endif
 @endsection
 @section('my_scripts')
-    <script src="{{ asset('assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $(":file").filestyle({input:!1});
+        });
+    </script>
     {!! script_ts('/assets/admin/my_js_scripts/news.js') !!}
 @endsection

@@ -133,6 +133,10 @@ var activeLocalization = {
             data: form.serialize(),
             dataType: 'JSON',
             success: function (result) {
+                if (result.error != undefined) {
+                    callToast.error('Ошибка', result.error);
+                    return false;
+                }
                 if (result.status == 'success') {
                     local=$.ajax({
                         method: 'POST',

@@ -16,8 +16,8 @@
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
-                                    <a href="{{ url()->previous() }}">
-                                        <i class="dripicons-arrow-thin-left"></i> Назад
+                                    <a href="{{route('admin/products')}}">
+                                        <i class="dripicons-arrow-thin-left"></i> К товарам
                                     </a>
                                 </li>
                                 <li>
@@ -278,13 +278,13 @@
                                         <div class="pull-right">
                                             @if($page->route_name == 'admin/product/add_page')
                                                 <button type="submit" id="btn_submit" class="btn btn-success btn-lg">
-                                                    Добавить
+                                                    Добавить @include('admin.includes.spinner')
                                                 </button>
                                             @else
                                                 <button class="btn btn-danger btn-lg" onclick="$('#modal_product_delete').modal('show');">
                                                     Удалить
                                                 </button>
-                                                <button type="submit" class="btn btn-success btn-lg">
+                                                <button id="btn_submit" type="submit" class="btn btn-success btn-lg">
                                                     Обновить данные @include('admin.includes.spinner')
                                                 </button>
                                             @endif
