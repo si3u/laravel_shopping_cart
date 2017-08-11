@@ -17,6 +17,7 @@ class CreateProductReviewsTable extends Migration
             $table->increments('id');
             $table->integer('product_id');
             $table->boolean('check_status')->default(false);
+            $table->boolean('read_status')->default(false);
             $table->integer('rating');
             $table->char('name');
             $table->char('email');

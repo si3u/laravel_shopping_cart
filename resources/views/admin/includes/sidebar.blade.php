@@ -5,12 +5,36 @@
                 <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-tags"></i>
-                        <span> Кателог </span>
-                        <span class="menu-arrow"></span>
+                        <span>
+                            Кателог
+                        </span>
+                        @if($count_notifications > 0)
+                            <span class="badge badge-success pull-right">
+                                {{$count_notifications}}
+                            </span>
+                        @else
+                            <span class="menu-arrow"></span>
+                        @endif
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
                         <li><a href="{{route('admin/categories')}}">Категории</a></li>
                         <li><a href="{{route('admin/products')}}">Товары</a></li>
+                        <li>
+                            <a href="{{route('admin/comments')}}">
+                                Комментарии
+                                @if($count_new_comments>0)
+                                    <span class="badge badge-success pull-right">{{$count_new_comments}}</span>
+                                @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin/reviews')}}">
+                                Отзывы
+                                @if($count_new_reviews>0)
+                                    <span class="badge badge-success pull-right">{{$count_new_reviews}}</span>
+                                @endif
+                            </a>
+                        </li>
                         <li><a href="{{route('admin/modular_images')}}">Модули</a></li>
                     </ul>
                 </li>

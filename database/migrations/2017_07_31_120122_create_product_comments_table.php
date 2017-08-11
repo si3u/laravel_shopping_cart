@@ -17,6 +17,7 @@ class CreateProductCommentsTable extends Migration
             $table->increments('id');
             $table->integer('product_id');
             $table->boolean('check_status')->default(false);
+            $table->boolean('read_status')->default(false);
             $table->char('name');
             $table->char('email');
             $table->text('message');

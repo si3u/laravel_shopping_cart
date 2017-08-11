@@ -156,6 +156,25 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\ProductController@Search'
     ])->name('admin/product/search');
 
+    // // //comments
+    Route::get('/admin/comments', [
+        'uses' => 'admin\ProductCommentController@Page'
+    ])->name('admin/comments');
+    Route::get('/admin/comment/{id}', [
+        'uses' => 'admin\ProductCommentController@PageUpdate'
+    ])->name('comment/page_update');
+
+    Route::post('/admin/comment/update', [
+        'uses' => 'admin\ProductCommentController@Update'
+    ])->name('comment/update');
+    Route::get('/admin/comment/delete/{id}', [
+        'uses' => 'admin\ProductCommentController@Delete'
+    ])->name('comment/delete');
+
+    // // //reviews
+    Route::get('/admin/reviews', [
+        'uses' => 'admin\ProductReviewController@Page'
+    ])->name('admin/reviews');
 });
 
 Auth::routes();
