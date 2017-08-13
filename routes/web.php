@@ -1,5 +1,9 @@
 <?php
 Route::group(['middleware' => ['web']], function() {
+    Route::get('/', function () {
+        echo "not auth";
+    });
+
     Route::get('/admin/login', function () {
         return view('admin.login');
     })->name('admin/login');
@@ -14,6 +18,13 @@ Route::group(['middleware' => ['web']], function() {
 });
 
 Route::group(['middleware' => ['only-administration']], function() {
+    Route::get('/', function () {
+        echo "auth";
+    });
+
+    Route::get('/admin', function () {
+        return view('admin.main');
+    });
     Route::get('/admin/main', function () {
         return view('admin.main');
     })->name('admin/main');
@@ -170,11 +181,27 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/comment/delete/{id}', [
         'uses' => 'admin\ProductCommentController@Delete'
     ])->name('comment/delete');
+    Route::get('/admin/comments/search/', [
+        'uses' => 'admin\ProductCommentController@Search'
+    ])->name('comments/search');
 
     // // //reviews
-    Route::get('/admin/reviews', [
+    Route::get('/admin/reviews/', [
         'uses' => 'admin\ProductReviewController@Page'
-    ])->name('admin/reviews');
+    ])->name('products/reviews');
+    Route::get('/admin/review/update/{id}', [
+        'uses' => 'admin\ProductReviewController@PageUpdate'
+    ])->name('review/page_update');
+
+    Route::post('/admin/review/update', [
+        'uses' => 'admin\ProductReviewController@Update'
+    ])->name('review/update');
+    Route::get('/admin/review/delete/{id}', [
+        'uses' => 'admin\ProductReviewController@Delete'
+    ])->name('review/delete');
+    Route::get('/admin/reviews/search', [
+        'uses' => 'admin\ProductReviewController@Search'
+    ])->name('reviews/search');
 });
 
 Auth::routes();

@@ -15,10 +15,10 @@
                         <div class="page-title-box">
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
-                                @if($page->route_name == 'comments/search')
+                                @if($page->route_name == 'reviews/search')
                                     <li>
-                                        <a href="{{route('admin/comments')}}">
-                                            <i class="dripicons-arrow-thin-left"></i> Ко всем комментариям
+                                        <a href="{{route('reviews/search')}}">
+                                            <i class="dripicons-arrow-thin-left"></i> Ко всем отзывам
                                         </a>
                                     </li>
                                 @endif
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12">
-                        @include('admin.comments.form_search')
+                        @include('admin.reviews.form_search')
                         <div class="card-box">
                             @include('admin.includes.alerts.success_alerts')
                             @include('admin.includes.alerts.error_alerts')
@@ -37,6 +37,7 @@
                                     <th class="text-center">ID</th>
                                     <th></th>
                                     <th class="text-center">Товар</th>
+                                    <th class="text-center">Рейтинг</th>
                                     <th class="text-center">Автор</th>
                                     <th class="text-center">E-mail автора</th>
                                     <th class="text-center">Статус</th>
@@ -45,39 +46,55 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(count($page->comments) > 0)
-                                    @foreach($page->comments as $comment)
+                                @if(count($page->reviews) > 0)
+                                    @foreach($page->reviews as $review)
                                         <tr>
                                             <td class="text-center">
-                                                {{$comment->id}}
-                                                @if(!$comment->read_status)
+                                                {{$review->id}}
+                                                @if(!$review->read_status)
                                                     <span class="badge badge-danger pull-right">New</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                <img src="/assets/images/products/{{$comment->product_image}}" alt="image" class="img-responsive thumb-md">
+                                                <img src="/assets/images/products/{{$review->product_image}}" alt="image" class="img-responsive thumb-md">
                                             </td>
-                                            <td class="text-center">
-                                                <a href="{{route('comments/search', ['vendor_code' => $comment->product_vendor_code])}}">
-                                                    {{$comment->product_name}}
+                                            <td>
+                                                <a href="{{route('admin/product/update_page', ['id' => $review->product_id])}}">
+                                                    {{$review->product_name}}
                                                 </a>
                                             </td>
-                                            <td class="text-center">{{$comment->name}}</td>
-                                            <td class="text-center">{{$comment->email}}</td>
                                             <td class="text-center">
-                                                @if($comment->check_status)
+                                                <div id="readOnly">
+                                                @for($i = 0; $i<$review->rating; $i++)
+                                                    <i class="fa fa-star text-danger"></i>&nbsp;
+                                                @endfor
+                                                @for($i = $review->rating; $i<5; $i++)
+                                                    <i class="fa fa-star-o text-muted"></i>
+                                                @endfor
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                {{$review->name}}
+                                            </td>
+                                            <td>
+                                                {{$review->email}}
+                                            </td>
+                                            <td class="text-center">
+                                                @if($review->check_status)
                                                     Включен
                                                 @else
                                                     Выключен
                                                 @endif
                                             </td>
-                                            <td class="text-center">{{$comment->created_at}}</td>
                                             <td class="text-center">
+                                                {{$review->created_at}}
+                                            </td>
+                                            <td>
                                                 <div class="btn-group m-b-10">
-                                                    <a href="{{route('comment/page_update', ['id' => $comment->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
+                                                    <a href="{{route('review/page_update', ['id' => $review->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
                                                         <i class="dripicons-pencil"></i>
                                                     </a>
-                                                    <button onclick="comment.delete({{$comment->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
+                                                    <button onclick="review.delete({{$review->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
                                                         <i class="dripicons-trash"></i>
                                                     </button>
                                                 </div>
@@ -86,9 +103,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="8">
+                                        <td colspan="9">
                                             <div class="alert alert-info alert-dismissible fade in" role="alert">
-                                                По запросу нет комментариев.
+                                                По запросу нет отзывов.
                                             </div>
                                         </td>
                                     </tr>
@@ -97,7 +114,7 @@
                             </table>
 
                             <div class="text-center">
-                                {{$page->comments->appends(request()->input())->render()}}
+                                {{$page->reviews->appends(request()->input())->render()}}
                             </div>
                         </div>
                     </div>
@@ -105,8 +122,9 @@
             </div>
         </div>
     </div>
-    @include('admin.comments.modal_delete')
+    @include('admin.reviews.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/comment.js') !!}
+    <script src="{{asset('/assets/admin/plugins/raty-fa/jquery.raty-fa.js')}}"></script>
+    {!! script_ts('/assets/admin/my_js_scripts/review.js') !!}
 @endsection

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
     public function SignIn (Request $request) {
         $validator = Validator::make($request->all(), [
             'login' => 'required|min:2|max:16|alpha_dash',

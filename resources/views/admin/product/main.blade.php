@@ -45,13 +45,13 @@
                             <div class="panel-body">
                                 @include('admin.includes.alerts.error_alerts')
                                 @include('admin.includes.alerts.success_alerts')
-                                <table class="table table-bordered m-0">
+                                <table class="table table-striped m-0">
                                     <thead>
                                     <tr>
-                                        <th class="text-center">Изображение</th>
-                                        <th class="text-center">Артикул</th>
-                                        <th class="text-center">Наименование</th>
-                                        <th class="text-center">Категория</th>
+                                        <th></th>
+                                        <th class="text-left">Артикул</th>
+                                        <th class="text-left">Наименование</th>
+                                        <th class="text-center">Категории</th>
                                         <th class="text-center">Добавлен</th>
                                         <th class="text-center">Отображение в категор.</th>
                                         <th class="text-center">Операции</th>
@@ -62,19 +62,21 @@
                                         @foreach($page->products as $product)
                                             <tr id="item_{{$product->id}}">
                                                 <th class="text-center">
-                                                    <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/products/{{$product->image}}">
+                                                    <img class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
                                                 </th>
                                                 <th class="text-center">
                                                     {{$product->vendor_code}}
                                                 </th>
-                                                <td>
+                                                <td class="text-left">
                                                     {{$product->name}}
                                                 </td>
                                                 <td>
                                                     @foreach($product->categories as $category)
-                                                        <a href="#">
-                                                            {{$category->name}}
-                                                        </a>
+                                                        <p>
+                                                            <a href="{{route('admin/product/search', ['category[]' => $category->id])}}">
+                                                                {{$category->name}}
+                                                            </a>
+                                                        </p>
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
@@ -87,13 +89,31 @@
                                                         Нет
                                                     @endif
                                                 </td>
-                                                <td>
-                                                    <a href="{{route('admin/product/update_page', ['id' => $product->id])}}" class="btn btn-sm btn-primary">
-                                                        <i class="dripicons-pencil"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-danger" onclick="product.delete({{$product->id}})">
-                                                        <i class="dripicons-trash"></i>
-                                                    </button>
+                                                <td class="text-center">
+                                                    <div class="btn-group m-b-10">
+                                                        <a href="{{route('admin/product/update_page', ['id' => $product->id])}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Редактировать"
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="dripicons-pencil"></i>
+                                                        </a>
+                                                        <button class="btn btn-sm btn-danger"
+                                                                data-toggle="tooltip" data-placement="top" title="Удалить"
+                                                                onclick="product.delete({{$product->id}})">
+                                                            <i class="dripicons-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group m-b-10">
+                                                        <a href="{{route('comments/search', ['vendor_code' => $product->vendor_code])}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Комментарии"
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="mdi mdi-comment-multiple-outline"></i>
+                                                        </a>
+                                                        <a href="{{route('reviews/search', ['vendor_code' => $product->vendor_code])}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Отзывы"
+                                                           class="btn btn-sm btn-custom">
+                                                            <i class="mdi mdi-comment-processing-outline"></i>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -109,7 +129,7 @@
                                     </tbody>
                                 </table>
                                 <div class="text-center">
-                                    {{$page->products->render()}}
+                                    {{$page->products->appends(request()->input())->render()}}
                                 </div>
                             </div>
                         </div>

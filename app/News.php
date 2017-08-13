@@ -107,13 +107,13 @@ class News extends Model
             }
         }
         if ($request->has('date_start') && $request->has('date_end')) {
-            $query->whereBetween('created_at', [$request->date_start, $request->date_end]);
+            $query->whereBetween('news.created_at', [$request->date_start, $request->date_end]);
         }
         if (!$request->has('date_start') && $request->has('date_end')) {
-            $query->where('created_at', '<=', $request->date_end);
+            $query->where('news.created_at', '<=', $request->date_end);
         }
         if ($request->has('date_start') && !$request->has('date_end')) {
-            $query->where('created_at', '>=', $request->date_start);
+            $query->where('news.created_at', '>=', $request->date_start);
         }
         $query->select(
             'news.id',

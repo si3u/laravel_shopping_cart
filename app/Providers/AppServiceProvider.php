@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('admin.includes.sidebar', \App\Views\Composers\NotificationComposer::class);
+        view()->composer(['admin.includes.sidebar', 'admin.includes.navbar'], \App\Views\Composers\NotificationComposer::class);
     }
 
     /**

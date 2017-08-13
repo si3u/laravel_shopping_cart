@@ -28,7 +28,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin/reviews')}}">
+                            <a href="{{route('products/reviews')}}">
                                 Отзывы
                                 @if($count_new_reviews>0)
                                     <span class="badge badge-success pull-right">{{$count_new_reviews}}</span>

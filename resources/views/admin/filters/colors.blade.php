@@ -47,7 +47,7 @@
                         <div class="col-md-6">
                             <div class="card-box">
                                 <h4 class="m-t-0 m-b-30 header-title">Имеющиеся</h4>
-                                <table class="table table-bordered m-0">
+                                <table class="table table-striped m-0">
                                     <thead>
                                     <tr>
                                         <th class="text-center">Наименование</th>

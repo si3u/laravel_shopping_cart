@@ -22,6 +22,6 @@ class OnlyAdministration
             }
             return false;
         }
-        return redirect()->route('admin/main');
+        return redirect()->route('admin/login');
     }
 }

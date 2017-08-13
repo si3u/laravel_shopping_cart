@@ -36,10 +36,10 @@
                         <div class="card-box">
                             @include('admin.includes.alerts.success_alerts')
                             @include('admin.includes.alerts.error_alerts')
-                            <table class="table table-bordered m-0">
+                            <table class="table table-striped m-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">Изображение</th>
+                                    <th class="text-left">Изображение</th>
                                     <th class="text-center">Наименование</th>
                                     <th class="text-center">Дата добавления</th>
                                     <th class="text-center">Операции</th>
@@ -49,22 +49,24 @@
                                     @if(count($page->news) > 0)
                                         @foreach($page->news as $news)
                                             <tr id="item_{{$news->id}}">
-                                                <td class="text-center">
+                                                <td>
                                                     @if($news->image_preview != null)
-                                                        <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/news/{{$news->image_preview}}" alt="image">
+                                                        <img class="textimg-responsive thumb-lg" src="/assets/images/news/{{$news->image_preview}}" alt="image">
                                                     @else
-                                                        <img class="img-responsive img-thumbnail thumb-lg" src="/assets/images/default.png" alt="image">
+                                                        <img class="img-responsive thumb-lg" src="/assets/images/default.png" alt="image">
                                                     @endif
                                                 </td>
                                                 <td>{{str_limit($news->topic, $limit = 100, $end = '...')}}</td>
-                                                <td>{{$news->created_at}}</td>
-                                                <td>
-                                                    <a href="{{route('news/update_page', ['id' => $news->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
-                                                        <i class="dripicons-pencil"></i>
-                                                    </a>
-                                                    <button onclick="news.delete({{$news->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
-                                                        <i class="dripicons-trash"></i>
-                                                    </button>
+                                                <td class="text-center">{{$news->created_at}}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group m-b-10">
+                                                        <a href="{{route('news/update_page', ['id' => $news->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
+                                                            <i class="dripicons-pencil"></i>
+                                                        </a>
+                                                        <button onclick="news.delete({{$news->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
+                                                            <i class="dripicons-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -81,7 +83,7 @@
                             </table>
 
                             <div class="text-center">
-                                {!! $page->news->render() !!}
+                                {!! $page->news->appends(request()->input())->render() !!}
                             </div>
                         </div>
                     </div>

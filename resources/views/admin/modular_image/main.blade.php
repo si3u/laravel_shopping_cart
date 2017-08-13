@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="card-box">
                         @include('admin.includes.alerts.success_alerts')
-                        <table class="table table-bordered m-0">
+                        <table class="table table-striped m-0">
                             <thead>
                             <tr>
                                 <th class="text-center">Модуль</th>

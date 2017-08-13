@@ -8,6 +8,7 @@
         @include('admin.includes.sidebar')
     </div>
     <div class="content-page">
+        <input type="hidden" name="now_rating" value="{{$page->review->rating}}">
         <div class="content">
             <div class="container">
                 <div class="row">
@@ -16,8 +17,8 @@
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
-                                    <a href="{{route('admin/comments')}}">
-                                        <i class="dripicons-arrow-thin-left"></i> Ко всем комментариям
+                                    <a href="{{route('products/reviews')}}">
+                                        <i class="dripicons-arrow-thin-left"></i> Ко всем отзывам
                                     </a>
                                 </li>
                             </ol>
@@ -29,17 +30,17 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <p class="text-center text-custom font-13">
-                                        <strong>Отзыв</strong>
+                                        <strong>Комментарий</strong>
                                     </p>
                                     <hr>
                                     <form id="form_work_on" action="javascript:void(0);" class="form-horizontal">
-                                        <input id="id" name="id" type="hidden" value="{{$page->comment->id}}">
+                                        <input id="id" name="id" type="hidden" value="{{$page->review->id}}">
                                         <div class="form-group">
                                             <label for="name" class="col-md-3 control-label">
                                                 Имя автора
                                             </label>
                                             <div class="col-md-9">
-                                                <input value="{{$page->comment->name}}" id="name" name="name" class="form-control">
+                                                <input value="{{$page->review->name}}" id="name" name="name" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -47,7 +48,7 @@
                                                 E-mail автора
                                             </label>
                                             <div class="col-md-9">
-                                                <input value="{{$page->comment->email}}" id="email" name="email" class="form-control">
+                                                <input value="{{$page->review->email}}" id="email" name="email" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -55,7 +56,15 @@
                                                 Сообщение
                                             </label>
                                             <div class="col-md-9">
-                                                <textarea id="message" name="message" rows="3" class="form-control">{{$page->comment->message}}</textarea>
+                                                <textarea id="message" name="message" rows="3" class="form-control">{{$page->review->message}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Рейтинг</label>
+                                            <div class="col-md-9">
+                                                <div id="rating" style="cursor: pointer;" class="text-center fa-lg">
+
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -65,12 +74,12 @@
                                             <div class="col-md-9">
                                                 <select class="form-control" id="status" name="status">
                                                     <option value="1"
-                                                        @if($page->comment->check_status)
+                                                            @if($page->review->check_status)
                                                             selected
-                                                        @endif >Включен</option>
+                                                            @endif >Включен</option>
                                                     <option value="0"
-                                                            @if(!$page->comment->check_status)
-                                                                selected
+                                                            @if(!$page->review->check_status)
+                                                            selected
                                                             @endif >Выключен</option>
                                                 </select>
                                                 <span class="help-block">
@@ -86,7 +95,7 @@
                                             </label>
                                             <div class="col-md-9">
                                                 <div class="pull-right">
-                                                    <button onclick="$('#modal_comment_delete').modal('show');" class="btn btn-lg btn-danger">
+                                                    <button type="button" onclick="$('#modal_review_delete').modal('show');" class="btn btn-lg btn-danger">
                                                         Удалить
                                                     </button>
                                                     <button type="submit" class="btn btn-lg btn-success">
@@ -103,16 +112,16 @@
                                     </p>
                                     <hr>
                                     <div class="thumbnail">
-                                        <img src="/assets/images/products/{{$page->comment->product_image}}" class="img-responsive">
+                                        <img src="/assets/images/products/{{$page->review->product_image}}" class="img-responsive">
                                         <div class="caption">
                                             <dl class="dl-horizontal">
                                                 <dt>Артикул:</dt>
-                                                <dd>{{$page->comment->vendor_code}}</dd>
+                                                <dd>{{$page->review->vendor_code}}</dd>
                                                 <dt>Наименование:</dt>
-                                                <dd>{{$page->comment->product_name}}</dd>
+                                                <dd>{{$page->review->product_name}}</dd>
                                             </dl>
                                             <p class="text-right">
-                                                <a target="_blank" href="{{route('admin/product/update_page', ['id' => $page->comment->product_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
+                                                <a target="_blank" href="{{route('admin/product/update_page', ['id' => $page->review->product_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
                                                     Открыть товар
                                                 </a>
                                             </p>
@@ -129,5 +138,6 @@
     @include('admin.reviews.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/comment.js') !!}
+    <script src="{{asset('/assets/admin/plugins/raty-fa/jquery.raty-fa.js')}}"></script>
+    {!! script_ts('/assets/admin/my_js_scripts/review.js') !!}
 @endsection

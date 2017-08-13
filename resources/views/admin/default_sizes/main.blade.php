@@ -25,32 +25,34 @@
                               nama="form_default_size_add"
                               action="{{route('admin/default_size/add')}}"
                               class="form-horizontal" onclick="return false;">
-                            <table class="table table-bordered m-0">
+                            <table class="table table-striped m-0">
                                 <thead>
                                 <tr>
-                                    <th>Ширина</th>
-                                    <th>Высота</th>
-                                    <th>Операции</th>
+                                    <th class="text-center">Ширина</th>
+                                    <th class="text-center">Высота</th>
+                                    <th class="text-center">Операции</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr id="row_add">
-                                    <td>
+                                    <td class="text-center">
                                         <input id="width" name="width" class="form-control" type="text" placeholder="Введите ширену">
                                     </td>
                                     <td>
                                         <input id="height" name="height" class="form-control" type="text" placeholder="Введите высоту">
                                     </td>
-                                    <td>
-                                        <button class="btn btn-success btn-block" onclick="defaultSize.add()">Добавить</button>
+                                    <td class="text-center">
+                                        <button class="btn btn-success" onclick="defaultSize.add()">
+                                            <i class="dripicons-plus"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 @foreach($page->size as $item)
                                     <tr id="item_{{$item->id}}">
                                         <td class="text-center">{{$item->width}}</td>
                                         <td class="text-center">{{$item->height}}</td>
-                                        <td>
-                                            <button class="btn btn-danger btn-block" onclick="defaultSize.delete({{$item->id}})">
+                                        <td class="text-center">
+                                            <button class="btn btn-danger" onclick="defaultSize.delete({{$item->id}})">
                                                 <i class="dripicons-trash"></i>
                                             </button>
                                         </td>

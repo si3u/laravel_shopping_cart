@@ -6,7 +6,8 @@
                 <p class="panel-sub-title text-muted">Ни один с параметров не являтся обязательным параметром для поиска</p>
             </div>
             <div class="panel-body">
-                <form action="{{route('comments/search')}}" method="get" class="form-horizontal" role="form">
+                <input name="now_rating" type="hidden" value="@isset($page->old_score){{$page->old_score}}@endisset">
+                <form action="{{route('reviews/search')}}" method="get" class="form-horizontal" role="form">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -24,9 +25,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Искать в тексте комментариях</label>
+                                <label class="col-md-3 control-label">Искать в тексте отзывов</label>
                                 <div class="col-md-9">
-                                    <input @isset($page->old_text_search) value="{{$page->old_text_search}}" @endisset id="text_search" name="text_search" type="text" class="form-control" placeholder="Введите текст для поиска в комментариях">
+                                    <input @isset($page->old_text_search) value="{{$page->old_text_search}}" @endisset id="text_search" name="text_search" type="text" class="form-control" placeholder="Введите текст для поиска в отзывах">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -45,7 +46,7 @@
                                                 selected
                                                 @endif
                                                 @endisset >
-                                            Только включенные комментарии
+                                            Только включенные отзывы
                                         </option>
                                         <option value="2"
                                                 @isset($page->old_check_status)
@@ -53,7 +54,7 @@
                                                 selected
                                                 @endif
                                                 @endisset >
-                                            Только выключенные комментарии
+                                            Только выключенные отзывы
                                         </option>
                                     </select>
                                 </div>
@@ -64,7 +65,7 @@
                                     <div class="checkbox checkbox-primary checkbox-single">
                                         <input type="checkbox" id="read_status" name="read_status"
                                                @if (isset($page->old_read_status))
-                                                   checked
+                                               checked
                                                @endif
                                                value="1" aria-label="Только новые">
                                         <label></label>
@@ -82,6 +83,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="date_start" class="col-md-2 control-label">Рейтинг</label>
+                                        <div class="col-md-10">
+                                            <div id="rating" style="cursor: pointer;" class="text-center fa-lg">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <div class="form-group">
