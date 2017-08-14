@@ -134,6 +134,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/modular_images/add', [
         'uses' => 'admin\ModularImageController@PageAdd'
     ])->name('admin/modular_images/add');
+    Route::get('/admin/modular_image/update/{id}', [
+        'uses' => 'admin\ModularImageController@PageUpdate'
+    ])->name('modular_image/update');
 
     Route::post('/admin/modular_image/add', [
         'uses' => 'admin\ModularImageController@Add'
@@ -142,6 +145,13 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\ModularImageController@Delete'
     ])->name('admin/modular_image/delete');
 
+    // // // size modular images
+    Route::post('/admin/size_modular_image/add', [
+        'uses' => 'admin\SizeModularImageController@Add'
+    ])->name('size_modular_image/add');
+    Route::post('/admin/size_modular_image/delete', [
+        'uses' => 'admin\SizeModularImageController@Delete'
+    ])->name('size_modular_image/delete');
 
     // // //products
     Route::get('/admin/products', [
@@ -202,6 +212,42 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/reviews/search', [
         'uses' => 'admin\ProductReviewController@Search'
     ])->name('reviews/search');
+
+    // // //setting order statuses
+    Route::get('/admin/setting/order_statuses', [
+        'uses' => 'admin\SettingOrderStatusController@Page'
+    ])->name('setting/order_statuses');
+
+    Route::post('/admin/setting/order_status/add', [
+        'uses' => 'admin\SettingOrderStatusController@Add'
+    ])->name('setting/order_status/add');
+    Route::get('/admin/setting/order_status/delete/{id}', [
+        'uses' => 'admin\SettingOrderStatusController@Delete'
+    ])->name('setting/order_status/delete');
+    Route::get('/admin/setting/order_status/upon_receipt/{id}', [
+        'uses' => 'admin\SettingOrderStatusController@ChangeUponReceipt'
+    ])->name('setting/order_status/upon_receipt');
+
+    // // //payment methods
+    Route::get('/admin/payment_methods', [
+        'uses' => 'admin\PaymentMethodController@Page'
+    ])->name('admin/payment_methods');
+    Route::get('/admin/payment_methods/add', [
+        'uses' => 'admin\PaymentMethodController@PageAdd'
+    ])->name('payment_methods/add');
+    Route::get('/admin/payment_methods/update/{id}', [
+        'uses' => 'admin\PaymentMethodController@PageUpdate'
+    ])->name('payment_methods/update');
+
+    Route::post('/admin/payment_method/add', [
+        'uses' => 'admin\PaymentMethodController@Add'
+    ])->name('payment_method/add');
+    Route::post('/admin/payment_method/update', [
+        'uses' => 'admin\PaymentMethodController@Update'
+    ])->name('payment_method/update');
+    Route::get('/admin/payment_method/delete/{id}', [
+        'uses' => 'admin\PaymentMethodController@Delete'
+    ])->name('payment_method/delete');
 });
 
 Auth::routes();

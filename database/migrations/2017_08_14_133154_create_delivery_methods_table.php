@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSizeModularImagesTable extends Migration
+class CreateDeliveryMethodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateSizeModularImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('size_modular_images', function (Blueprint $table) {
+        Schema::create('delivery_methods', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('modular_image_id');
-            $table->integer('number');
-            $table->integer('width');
-            $table->integer('height');
         });
     }
 
@@ -29,6 +25,6 @@ class CreateSizeModularImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('size_modular_images');
+        Schema::dropIfExists('delivery_methods');
     }
 }

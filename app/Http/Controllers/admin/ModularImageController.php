@@ -25,6 +25,21 @@ class ModularImageController extends Controller
         return view('admin.modular_image.work_on', ['page' => $data]);
     }
 
+    public function PageUpdate($id) {
+        $validator = Validator::make(
+            ['id' => $id],
+            ['id' => 'required|integer|exists:modular_images,id']
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        $data = (object)[
+            'title' => 'Редактирование модуля',
+            'item' => ModularImage::GetItem($id)
+        ];
+        return view('admin.modular_image.update', ['page' => $data]);
+    }
+
     public function Add(Request $request) {
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:jpg,jpeg,png|max:2048'

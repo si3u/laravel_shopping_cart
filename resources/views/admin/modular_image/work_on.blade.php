@@ -30,10 +30,23 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p class="panel-sub-title text-muted">
+                                    После добавление перейдите в <a href="{{route('admin/modular_images')}}">список всех моделей</a>
+                                    где можно будет перейти к редактированию  модели и добавлению в нее размеров картин на ней.
+                                    Эти размеры используются чтобы при изменении размера заказываемой модели высчитывались пропорциональные размеры картин на ней.
+                                </p>
+                            </div>
+                            <div class="panel-body">
+                                <form method="post" class="dropzone" name="add_modular_images" id="add_modular_images" action="{{route('admin/modular_image/add')}}">
+                                    {{ csrf_field() }}
+                                </form>
+                            </div>
+                        </div>
                         <div class="card-box">
-                            <form method="post" class="dropzone" name="add_modular_images" id="add_modular_images" action="{{route('admin/modular_image/add')}}">
-                                {{ csrf_field() }}
-                            </form>
+
+
                         </div>
                     </div>
                 </div>

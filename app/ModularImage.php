@@ -22,6 +22,9 @@ use Illuminate\Database\Eloquent\Model;
 class ModularImage extends Model
 {
     protected $primaryKey = 'id';
+    protected function Sizes() {
+        return $this->hasMany('App\SizeModularImage', 'modular_image_id');
+    }
 
     protected function GetItems() {
         return ModularImage::orderBy('id', 'desc')->paginate(10);
@@ -39,6 +42,13 @@ class ModularImage extends Model
             return true;
         }
         return false;
+    }
+
+    protected function GetItem($id) {
+        return (object)[
+            'data' => ModularImage::find($id),
+            'sizes' => ModularImage::find($id)->Sizes()->orderBy('number', 'asc')->get()
+        ];
     }
 
     protected function DeleteItem($id) {

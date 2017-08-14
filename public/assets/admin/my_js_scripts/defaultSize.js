@@ -18,8 +18,8 @@ var defaultSize = {
                     $('<tr class="success" id="item_'+result.item_id+'">\n' +
                     '     <td class="text-center">'+width+'</td>\n' +
                     '     <td class="text-center">'+height+'</td>\n' +
-                    '     <td>\n' +
-                    '         <button class="btn btn-danger btn-block" onclick="defaultSize.delete('+result.item_id+')">' +
+                    '     <td class="text-center">\n' +
+                    '         <button class="btn btn-danger" onclick="defaultSize.delete('+result.item_id+')">' +
                     '             <i class="dripicons-trash"></i>'+
                     '         </button>\n' +
                     '     </td>\n' +

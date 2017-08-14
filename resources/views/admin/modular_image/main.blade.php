@@ -47,10 +47,15 @@
                                         <td class="text-center">
                                             {{$item->created_at}}
                                         </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-block" onclick="modularImage.delete({{$item->id}})">
-                                                <i class="dripicons-trash"></i>
-                                            </button>
+                                        <td class="text-center">
+                                            <div class="btn-group m-b-10">
+                                                <a href="{{route('modular_image/update', ['id' => $item->id])}}" class="btn btn-primary">
+                                                    <i class="dripicons-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-danger" onclick="modularImage.delete({{$item->id}})">
+                                                    <i class="dripicons-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

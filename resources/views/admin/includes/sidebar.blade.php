@@ -66,6 +66,8 @@
                         <li><a href="{{route('admin/prices')}}"> Цены</a></li>
                         <li><a href="javascript:;" onclick="activeLocalization.get()"> Локализации</a></li>
                         <li><a href="{{route('admin/default_sizes')}}"> Размеры картин</a></li>
+                        <li><a href="{{route('setting/order_statuses')}}"> Статусы заказов </a></li>
+                        <li><a href="{{route('admin/payment_methods')}}"> Методы оплаты </a></li>
                         <li>
                             <a href="javascript: void(0);" aria-expanded="true">Фильтры <span class="menu-arrow"></span></a>
                             <ul class="nav-third-level nav" aria-expanded="true">
