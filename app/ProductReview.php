@@ -125,7 +125,9 @@ class ProductReview extends Model
             $query->where('product_reviews.read_status', false);
         }
         if ($request->has('score')) {
-            $query->where('rating', $request->score);
+            if ($request->score != 0) {
+                $query->where('rating', $request->score);
+            }
         }
         if ($request->has('date_start') && $request->has('date_end')) {
             $query->whereBetween(

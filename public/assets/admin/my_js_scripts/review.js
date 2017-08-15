@@ -5,8 +5,13 @@ var review = {
     }
 };
 $(document).ready(function () {
+    var score = 0;
+    var nowRating = $('input[name=now_rating]').val();
+    if ($.isNumeric(nowRating)) {
+        score = nowRating;
+    }
     $("#rating").raty({
-        score: $('input[name=now_rating]').val(),
+        score: score,
         starOff:"fa fa-star-o text-muted",
         starOn:"fa fa-star text-danger"
     });
