@@ -43,27 +43,35 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($page->payment_methods as $item)
+                                    @if(count($page->payment_methods) > 0)
+                                        @foreach($page->payment_methods as $item)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{$item->DataLocal->name}}
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="btn-group m-b-10">
+                                                        <a href="{{route('payment_methods/update', ['id'=>$item->id])}}" class="btn btn-primary">
+                                                            <i class="dripicons-pencil"></i>
+                                                        </a>
+                                                        <button class="btn btn-danger" onclick="paymentMethod.delete({{$item->id}});">
+                                                            <i class="dripicons-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
                                         <tr>
-                                            <td class="text-center">
-                                                {{$item->DataLocal->name}}
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="btn-group m-b-10">
-                                                    <a href="{{route('payment_methods/update', ['id'=>$item->id])}}" class="btn btn-primary">
-                                                        <i class="dripicons-pencil"></i>
-                                                    </a>
-                                                    <button class="btn btn-danger" onclick="paymentMethod.delete({{$item->id}});">
-                                                        <i class="dripicons-trash"></i>
-                                                    </button>
+                                            <td colspan="2">
+                                                <div class="alert alert-info" role="alert">
+                                                    Пока методов оплаты нет. Перейдите по ссылке "Добавить" чтобы добавить методы оплаты.
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
-                            </form>
-
                             <div class="text-center">
                                 {{$page->payment_methods->render()}}
                             </div>

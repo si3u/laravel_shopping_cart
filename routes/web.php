@@ -248,6 +248,35 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/payment_method/delete/{id}', [
         'uses' => 'admin\PaymentMethodController@Delete'
     ])->name('payment_method/delete');
+
+    // // //delivery methods
+    Route::get('/admin/delivery_methods', [
+        'uses' => 'admin\DeliveryMethodController@Page'
+    ])->name('admin/delivery_methods');
+    Route::get('/admin/delivery_methods/add', [
+        'uses' => 'admin\DeliveryMethodController@PageAdd'
+    ])->name('delivery_methods/page_add');
+    Route::get('/admin/delivery_method/update/{id}', [
+        'uses' => 'admin\DeliveryMethodController@PageUpdate'
+    ])->name('delivery_methods/page_update');
+
+    Route::post('/admin/delivery_method/add', [
+        'uses' => 'admin\DeliveryMethodController@Add'
+    ])->name('delivery_method/add');
+    Route::post('/admin/delivery_method/update', [
+        'uses' => 'admin\DeliveryMethodController@Update'
+    ])->name('delivery_method/update');
+    Route::get('/admin/delivery_method/delete/{id}', [
+        'uses' => 'admin\DeliveryMethodController@Delete'
+    ])->name('delivery_method/delete');
+
+    // // //contacts
+    Route::post('/admin/contacts/get', [
+        'uses' => 'admin\ContactController@Get'
+    ])->name('admin/contacts');
+    Route::post('/admin/contacts/update', [
+        'uses' => 'admin\ContactController@Update'
+    ])->name('contacts/update');
 });
 
 Auth::routes();

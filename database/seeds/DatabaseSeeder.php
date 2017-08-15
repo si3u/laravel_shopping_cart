@@ -122,3 +122,14 @@ class CreatePrices extends Seeder {
         ]);
     }
 }
+
+class CreateContacts extends Seeder {
+    public function run() {
+        DB::table('contacts')->delete();
+        DB::table('contacts')->truncate();
+
+        DB::table('contacts')->insert([
+            'id' => 1
+        ]);
+    }
+}

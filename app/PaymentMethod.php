@@ -25,6 +25,14 @@ class PaymentMethod extends Model
         return $query->orderBy('id', 'desc')->paginate(10);
     }
 
+    public static function GetItemsStatic() {
+        $query = PaymentMethod::query();
+        $query->with(['DataLocal' => function($q) {
+            $q->where('lang_id', 1);
+        }]);
+        return $query->orderBy('id', 'desc')->get();
+    }
+
     protected function CreateItem() {
         return PaymentMethod::insertGetId([]);
     }

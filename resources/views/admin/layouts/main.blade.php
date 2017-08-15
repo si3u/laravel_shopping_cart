@@ -29,6 +29,7 @@
 {{ csrf_field() }}
 @yield('content')
 @include('admin.active_localization.modal')
+@include('admin.includes.modal.contacts')
 <script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
 {!! script_ts('/assets/admin/js/bootstrap.min.js') !!}
 {!! script_ts('/assets/admin/js/metisMenu.min.js') !!}
