@@ -4,6 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\DataPaymentMethod
+ *
+ * @property int $payment_method_id
+ * @property int $lang_id
+ * @property string $name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataPaymentMethod whereLangId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataPaymentMethod whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataPaymentMethod wherePaymentMethodId($value)
+ * @mixin \Eloquent
+ */
 class DataPaymentMethod extends Model
 {
     public $timestamps = false;

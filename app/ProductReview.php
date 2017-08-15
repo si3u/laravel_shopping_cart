@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductReview whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductReview whereRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductReview whereUpdatedAt($value)
+ * @property int $read_status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductReview mainSelect()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductReview whereReadStatus($value)
  */
 class ProductReview extends Model
 {

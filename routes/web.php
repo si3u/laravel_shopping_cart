@@ -277,6 +277,18 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/contacts/update', [
         'uses' => 'admin\ContactController@Update'
     ])->name('contacts/update');
+
+    // // //recommend products
+    Route::get('/admin/recommend_products', [
+        'uses' => 'admin\RecommendProductController@Page'
+    ])->name('admin/recommend_products');
+
+    Route::post('/admin/recommend_products/add', [
+        'uses' => 'admin\RecommendProductController@Add'
+    ])->name('recommend_products/add');
+    Route::post('/admin/recommend_products/delete', [
+        'uses' => 'admin\RecommendProductController@Delete'
+    ])->name('recommend_products/delete');
 });
 
 Auth::routes();

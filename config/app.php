@@ -183,6 +183,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         Nestable\NestableServiceProvider::class,
+        InsertOnDuplicateKey\InsertOnDuplicateKeyServiceProvider::class,
     ],
 
     /*

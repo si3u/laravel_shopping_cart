@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.32 on 2017-08-07.
+ * Generated for Laravel 5.4.32 on 2017-08-15.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -14500,6 +14500,60 @@ namespace  {
             public static function macroCall($method, $parameters)
             {    
                 return \Illuminate\Database\Query\Builder::macroCall($method, $parameters);
+            }
+         
+            /**
+             * Run an insert ignore statement against the database.
+             *
+             * @param array $values
+             * @param string|null $pivotTable
+             * @return bool 
+             * @static 
+             */ 
+            public static function insertIgnore($values, $pivotTable = null)
+            {    
+                return \Illuminate\Database\Query\Builder::insertIgnore($values, $pivotTable);
+            }
+         
+            /**
+             * Run an insert on duplicate key update statement against the database.
+             *
+             * @param array $values
+             * @param string $type
+             * @param string|null $pivotTable
+             * @return bool 
+             * @static 
+             */ 
+            public static function insertOnDuplicateKey($values, $type = 'on duplicate key', $pivotTable = null)
+            {    
+                return \Illuminate\Database\Query\Builder::insertOnDuplicateKey($values, $type, $pivotTable);
+            }
+         
+            /**
+             * Attach models to the parent ignoring existing associations.
+             *
+             * @param mixed $id
+             * @param array $attributes
+             * @return bool 
+             * @static 
+             */ 
+            public static function attachIgnore($id, $attributes = array())
+            {    
+                return \Illuminate\Database\Query\Builder::attachIgnore($id, $attributes);
+            }
+         
+            /**
+             * Attach models to the parent updating existing associations.
+             *
+             * @param mixed $id
+             * @param array $attributes
+             * @param string $type
+             * @return bool 
+             * @static 
+             */ 
+            public static function attachOnDuplicateKey($id, $attributes = array(), $type = 'on duplicate key')
+            {    
+                return \Illuminate\Database\Query\Builder::attachOnDuplicateKey($id, $attributes, $type);
             }
         }
 

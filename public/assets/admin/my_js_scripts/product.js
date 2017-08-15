@@ -5,6 +5,26 @@ var product = {
         $('#modal_product_delete').modal('show');
     }
 };
+function checkProducts(option) {
+    var form = $('#form_check');
+    var action = '';
+    if (option == 1) {
+        action = '/admin/recommend_products/add';
+    }
+    $.ajax({
+        method: "POST",
+        url: action,
+        data: form.serialize(),
+        dataType: 'JSON',
+        success: function (response) {
+            console.log(response);
+            if (response.status == 'success') {
+                callToast.success('Товар', 'успешно добавлен в рекомендуемые');
+                return true;
+            }
+        }
+    });
+}
 $(document).ready(function () {
     $('#form_work_on').submit(function() {
         var spinner = $('#spinner');

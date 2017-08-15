@@ -32,6 +32,8 @@ use App\ImageBase\ImageBase;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Product whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Product whereVendorCode($value)
  * @mixin \Eloquent
+ * @property int $status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product whereStatus($value)
  */
 class Product extends Model
 {

@@ -4,6 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\DataDeliveryMethod
+ *
+ * @property int $delivery_method_id
+ * @property int $lang_id
+ * @property string $name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataDeliveryMethod whereDeliveryMethodId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataDeliveryMethod whereLangId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\DataDeliveryMethod whereName($value)
+ * @mixin \Eloquent
+ */
 class DataDeliveryMethod extends Model
 {
     public $timestamps = false;

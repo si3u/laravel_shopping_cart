@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment mainSelect()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereReadStatus($value)
  */
 class ProductComment extends Model
 {

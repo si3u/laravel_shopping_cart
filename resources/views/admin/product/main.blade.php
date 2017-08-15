@@ -38,16 +38,26 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.product.form_search')
+                @if ($page->route_name == 'admin/products' || $page->route_name == 'admin/product/search')
+                    @include('admin.product.form_search')
+                @endif
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 @include('admin.includes.alerts.error_alerts')
                                 @include('admin.includes.alerts.success_alerts')
+                                <form @if($page->route_name == 'admin/recommend_products')
+                                      method="post"
+                                      action="{{route('recommend_products/delete')}}"
+                                      @else
+                                      action="javascript:void(0);"
+                                      @endif
+                                      id="form_check">
                                 <table class="table table-striped m-0">
                                     <thead>
                                     <tr>
+                                        <th></th>
                                         <th></th>
                                         <th class="text-left">Артикул</th>
                                         <th class="text-left">Наименование</th>
@@ -61,6 +71,12 @@
                                     @if (count($page->products) > 0)
                                         @foreach($page->products as $product)
                                             <tr id="item_{{$product->id}}">
+                                                <th>
+                                                    <div class="checkbox checkbox-primary checkbox-single">
+                                                        <input type="checkbox" id="check_products" name="check_products[]" value="{{$product->id}}">
+                                                        <label></label>
+                                                    </div>
+                                                </th>
                                                 <th class="text-center">
                                                     <img class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
                                                 </th>
@@ -92,24 +108,20 @@
                                                 <td class="text-center">
                                                     <div class="btn-group m-b-10">
                                                         <a href="{{route('admin/product/update_page', ['id' => $product->id])}}"
-                                                           data-toggle="tooltip" data-placement="top" title="Редактировать"
                                                            class="btn btn-sm btn-primary">
                                                             <i class="dripicons-pencil"></i>
                                                         </a>
                                                         <button class="btn btn-sm btn-danger"
-                                                                data-toggle="tooltip" data-placement="top" title="Удалить"
                                                                 onclick="product.delete({{$product->id}})">
                                                             <i class="dripicons-trash"></i>
                                                         </button>
                                                     </div>
                                                     <div class="btn-group m-b-10">
                                                         <a href="{{route('comments/search', ['vendor_code' => $product->vendor_code])}}"
-                                                           data-toggle="tooltip" data-placement="top" title="Комментарии"
                                                            class="btn btn-sm btn-primary">
                                                             <i class="mdi mdi-comment-multiple-outline"></i>
                                                         </a>
                                                         <a href="{{route('reviews/search', ['vendor_code' => $product->vendor_code])}}"
-                                                           data-toggle="tooltip" data-placement="top" title="Отзывы"
                                                            class="btn btn-sm btn-custom">
                                                             <i class="mdi mdi-comment-processing-outline"></i>
                                                         </a>
@@ -119,7 +131,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="8">
                                                 <div class="alert alert-info alert-dismissible fade in" role="alert">
                                                     Товаров по запросу нет.
                                                 </div>
@@ -128,6 +140,22 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                    <div class="btn-group">
+                                        @if($page->route_name == 'admin/recommend_products')
+                                            {!!csrf_field()!!}
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                    data-toggle="tooltip" data-placement="top" title="Выбранные удалить с Рекомендуемых товары">
+                                                <i class="dripicons-trash"></i>
+                                            </button>
+                                        @else
+                                            <button class="btn btn-primary btn-sm"
+                                                    data-toggle="tooltip" data-placement="top" title="Выбранные в Рекомендуемые товары"
+                                                    onclick="checkProducts(1)">
+                                                <i class="mdi mdi-star"></i>
+                                            </button>
+                                        @endif
+                                    </div>
+                                </form>
                                 <div class="text-center">
                                     {{$page->products->appends(request()->input())->render()}}
                                 </div>
