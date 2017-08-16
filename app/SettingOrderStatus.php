@@ -20,6 +20,14 @@ class SettingOrderStatus extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
 
+    public static function GetActive() {
+        $select = SettingOrderStatus::where('upon_receipt', true)->select('id')->first();
+        if (isset($select->id)) {
+            return $select->id;
+        }
+        return null;
+    }
+
     protected function GetItems() {
         return SettingOrderStatus::paginate(10);
     }

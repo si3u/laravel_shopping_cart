@@ -265,7 +265,7 @@ class ProductController extends Controller {
         $preview_image = ImageBase::CreatePreview(
             'assets/images/products/'.$date.'/'.$image,
             'assets/images/products/'.$date.'/',
-            $exp, 300, 300
+            $exp, 580, 435
         );
 
         $item_id = Product::CreateItem($request->vendor_code,
@@ -374,7 +374,7 @@ class ProductController extends Controller {
             $preview_image = ImageBase::CreatePreview(
                 'assets/images/products/'.$date.'/'.$image,
                 'assets/images/products/'.$date.'/',
-                $exp, 300, 300
+                $exp, 580, 435
             );
             ProductModularImage::CreateItemStatic($this->CreateModularImages($date,$request->item_id,$image,$exp));
 

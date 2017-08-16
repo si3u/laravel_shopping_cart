@@ -19,10 +19,10 @@ class PriceController extends Controller {
 
     public function Update(Request $request) {
         $validator = Validator::make(Input::all(), [
-           'natural_canvas' => 'required|regex:/^\d+(\.\d\d)?$/|between:0,99999999.99',
-           'artificial_canvas' => 'required|regex:/^\d+(\.\d\d)?$/|between:0,99999999.99',
-           'running_meter' => 'required|regex:/^\d+(\.\d\d)?$/|between:0,99999999.99',
-           'for_work' => 'required|regex:/^\d+(\.\d\d)?$/|between:0,99999999.99',
+           'natural_canvas' => 'required|between:0,99999999.99',
+           'artificial_canvas' => 'required|between:0,99999999.99',
+           'running_meter' => 'required|between:0,99999999.99',
+           'for_work' => 'required|between:0,99999999.99',
         ]);
 
         if ($validator->fails()) {

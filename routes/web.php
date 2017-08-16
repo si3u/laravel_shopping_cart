@@ -4,6 +4,12 @@ Route::group(['middleware' => ['web']], function() {
         echo "not auth";
     });
 
+    // // //orders
+    Route::post('/order/create', [
+        'uses' => 'OrderController@Create'
+    ]);
+
+
     Route::get('/admin/login', function () {
         return view('admin.login');
     })->name('admin/login');
@@ -11,10 +17,6 @@ Route::group(['middleware' => ['web']], function() {
     Route::post('/admin/sign_in', [
         'uses' => 'UserController@SignIn'
     ])->name('admin/sign_in');
-
-    Route::get('/admin/exit', [
-        'uses' => 'UserController@SignOut',
-    ])->middleware('auth');
 });
 
 Route::group(['middleware' => ['only-administration']], function() {
@@ -289,6 +291,16 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/recommend_products/delete', [
         'uses' => 'admin\RecommendProductController@Delete'
     ])->name('recommend_products/delete');
+
+    // // //order
+    Route::get('/admin/orders', [
+        'uses' => 'admin\OrderController@Page'
+    ])->name('admin/orders');
+
+    // // //exit
+    Route::get('/admin/exit', [
+        'uses' => 'UserController@SignOut',
+    ])->middleware('auth');
 });
 
 Auth::routes();

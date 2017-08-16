@@ -58,7 +58,7 @@ class Product extends Model
             )->paginate(10);
     }
 
-    protected function GetItem($id) {
+    public static function GetItem($id) {
         return Product::find($id);
     }
 

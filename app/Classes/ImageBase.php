@@ -3,6 +3,7 @@ namespace App\ImageBase;
 
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManagerStatic as Image;
+use Symfony\Component\Finder\SplFileInfo;
 
 class ImageBase {
     public static function CreatePreview($url_img, $url_save, $exp_img, $width, $height) {
@@ -38,10 +39,10 @@ class ImageBase {
         return $name;
     }
 
-    public static function ImageCrop($url, $url_save, $exp, $width, $height, $x, $y) {
+    public static function ImageCrop($url, $url_save, $width, $height, $x, $y) {
         $img = Image::make(public_path($url));
-        $name = uniqid('img_').'.'.$exp;
-
+        $info = new \SplFileInfo($url);
+        $name = uniqid('img_').'.'.$info->getExtension();
         $img->crop($width, $height, $x, $y);
         $img->save(public_path($url_save.$name));
 

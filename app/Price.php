@@ -24,7 +24,7 @@ class Price extends Model
    protected $primaryKey = 'id';
    public $timestamps = false;
 
-    protected function GetData() {
+    public static function GetData() {
         return Price::find(1);
     }
 
