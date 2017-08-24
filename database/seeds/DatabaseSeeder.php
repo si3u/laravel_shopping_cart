@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CreateLocalization');
         $this->call('CreateTextPages');
         $this->call('CreatePrices');
+        $this->call('CreateContacts');
     }
 }
 class CreateAdmin extends Seeder {

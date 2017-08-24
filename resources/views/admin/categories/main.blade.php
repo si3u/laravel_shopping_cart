@@ -32,7 +32,7 @@
                                 Кликните на элемент древа категорий, чтобы приступить к его изменению/удалению
                             </p>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" style="font-size: 16px;">
                             @include('admin.includes.alerts.success_alerts')
                             @include('admin.includes.alerts.error_alerts')
                             {!! $page->tree !!}

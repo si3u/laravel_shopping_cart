@@ -57,6 +57,9 @@ class DataProduct extends Model {
             ['product_id', '=', $product_id],
             ['lang_id', '=', $lang_id],
         ];
+        if (DataProduct::where($where)->count() == 0) {
+            DataProduct::insert(['product_id' => $product_id, 'lang_id' => $lang_id]);
+        }
         $data = [
             'name' => $name,
             'meta_title' => $meta_title,

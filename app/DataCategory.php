@@ -60,6 +60,9 @@ class DataCategory extends Model
             ['category_id', '=', $category_id],
             ['lang_id', '=', $lang_id],
         ];
+        if (DataCategory::where($where)->count() == 0) {
+            DataCategory::insert(['category_id' => $category_id, 'lang_id' => $lang_id]);
+        }
         $data = [
             'name' => $name,
             'description' => $description,

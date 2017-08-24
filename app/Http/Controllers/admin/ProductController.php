@@ -111,7 +111,7 @@ class ProductController extends Controller {
         $data = (object)[
             'title' => 'Управление товарами',
             'route_name' => $this->route_name,
-            'tree' => Category::GetTree(1, 'select_multiple'),
+            'tree' => Category::GetTree(null, 'select_multiple'),
             'products' => $products
         ];
         return view('admin.product.main', ['page' => $data]);
@@ -122,7 +122,7 @@ class ProductController extends Controller {
             'title' => 'Добавление товара',
             'active_lang' => $this->active_local,
             'route_name' => $this->route_name,
-            'tree' => Category::GetTree(1, 'select_multiple'),
+            'tree' => Category::GetTree(null, 'select_multiple', false),
             'size' => DefaultSize::GetItemsStatic(),
             'color' => FilterByColor::GetItemsStatic()
         ];
@@ -185,7 +185,7 @@ class ProductController extends Controller {
             $products[$i]->categories = ProductCategory::GetCategoriesItem($products[$i]->id);
             $i++;
         }
-        $tree = Category::GetTree(1, 'select_multiple');
+        $tree = Category::GetTree(null, 'select_multiple');
         if ($request->has('category')) {
             $tree = Category::GetTree($request->category, 'select_multiple');
         }

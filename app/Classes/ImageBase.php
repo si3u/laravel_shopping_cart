@@ -6,9 +6,12 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Symfony\Component\Finder\SplFileInfo;
 
 class ImageBase {
-    public static function CreatePreview($url_img, $url_save, $exp_img, $width, $height) {
+    public static function CreatePreview($url_img, $url_save, $exp_img, $width, $height, $bg_color = null) {
+        if ($bg_color == null) {
+            $bg_color = '#fff';
+        }
         $preview_name = uniqid('img_').'.'.$exp_img;
-        $white_bg = Image::canvas($width, $height, '#fff');
+        $white_bg = Image::canvas($width, $height, $bg_color);
         $pre_image = Image::make(public_path($url_img))
             ->resize($width, $height, function ($constraint) {
                 $constraint->aspectRatio();

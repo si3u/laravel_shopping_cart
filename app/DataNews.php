@@ -59,6 +59,9 @@ class DataNews extends Model
                                       $meta_keywords = null,
                                       $tags = null) {
         $where = ['news_id' => $news_id, 'lang_id' => $lang_id];
+        if (DataNews::where($where)->count() == 0) {
+            DataNews::insert(['news_id' => $news_id, 'lang_id' => $lang_id]);
+        }
         $update = [
             'topic' => $topic,
             'text' => $text,

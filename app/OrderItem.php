@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OrderItem whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\OrderItem whereWidth($value)
  * @mixin \Eloquent
+ * @property int $product_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\OrderItem whereProductId($value)
  */
 class OrderItem extends Model
 {

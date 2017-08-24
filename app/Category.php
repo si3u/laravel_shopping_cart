@@ -52,22 +52,21 @@ class Category extends Model
         return Category::find($id);
     }
 
-    public static function GetTree($select, $output) {
-        if ($select == 1) {
-            $select = null;
+    public static function GetTree($select, $output, $include_root = true) {
+        $query = Category::query();
+        $query->join('data_categories', 'categories.id', '=', 'data_categories.category_id');
+        if (!$include_root) {
+            $query->where('categories.id', '<>', 1);
         }
-        $data = DB::table('data_categories')
-            ->join('categories', 'data_categories.category_id', '=', 'categories.id')
-            ->where('data_categories.lang_id', 1)
+        $query->where('data_categories.lang_id', 1)
             ->orderBy('categories.sorting_order', 'asc')
             ->select(
                 'categories.id',
                 'categories.parent_id',
                 'data_categories.name',
                 'categories.slug'
-            )
-            ->get();
-
+            );
+        $data = $query->get();
         $prepare_data = array();
         $i = 0;
         while ($i < count($data)) {
@@ -115,8 +114,8 @@ class Category extends Model
         $data_insert = [
             'sorting_order' => $sorting_order
         ];
-        if ($parent_id == 0) {
-            $data_insert += ['parent_id' => 1];
+        if ($parent_id == 1) {
+            $data_insert += ['parent_id' => 0];
         } else {
             $data_insert += ['parent_id' => $parent_id];
         }
@@ -132,7 +131,12 @@ class Category extends Model
 
     protected function UpdateItem($id, $parent_id, $sorting_order) {
         $item = Category::find($id);
-        $item->parent_id = $parent_id;
+        if ($parent_id == 1) {
+            $item->parent_id = 0;
+        }
+        else {
+            $item->parent_id = $parent_id;
+        }
         $item->sorting_order = $sorting_order;
         if ($item->save()) {
             return true;

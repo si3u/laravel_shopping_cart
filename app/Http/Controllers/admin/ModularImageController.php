@@ -55,7 +55,7 @@ class ModularImageController extends Controller
         $preview_image = ImageBase::CreatePreview(
             'assets/images/modular/'.$image,
             'assets/images/modular/',
-            $exp, 300, 300
+            $exp, 360, 270, '#4169E0'
         );
         ModularImage::CreateItem($image, $preview_image);
         return response()->json([

@@ -5,49 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\DataCategory;
 use App\Http\Controllers\Controller;
+use App\Traits\Controller\Admin\CategoryControllerTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller {
-    private function PrepareDataLocal($id) {
-        $data_local = Category::GetDataLocalization($id);
-        $prepare_data_local = null;
-        foreach ($data_local as $item) {
-            if ($item->lang_id == 1) {
-                $prepare_data_local['ru'] = (object)[
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'meta_title' => $item->meta_title,
-                    'meta_description' => $item->meta_description,
-                    'meta_keywords' => $item->meta_keywords,
-                ];
-            }
-            elseif ($item->lang_id == 2) {
-                $prepare_data_local['ua'] = (object)[
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'meta_title' => $item->meta_title,
-                    'meta_description' => $item->meta_description,
-                    'meta_keywords' => $item->meta_keywords,
-                ];
-            }
-            else {
-                $prepare_data_local['en'] = (object)[
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'meta_title' => $item->meta_title,
-                    'meta_description' => $item->meta_description,
-                    'meta_keywords' => $item->meta_keywords,
-                ];
-            }
-        }
-        return (object)$prepare_data_local;
-    }
+
+    use CategoryControllerTrait;
 
     public function Page() {
         $data = (object)[
             'title' => 'Древо категорий',
-            'tree' => Category::GetTree(1, 'categories/main')
+            'tree' => Category::GetTree(null, 'categories/main', false)
         ];
         return view('admin.categories.main', ['page' => $data]);
     }
@@ -57,7 +26,7 @@ class CategoryController extends Controller {
             'title' => 'Добавить категорию',
             'route_name' => $this->route_name,
             'active_lang' => $this->active_local,
-            'parents' => Category::GetTree(1, 'add_or_update')
+            'parents' => Category::GetTree(null, 'add_or_update')
         ];
         return view('admin.categories.work_on', ['page' => (object)$data]);
     }

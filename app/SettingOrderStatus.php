@@ -29,7 +29,7 @@ class SettingOrderStatus extends Model
     }
 
     protected function GetItems() {
-        return SettingOrderStatus::paginate(10);
+        return SettingOrderStatus::orderBy('id', 'desc')->paginate(10);
     }
 
     protected function CreateItem($name) {

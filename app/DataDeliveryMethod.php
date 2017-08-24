@@ -33,7 +33,9 @@ class DataDeliveryMethod extends Model
             ['lang_id', $lang_id]
         ];
         $data = ['name' => $name];
-
+        if (DataDeliveryMethod::where($where)->count() == 0) {
+            DataDeliveryMethod::insert(['delivery_method_id' => $id, 'lang_id' => $lang_id]);
+        }
         DataDeliveryMethod::where($where)->update($data);
     }
 }

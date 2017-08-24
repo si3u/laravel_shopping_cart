@@ -33,7 +33,9 @@ class DataPaymentMethod extends Model
             ['lang_id', $lang_id]
         ];
         $data = ['name' => $name];
-
+        if (DataPaymentMethod::where($where)->count() == 0) {
+            DataPaymentMethod::insert(['payment_method_id' => $id, 'lang_id' => $lang_id]);
+        }
         DataPaymentMethod::where($where)->update($data);
     }
 }

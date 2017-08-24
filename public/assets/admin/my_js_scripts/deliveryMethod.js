@@ -1,14 +1,6 @@
 var deliveryMethod = {
     'add': function () {
         var form = $('#form');
-        var requiredFields = [];
-        for (var i in local) {
-            requiredFields.push('name_'+local[i].lang);
-            if ($('#form #'+requiredFields[i]).val().length < 1) {
-                callToast.error('Вы не заполнили обязательные поля', 'Они должны быть заполнены во всех формах активных локализаций');
-                return false;
-            }
-        }
         $.ajax({
             method: form.attr('method'),
             url: form.attr('action'),
@@ -33,14 +25,6 @@ var deliveryMethod = {
     },
     'update': function () {
         var form = $('#form');
-        var requiredFields = [];
-        for (var i in local) {
-            requiredFields.push('name_'+local[i].lang);
-            if ($('#form #'+requiredFields[i]).val().length < 1) {
-                callToast.error('Вы не заполнили обязательные поля', 'Они должны быть заполнены во всех формах активных локализаций');
-                return false;
-            }
-        }
         $.ajax({
             method: form.attr('method'),
             url: form.attr('action'),

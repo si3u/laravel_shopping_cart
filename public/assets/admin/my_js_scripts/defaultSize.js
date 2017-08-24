@@ -3,17 +3,22 @@ var defaultSize = {
         var form = $('#form_default_size_add');
         var width = $('input[name="width"]').val();
         var height = $('input[name="height"]').val();
-        if (!$.isNumeric(width) || !$.isNumeric(height)) {
+        /*if (!$.isNumeric(width) || !$.isNumeric(height)) {
             form[0].reset();
             callToast.error('Ошибка', 'Значение высоты и ширены должны быть целочисленными');
             return false;
-        }
+        }*/
         $.ajax({
             method: "POST",
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
-            success: function (result) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.responseJSON.errors);
+            }
+        });
+        /* success: function (result) {
+                console.log(result);
                 if (result.status == 'success') {
                     $('<tr class="success" id="item_'+result.item_id+'">\n' +
                     '     <td class="text-center">'+width+'</td>\n' +
@@ -32,8 +37,7 @@ var defaultSize = {
                     callToast.success('Размер', 'Успешно добавлен');
                     return true;
                 }
-            }
-        });
+            }*/
     },
     'delete': function (id) {
         $.ajax({

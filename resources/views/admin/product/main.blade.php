@@ -140,21 +140,23 @@
                                     @endif
                                     </tbody>
                                 </table>
-                                    <div class="btn-group">
-                                        @if($page->route_name == 'admin/recommend_products')
-                                            {!!csrf_field()!!}
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                    data-toggle="tooltip" data-placement="top" title="Выбранные удалить с Рекомендуемых товары">
-                                                <i class="dripicons-trash"></i>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-primary btn-sm"
-                                                    data-toggle="tooltip" data-placement="top" title="Выбранные в Рекомендуемые товары"
-                                                    onclick="checkProducts(1)">
-                                                <i class="mdi mdi-star"></i>
-                                            </button>
-                                        @endif
-                                    </div>
+                                    @if (count($page->products) > 0)
+                                        <div class="btn-group">
+                                            @if($page->route_name == 'admin/recommend_products')
+                                                {!!csrf_field()!!}
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="Выбранные удалить с Рекомендуемых товары">
+                                                    <i class="dripicons-trash"></i>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-primary btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="Выбранные в Рекомендуемые товары"
+                                                        onclick="checkProducts(1)">
+                                                    <i class="mdi mdi-star"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </form>
                                 <div class="text-center">
                                     {{$page->products->appends(request()->input())->render()}}

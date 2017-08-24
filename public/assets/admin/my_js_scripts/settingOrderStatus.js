@@ -21,9 +21,14 @@ var orderStatus = {
                     $('<tr id="item_'+result.item_id+'" class="success">\n' +
                         '     <td class="text-center">'+name+'</td>\n' +
                         '     <td class="text-center">\n' +
-                        '         <a href="/admin/setting/order_status/delete/'+result.item_id+'" class="btn btn-danger">' +
-                        '             <i class="dripicons-trash"></i>'+
-                        '         </a>\n' +
+                        '       <div class="btn-group m-b-10">'+
+                        '           <a href="/admin/setting/order_status/upon_receipt/'+result.item_id+'" class="btn btn-custom">'+
+                        '               <i class="dripicons-paperclip"></i>'+
+                        '            </a>'+
+                        '            <a href="/admin/setting/order_status/delete/'+result.item_id+'" class="btn btn-danger">' +
+                        '               <i class="dripicons-trash"></i>'+
+                        '            </a>' +
+                        '       </div>'+
                         '     </td>\n' +
                         '  </tr>').insertAfter('#row_add');
                     form[0].reset();
