@@ -10,6 +10,9 @@ class ActiveLocalizationController extends Controller {
     public function Get() {
         return response()->json(ActiveLocalization::GetAll());
     }
+    public function GetActive() {
+        return response()->json(ActiveLocalization::GetActive());
+    }
 
     public function Update(Request $request) {
         $status = [false, false, false];

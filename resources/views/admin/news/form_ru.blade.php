@@ -5,8 +5,8 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3"><span class="text-danger">*</span> Текст</label>
-    <div class="col-md-9">
+    <div class="col-md-12">
+        <h5 class="m-t-0 header-title">Текст новости:</h5>
         <div class="editor" id="text_ru">@isset($page->data->ru->topic) {!! $page->data->ru->text !!} @endisset</div>
     </div>
 </div>

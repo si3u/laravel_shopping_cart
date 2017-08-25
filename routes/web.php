@@ -116,7 +116,10 @@ Route::group(['middleware' => ['only-administration']], function() {
     // // //localization
     Route::post('/admin/active_localization/get', [
         'uses' => 'admin\ActiveLocalizationController@Get'
-    ])->name('active_localization/update');
+    ])->name('active_localization/get');
+    Route::post('/admin/active_localization/get_active', [
+        'uses' => 'admin\ActiveLocalizationController@GetActive'
+    ])->name('active_localization/get_active');
     Route::post('/admin/active_localization/update', [
         'uses' => 'admin\ActiveLocalizationController@Update'
     ])->name('active_localization/update');

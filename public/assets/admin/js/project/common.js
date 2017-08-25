@@ -124,7 +124,7 @@ function insertErrorArray(form, errorData, blockView, insertInto) {
 }
 var local=$.ajax({
     method: 'POST',
-    url: '/admin/active_localization/get',
+    url: '/admin/active_localization/get_active',
     dataType: 'JSON',
     async: false
 }).responseJSON;

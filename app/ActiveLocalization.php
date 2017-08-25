@@ -23,7 +23,7 @@ class ActiveLocalization extends Model
     protected $primaryKey = 'id';
 
     public static function GetActive() {
-        return ActiveLocalization::where('status', true)->get();
+        return ActiveLocalization::where('status', '=', true)->get();
     }
     protected function GetAll() {
         return ActiveLocalization::get();
