@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\ImageBase\ImageBase;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -53,7 +54,7 @@ class ModularImage extends Model
 
     protected function DeleteItem($id) {
         $item = ModularImage::find($id);
-        ImageBase\ImageBase::DeleteImages('/assets/images/modular/', [
+        ImageBase::DeleteImages('/assets/images/modular/', [
             $item->image, $item->preview_image
         ]);
         $item->delete();

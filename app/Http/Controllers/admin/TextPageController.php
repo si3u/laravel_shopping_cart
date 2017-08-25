@@ -4,32 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\TextPage;
+use App\Traits\Controllers\Admin\TextPageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TextPageController extends Controller {
-    private function PrepareData($id) {
-        $data = TextPage::GetItems($id);
-        $prepare_data = null;
-        foreach ($data as $datum) {
-            if ($datum->lang_id == 1) {
-                $prepare_data['ru'] = (object)[
-                    'value' => $datum->value
-                ];
-            }
-            elseif ($datum->lang_id == 2) {
-                $prepare_data['ua'] = (object)[
-                    'value' => $datum->value
-                ];
-            }
-            else {
-                $prepare_data['en'] = (object)[
-                    'value' => $datum->value
-                ];
-            }
-        }
-        return (object)$prepare_data;
-    }
+
+    use TextPageTrait;
 
     public function Get($id) {
         $validator = Validator::make(

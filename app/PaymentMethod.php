@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Models\PaymentMethodTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -19,12 +20,7 @@ class PaymentMethod extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
 
-    public function DataLocal() {
-        return $this->hasOne('App\DataPaymentMethod', 'payment_method_id');
-    }
-    public function DataLocals() {
-        return $this->hasMany('App\DataPaymentMethod', 'payment_method_id');
-    }
+    use PaymentMethodTrait;
 
     protected function GetItems() {
         $query = PaymentMethod::query();

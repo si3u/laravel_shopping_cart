@@ -6,37 +6,13 @@ use App\DataNews;
 use App\Http\Controllers\Controller;
 use App\ImageBase\ImageBase;
 use App\News;
+use App\Traits\Controllers\Admin\NewsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller {
-    private function PrepareDataLocal($id) {
-        $data_local = News::GetItemAndLocalData($id, $this->active_local_id);
-        $prepare_data_local = null;
-        foreach ($data_local as $item) {
-            $key = '';
-            switch ($item->lang_id) {
-                case 1:
-                    $key = 'ru';
-                    break;
-                case 2:
-                    $key = 'ua';
-                    break;
-                case 3:
-                    $key = 'en';
-                    break;
-            }
-            $prepare_data_local[$key] = (object)[
-                'topic' => $item->topic,
-                'text' => $item->text,
-                'meta_title' => $item->meta_title,
-                'meta_description' => $item->meta_description,
-                'meta_keywords' => $item->meta_keywords,
-                'tags' => $item->tags,
-            ];
-        }
-        return (object)$prepare_data_local;
-    }
+
+    use NewsTrait;
 
     public function Page() {
         $data = (object)[

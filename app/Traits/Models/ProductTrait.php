@@ -1,5 +1,5 @@
 <?php
-namespace App\Traits;
+namespace App\Traits\Models;
 trait ProductTrait {
     protected function Reviews() {
         return $this->hasMany('App\ProductReview', 'product_id');

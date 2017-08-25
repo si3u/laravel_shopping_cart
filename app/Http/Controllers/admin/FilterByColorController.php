@@ -6,6 +6,7 @@ use App\FilterByColor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class FilterByColorController extends Controller {
     public function Page() {
         $data = (object)[

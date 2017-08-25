@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\DataCategory;
 use App\Http\Controllers\Controller;
-use App\Traits\Controller\Admin\CategoryControllerTrait;
+use App\Traits\Controllers\Admin\CategoryControllerTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -103,8 +103,7 @@ class CategoryController extends Controller {
             $m_description = $request['meta_description_'.$this->active_local[$i]->lang];
             $m_keywords = $request['meta_keywords_'.$this->active_local[$i]->lang];
 
-            $id = DataCategory::CreateItem($last_id, $name, $lang_id, $description, $m_title, $m_description, $m_keywords);
-
+            DataCategory::CreateItem($last_id, $name, $lang_id, $description, $m_title, $m_description, $m_keywords);
             $i++;
         }
 

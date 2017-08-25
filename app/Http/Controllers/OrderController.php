@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\OrderItem;
 use App\Price;
-use App\Traits\OrderControllerTrait;
+use App\Traits\Controllers\OrderControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;

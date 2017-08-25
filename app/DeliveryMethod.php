@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Models\DeliveryMethodTrait;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,16 +20,7 @@ class DeliveryMethod extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
 
-    public function CommunicationWithPayment() {
-        return $this->hasMany('App\CommunicationDeliveryPayment', 'delivery_id');
-    }
-    public function DataLocal() {
-        return $this->hasOne('App\DataDeliveryMethod', 'delivery_method_id');
-    }
-    public function DataLocals() {
-        return $this->hasMany('App\DataDeliveryMethod', 'delivery_method_id');
-    }
-
+    use DeliveryMethodTrait;
 
     protected function CreateItem() {
         return DeliveryMethod::insertGetId([]);
