@@ -104,7 +104,7 @@ var contacts = {
             }
         });
     }
-}
+};
 function insertErrorArray(form, errorData, blockView, insertInto) {
     blockView.show();
     var keys = Object.keys(errorData);
@@ -187,4 +187,38 @@ var activeLocalization = {
             }
         });
     }
-}
+};
+
+$(document).ready(function () {
+    console.log('ready');
+    $('*.editor').css('height', '350');
+    var config = {
+        autosubmit: false,
+        images : {
+            editing : {
+                enabled : false
+            },
+            upload : {
+                handler: function (data, success, failure) {
+                    var formData = new FormData();
+                    formData.append('image', data.blob());
+                    $.ajax({
+                        method: "POST",
+                        url: '/admin/upload_file/',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            success(response);
+                        }
+                    });
+                }
+            }
+        },
+        codeview: {
+            enabled : false
+        },
+        basePath : '/assets/admin/js/textboxio/'
+    };
+    var editor = textboxio.replaceAll('.editor', config);
+});

@@ -95,5 +95,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/filterColor.js') !!}
+    {!! script_ts('/assets/admin/js/project/filterColor.js') !!}
 @endsection

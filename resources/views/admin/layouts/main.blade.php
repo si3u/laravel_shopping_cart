@@ -15,7 +15,6 @@
     {!! style_ts('/assets/admin/css/menu.css') !!}
     {!! style_ts('/assets/admin/css/responsive.css') !!}
     {!! style_ts('/assets/admin/plugins/responsive-table/css/rwd-table.min.css') !!}
-    {!! style_ts('/assets/admin/plugins/summernote/summernote.css') !!}
     {!! style_ts('/assets/admin/plugins/jquery-toastr/jquery.toast.min.css') !!}
     {!! style_ts('/assets/admin/plugins/jquery.filer/css/jquery.filer.css') !!}
     {!! style_ts('/assets/admin/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') !!}
@@ -43,37 +42,11 @@
 {!! script_ts('/assets/admin/pages/jquery.dashboard.js') !!}
 {!! script_ts('/assets/admin/js/jquery.core.js') !!}
 {!! script_ts('/assets/admin/js/jquery.app.js') !!}
-{!! script_ts('/assets/admin/plugins/summernote/summernote.min.js') !!}
 {!! script_ts('/assets/admin/plugins/responsive-table/js/rwd-table.min.js') !!}
 
-{!! script_ts('/assets/admin/my_js_scripts/common.js') !!}
+{!! script_ts('/assets/admin/js/textboxio/textboxio.js') !!}
 
-<script>
-    jQuery(document).ready(function(){
-        $('.summernote').summernote({
-            toolbar: [
-                // [groupName, [list of button]]
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-            ],
-            height: 150,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-            focus: false                 // set focus to editable area after initializing summernote
-        });
-        $('.characteristics').summernote({
-            toolbar: [
-                ['table', ['table']]
-            ],
-            height: 150,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-            focus: false                 // set focus to editable area after initializing summernote
-        });
-    });
-</script>
+{!! script_ts('/assets/admin/js/project/common.js') !!}
 
 @yield('my_scripts')
 

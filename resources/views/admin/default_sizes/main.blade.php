@@ -72,5 +72,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/defaultSize.js') !!}
+    {!! script_ts('/assets/admin/js/project/defaultSize.js') !!}
 @endsection

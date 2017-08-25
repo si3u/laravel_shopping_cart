@@ -16,8 +16,8 @@ class CreateDataNewsTable extends Migration
         Schema::create('data_news', function (Blueprint $table) {
             $table->integer('news_id');
             $table->integer('lang_id');
-            $table->char('topic');
-            $table->text('text');
+            $table->char('topic')->nullable();
+            $table->text('text')->nullable();
             $table->char('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();

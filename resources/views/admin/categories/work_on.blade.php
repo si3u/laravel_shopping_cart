@@ -119,5 +119,5 @@
     @endif
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/category.js') !!}
+    {!! script_ts('/assets/admin/js/project/category.js') !!}
 @endsection

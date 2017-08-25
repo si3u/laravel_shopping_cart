@@ -19,11 +19,11 @@ var category = {
         }
 
         var form = $('#form_add');
-
         var data = form.serializeArray();
         for (var i in local) {
             if (local[i].status == true) {
-                data.push({ name: 'description_'+local[i].lang, value: $('#description_'+local[i].lang).summernote('code')});
+                var description = textboxio.replace('#description_'+local[i].lang).content.get();
+                data.push({ name: 'description_'+local[i].lang, value: description});
             }
         }
         $.ajax({
@@ -75,7 +75,8 @@ var category = {
 
         for (var i in local) {
             if (local[i].status == true) {
-                data.push({ name: 'description_'+local[i].lang, value: $('#description_'+local[i].lang).summernote('code')});
+                var description = textboxio.replace('#description_'+local[i].lang).content.get();
+                data.push({ name: 'description_'+local[i].lang, value: description});
             }
         }
 

@@ -7,7 +7,7 @@
 <div class="form-group">
     <label class="control-label col-md-3"><span class="text-danger">*</span> Текст</label>
     <div class="col-md-9">
-        <div class="summernote" id="text_ua">@isset($page->data->ua->topic) {!! $page->data->ua->text !!} @endisset</div>
+        <div class="editor" id="text_ua">@isset($page->data->ua->topic) {!! $page->data->ua->text !!} @endisset</div>
     </div>
 </div>
 <div class="form-group">

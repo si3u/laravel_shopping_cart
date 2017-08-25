@@ -297,6 +297,11 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\OrderController@Page'
     ])->name('admin/orders');
 
+    // // //upload files
+    Route::post('/admin/upload_file/', [
+        'uses' => 'admin\UploadFileController@Upload'
+    ])->name('upload_file');
+
     // // //exit
     Route::get('/admin/exit', [
         'uses' => 'UserController@SignOut',

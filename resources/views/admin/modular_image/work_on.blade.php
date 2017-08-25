@@ -55,6 +55,6 @@
     </div>
 @endsection
 @section('my_scripts')
-    <script src="{{ asset('assets/admin/my_js_scripts/dropzone.js') }}"></script>
-    {!! script_ts('/assets/admin/my_js_scripts/modularImage.js') !!}
+    <script src="{{ asset('assets/admin/js/project/dropzone.js') }}"></script>
+    {!! script_ts('/assets/admin/js/project/modularImage.js') !!}
 @endsection

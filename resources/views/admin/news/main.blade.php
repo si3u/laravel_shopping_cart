@@ -94,5 +94,5 @@
     @include('admin.news.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/news.js') !!}
+    {!! script_ts('/assets/admin/js/project/news.js') !!}
 @endsection

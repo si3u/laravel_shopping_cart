@@ -304,5 +304,5 @@
 @endsection
 @section('my_scripts')
     <script src="{{ asset('assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
-    {!! script_ts('/assets/admin/my_js_scripts/product.js') !!}
+    {!! script_ts('/assets/admin/js/project/product.js') !!}
 @endsection

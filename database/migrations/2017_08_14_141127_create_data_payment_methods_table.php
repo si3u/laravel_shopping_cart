@@ -16,7 +16,7 @@ class CreateDataPaymentMethodsTable extends Migration
         Schema::create('data_payment_methods', function (Blueprint $table) {
             $table->integer('payment_method_id');
             $table->integer('lang_id');
-            $table->char('name');
+            $table->char('name')->nullable();
         });
     }
 

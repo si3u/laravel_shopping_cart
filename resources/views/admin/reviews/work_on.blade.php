@@ -139,5 +139,5 @@
 @endsection
 @section('my_scripts')
     <script src="{{asset('/assets/admin/plugins/raty-fa/jquery.raty-fa.js')}}"></script>
-    {!! script_ts('/assets/admin/my_js_scripts/review.js') !!}
+    {!! script_ts('/assets/admin/js/project/review.js') !!}
 @endsection

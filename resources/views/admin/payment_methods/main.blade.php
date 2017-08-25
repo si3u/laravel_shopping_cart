@@ -84,5 +84,5 @@
     @include('admin.payment_methods.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/paymentMethod.js') !!}
+    {!! script_ts('/assets/admin/js/project/paymentMethod.js') !!}
 @endsection

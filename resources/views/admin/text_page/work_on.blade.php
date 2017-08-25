@@ -20,7 +20,8 @@
                 </div>
                 <div class="row">
                     <div class="card-box">
-                        <form id="form_save_text_page" class="form-horizontal" action="{{route('admin/text_page/update')}}" onclick="return false;">
+                        <form id="form_save_text_page" class="form-horizontal" action="javascript:void(0);">
+                            {{csrf_field()}}
                             <input type="hidden" name="item_id" value="{{$page->id}}">
                             <ul class="nav nav-tabs tabs-bordered nav-justified">
                                 <?php $i = 0; ?>
@@ -80,5 +81,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/textPage.js') !!}
+    {!! script_ts('/assets/admin/js/project/textPage.js') !!}
 @endsection

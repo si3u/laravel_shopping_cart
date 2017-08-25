@@ -2,19 +2,13 @@ var textPage = {
     'save': function () {
         var data = {};
         for (var i in local) {
-            var dataRequired = $('#value_'+local[i].lang).summernote('code');
-            data['value_'+local[i].lang] = dataRequired;
-            if (dataRequired.length < 10) {
-                callToast.error('Заполните все поля', 'На активных вкладках данные должны быть больше 10 символов');
-                return false;
-            }
+            data['value_'+local[i].lang] = textboxio.replace('#value_'+local[i].lang).content.get();
         }
-
         var form = $('#form_save_text_page');
         data['id'] = $('input[name="item_id"]').val();
         $.ajax({
             method: "POST",
-            url: form.attr('action'),
+            url: '/admin/text_page/update',
             data: data,
             dataType: 'JSON',
             success: function (result) {
@@ -35,4 +29,4 @@ var textPage = {
             }
         });
     }
-}
+};

@@ -87,5 +87,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/settingOrderStatus.js') !!}
+    {!! script_ts('/assets/admin/js/project/settingOrderStatus.js') !!}
 @endsection

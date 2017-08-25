@@ -84,5 +84,5 @@
     @include('admin.delivery_method.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/deliveryMethod.js') !!}
+    {!! script_ts('/assets/admin/js/project/deliveryMethod.js') !!}
 @endsection

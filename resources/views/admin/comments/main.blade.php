@@ -108,5 +108,5 @@
     @include('admin.comments.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/comment.js') !!}
+    {!! script_ts('/assets/admin/js/project/comment.js') !!}
 @endsection

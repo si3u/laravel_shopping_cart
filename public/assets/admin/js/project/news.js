@@ -6,7 +6,7 @@ var news = {
         }
         for (var i in local) {
             var topic = $('#topic_' + local[i].lang).val();
-            var value = $('#text_' + local[i].lang).summernote('code');
+            var value = textboxio.replace('#text_'+local[i].lang).content.get();
             var mTitle = $('#meta_title_'+local[i].lang).val();
             var mDescription = $('#meta_description_'+local[i].lang).val();
             var mKeywords = $('#meta_keywords_'+local[i].lang).val();
@@ -74,7 +74,7 @@ var news = {
         }
         for (var i in local) {
             var topic = $('#topic_' + local[i].lang).val();
-            var value = $('#text_' + local[i].lang).summernote('code');
+            var value = textboxio.replace('#text_'+local[i].lang).content.get();
             var mTitle = $('#meta_title_'+local[i].lang).val();
             var mDescription = $('#meta_description_'+local[i].lang).val();
             var mKeywords = $('#meta_keywords_'+local[i].lang).val();
@@ -136,4 +136,4 @@ var news = {
         $('#href_delete').attr('href', '/admin/news/delete/'+id);
         $('#modal_news_delete').modal('show');
     }
-}
+};

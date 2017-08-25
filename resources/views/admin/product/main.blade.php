@@ -171,5 +171,5 @@
     @include('admin.product.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/my_js_scripts/product.js') !!}
+    {!! script_ts('/assets/admin/js/project/product.js') !!}
 @endsection

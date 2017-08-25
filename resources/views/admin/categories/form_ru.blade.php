@@ -28,7 +28,7 @@
 <div class="form-group">
     <label class="col-md-2 control-label">Описание</label>
     <div class="col-md-10">
-        <div id="description_ru" name="description_ru" class="summernote">@if($page->route_name == 'categories/update') @isset($page->data_local->ru->description){!!$page->data_local->ru->description!!}@endisset @endif</div>
+        <div id="description_ru" name="description_ru" class="editor">@if($page->route_name == 'categories/update') @isset($page->data_local->ru->description){!!$page->data_local->ru->description!!}@endisset @endif</div>
     </div>
 </div>
 

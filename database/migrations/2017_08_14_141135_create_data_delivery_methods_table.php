@@ -16,7 +16,7 @@ class CreateDataDeliveryMethodsTable extends Migration
         Schema::create('data_delivery_methods', function (Blueprint $table) {
             $table->integer('delivery_method_id');
             $table->integer('lang_id');
-            $table->char('name');
+            $table->char('name')->nullable();
         });
     }
 
