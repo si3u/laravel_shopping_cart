@@ -5,6 +5,8 @@ use App\CommunicationDeliveryPayment;
 use App\DataDeliveryMethod;
 use App\DeliveryMethod;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\DeliveryMethod\AddRequest;
+use App\Http\Requests\Admin\DeliveryMethod\UpdateRequest;
 use App\PaymentMethod;
 use App\Traits\Controllers\Admin\DeliveryMethodTrait;
 use Illuminate\Http\Request;
@@ -58,29 +60,7 @@ class DeliveryMethodController extends Controller {
         return view('admin.delivery_method.work_on', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
-        $validator = Validator::make($request->all(), [
-            'payment_methods' => 'required',
-            'payment_methods.*' => 'integer|exists:payment_methods,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Add(AddRequest $request) {
         $item_id = DeliveryMethod::CreateItem();
         $i = 0;
         while ($i<$this->count_active_local) {
@@ -95,30 +75,7 @@ class DeliveryMethodController extends Controller {
         ]);
     }
 
-    public function Update(Request $request) {
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
-        $validator = Validator::make($request->all(), [
-            'item_id' => 'required|integer|exists:delivery_methods,id',
-            'payment_methods' => 'required',
-            'payment_methods.*' => 'integer|exists:payment_methods,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Update(UpdateRequest $request) {
         $i = 0;
         while ($i<$this->count_active_local) {
             $name = $request['name_'.$this->active_local[$i]->lang];

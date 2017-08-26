@@ -7,16 +7,10 @@ var orderStatus = {
             url: '/admin/setting/order_status/add',
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+            },
             success: function (result) {
-                console.log(result);
-                if (result.error != undefined) {
-                    callToast.error('Ошибка', result.error);
-                    return false;
-                }
-                if (result.errors != undefined) {
-                    insertErrorArray(form, result.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (result.status == 'success') {
                     $('<tr id="item_'+result.item_id+'" class="success">\n' +
                         '     <td class="text-center">'+name+'</td>\n' +

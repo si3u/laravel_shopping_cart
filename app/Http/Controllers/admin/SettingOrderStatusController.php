@@ -2,9 +2,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SettingOrderStatus\AddRequest;
 use App\SettingOrderStatus;
-use Hamcrest\Core\Set;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class SettingOrderStatusController extends Controller {
@@ -16,19 +15,10 @@ class SettingOrderStatusController extends Controller {
         return view('admin.setting_order_status.main', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:setting_order_statuses,name'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-        $id = SettingOrderStatus::CreateItem($request->name);
+    public function Add(AddRequest $request) {
         return response()->json([
             'status' => 'success',
-            'item_id' => $id
+            'item_id' => SettingOrderStatus::CreateItem($request->name)
         ]);
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\DefaultSize;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddRequest extends FormRequest
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,15 @@ class AddRequest extends FormRequest
     public function rules()
     {
         return [
-            'width' => 'required|integer',
-            'height' => 'required|integer'
+            'id' => 'required|integer|exists:default_sizes,id',
         ];
     }
     public function messages ()
     {
         return [
-            'width.required'       => 'Укажите значение ширены',
-            'height.required' => 'Укажите значение вытоты',
-            'width.integer'       => 'Ширина должна быть целочисленным значением',
-            'height.integer' => 'Высота должна быть челочисленным значением',
+            'id.required' => 'Вы не передали ID элемента',
+            'id.integer' => 'Значение ID должно быть целочисленным',
+            'id.exists' => 'Даной записи не существует в БД',
         ];
     }
     public function response(array $errors) {

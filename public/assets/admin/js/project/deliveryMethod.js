@@ -6,6 +6,11 @@ var deliveryMethod = {
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.responseJSON);
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                return false;
+            },
             success: function (response) {
                 console.log(response);
                 if (response.errors != undefined) {
@@ -30,6 +35,11 @@ var deliveryMethod = {
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.responseJSON);
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                return false;
+            },
             success: function (response) {
                 console.log(response);
                 if (response.errors != undefined) {

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DefaultSize;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DefaultSize\AddRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Admin\DefaultSize\DeleteRequest;
 
 class DefaultSizeController extends Controller {
     public function Page() {
@@ -19,33 +18,13 @@ class DefaultSizeController extends Controller {
     }
 
     public function Add(AddRequest $request) {
-        /*$validator = Validator::make($request->all(), [
-            'width' => 'required|integer',
-            'height' => 'required|integer'
-        ]);*/
-
-        /*if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }*/
         return response()->json([
             'status' => 'success',
             'item_id' => DefaultSize::CreateItem($request->width, $request->height)
         ]);
     }
 
-    public function Delete(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:default_sizes,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
+    public function Delete(DeleteRequest $request) {
         DefaultSize::DeleteItem($request->id);
         return response()->json([
             'status' => 'success'

@@ -82,7 +82,7 @@ var news = {
 
             if (topic.length > 0 && value.length > 0) {
                 formData.append('topic_' + local[i].lang, topic);
-                formData.append('text_' + local[i].lang, $('#text_' + local[i].lang).summernote('code'));
+                formData.append('text_' + local[i].lang, value);
 
                 if (mTitle.length > 0) {
                     formData.append('meta_title_' + local[i].lang, mTitle);

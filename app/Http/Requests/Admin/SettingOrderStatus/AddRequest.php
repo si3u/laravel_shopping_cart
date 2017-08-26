@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\DefaultSize;
+namespace App\Http\Requests\Admin\SettingOrderStatus;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,17 +24,16 @@ class AddRequest extends FormRequest
     public function rules()
     {
         return [
-            'width' => 'required|integer',
-            'height' => 'required|integer'
+            'name' => 'required|string|max:255|unique:setting_order_statuses,name'
         ];
     }
     public function messages ()
     {
         return [
-            'width.required'       => 'Укажите значение ширены',
-            'height.required' => 'Укажите значение вытоты',
-            'width.integer'       => 'Ширина должна быть целочисленным значением',
-            'height.integer' => 'Высота должна быть челочисленным значением',
+            'name.required' => 'Наименование обязательно для заполнения',
+            'name.string' => 'Наименование должно быть текстом',
+            'name.max' => 'Наименование не должно превышать 255 символов',
+            'name.unique' => 'Это Наименование уже существует в БД',
         ];
     }
     public function response(array $errors) {
@@ -45,5 +44,6 @@ class AddRequest extends FormRequest
 
             return response()->json($response, 422);
         }
+        return false;
     }
 }

@@ -25,6 +25,7 @@
                               nama="form_default_size_add"
                               action="{{route('admin/default_size/add')}}"
                               class="form-horizontal" onclick="return false;">
+                            @include('admin.includes.alerts.error_ajax')
                             <table class="table table-striped m-0">
                                 <thead>
                                 <tr>
