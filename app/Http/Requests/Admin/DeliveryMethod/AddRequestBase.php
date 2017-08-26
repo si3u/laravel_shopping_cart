@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin\DeliveryMethod;
 
-use App\Base\BaseFormRequest;
+use App\Base\FormRequestBase;
 
-class AddRequest extends BaseFormRequest
+class AddRequest extends FormRequestBase
 {
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
     {

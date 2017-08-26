@@ -4,7 +4,7 @@ namespace App\Base;
 use App\ActiveLocalization;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BaseFormRequest extends FormRequest {
+class FormRequestBase extends FormRequest {
     protected $rules_local;
     protected $messages_local;
     protected $active_local;

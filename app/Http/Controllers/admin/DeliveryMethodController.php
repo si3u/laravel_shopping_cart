@@ -9,7 +9,6 @@ use App\Http\Requests\Admin\DeliveryMethod\AddRequest;
 use App\Http\Requests\Admin\DeliveryMethod\UpdateRequest;
 use App\PaymentMethod;
 use App\Traits\Controllers\Admin\DeliveryMethodTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class DeliveryMethodController extends Controller {
