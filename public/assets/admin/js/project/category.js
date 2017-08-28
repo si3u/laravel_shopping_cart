@@ -31,12 +31,12 @@ var category = {
             url: form.attr('action'),
             data: data,
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при добавлении категории');
+                return false;
+            },
             success: function (result) {
-                if (result.errors != undefined) {
-                    insertErrorArray(form, result.errors, $('#group_errors'), $('#errors_list'));
-                    callToast.error('Ошибка', 'при добавлении категории');
-                    return false;
-                }
                 if (result.status == 'success') {
                     $('input[name=item_id]').val(result.item_id);
                     form.attr('action', result.url_update)
@@ -85,6 +85,11 @@ var category = {
             url: form.attr('action'),
             data: data,
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при обновлении данных категории');
+                return false;
+            },
             success: function (result) {
                 if (result.error != undefined) {
                     callToast.success('Ошибка', result);
@@ -96,7 +101,7 @@ var category = {
             }
         });
     }
-}
+};
 $(document).ready(function () {
     $('* #parent_id').change(function () {
         $("* #parent_id").val($(this).val());

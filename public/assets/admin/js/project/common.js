@@ -92,11 +92,12 @@ var contacts = {
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors_contact'), $('#errors_list_contact'));
+                callToast.error('Ошибка', 'при обновлении контактных данных');
+                return false;
+            },
             success: function (response) {
-                if (response.errors != undefined) {
-                    insertErrorArray(form, response.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (response.status == 'success') {
                     callToast.success('Контактная информация', 'успешно изменена');
                     return true;

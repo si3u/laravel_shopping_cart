@@ -12,11 +12,12 @@ $(document).ready(function () {
             url: '/admin/comment/update',
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при обновлении комментария');
+                return false;
+            },
             success: function (response) {
-                if (response.errors != undefined) {
-                    insertErrorArray(form, response.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (response.status == 'success') {
                     callToast.success('Данные', 'успешно изменены');
                     return true;

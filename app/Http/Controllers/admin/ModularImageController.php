@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ModularImage\AddRequest;
 use App\ImageBase\ImageBase;
 use App\ModularImage;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ModularImageController extends Controller
@@ -40,15 +40,7 @@ class ModularImageController extends Controller
         return view('admin.modular_image.update', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required|mimes:jpg,jpeg,png|max:2048'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Add(AddRequest $request) {
         $exp = $request->file('file')->getClientOriginalExtension();
         $image = uniqid('img_').'.'.$exp;
         $request->file('file')->move(public_path('assets/images/modular/'), $image);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductComment\SearchRequest;
+use App\Http\Requests\Admin\ProductComment\UpdateRequest;
 use App\ProductComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,19 +39,7 @@ class ProductCommentController extends Controller {
         return view('admin.comments.work_on', ['page' => $data]);
     }
 
-    public function Update(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:product_comments,id',
-            'status' => 'required|boolean',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'message' => 'required|string'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Update(UpdateRequest $request) {
         if (ProductComment::UpdateItem($request->id,
                                        $request->status,
                                        $request->name,
@@ -76,19 +66,7 @@ class ProductCommentController extends Controller {
         return redirect()->route('admin/comments')->with('success', 'Комментарий успешно удален');
     }
 
-    public function Search(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'email' => 'nullable|email',
-            'vendor_code' => 'nullable|integer',
-            'text_search' => 'nullable|string|max:255',
-            'check_status' => 'nullable|integer',
-            'read_status' => 'nullable|',
-            'date_start' => 'nullable|date',
-            'date_end' => 'nullable|date',
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
+    public function Search(SearchRequest $request) {
         $data = (object)[
             'title' => 'Поиск по комментариям',
             'route_name' => $this->route_name,

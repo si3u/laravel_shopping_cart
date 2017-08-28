@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RecommendProduct\CommonRequest;
 use App\ProductCategory;
 use App\RecommendProduct;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class RecommendProductController extends Controller {
     public function Page() {
@@ -25,33 +23,22 @@ class RecommendProductController extends Controller {
         ];
         return view('admin.product.main', ['page' => $data]);
     }
-
-    public function Add(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'check_products.*' => 'nullable|integer'
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+    private function Check() {
+        if (!isset($request->check_products)) {
+            return redirect()->back();
         }
+    }
+    public function Add(CommonRequest $request) {
+        $this->Check();
         RecommendProduct::CreateItems($request->check_products);
         return response()->json([
             'status' => 'success'
         ]);
     }
 
-    public function Delete(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'check_products.*' => 'integer|exists:recommend_products,product_id'
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
-        if (!isset($request->check_products)) {
-            return redirect()->back();
-        }
-        else {
-            RecommendProduct::DeleteItems($request->check_products);
-            return redirect()->back()->with('success', 'выбранные товары были удалены с рекомендуемых товаров');
-        }
+    public function Delete(CommonRequest $request) {
+        $this->Check();
+        RecommendProduct::DeleteItems($request->check_products);
+        return redirect()->back()->with('success', 'выбранные товары были удалены с рекомендуемых товаров');
     }
 }

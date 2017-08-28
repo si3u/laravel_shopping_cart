@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\DataCategory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Category\AddRequest;
+use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Traits\Controllers\Admin\CategoryControllerTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller {
@@ -61,35 +62,7 @@ class CategoryController extends Controller {
         return view('admin.categories.work_on', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        $validator = Validator::make(
-            ['parent_id' => $request->parent_id],
-            ['parent_id' => 'required|integer|exists:categories,id']
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
-        $i = 0;
-        while ($i<count($this->active_local)) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-                'sorting_order_'.$this->active_local[$i]->lang => 'required|integer',
-                'description_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_title_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_description_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_keywords_'.$this->active_local[$i]->lang => 'string|nullable',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
+    public function Add(AddRequest $request) {
         $parent_id = $request['parent_id'];
         $sorting_order = $request['sorting_order_'.$this->active_local[0]->lang];
         $last_id = Category::CreateItem($parent_id, $sorting_order);
@@ -114,50 +87,14 @@ class CategoryController extends Controller {
         ]);
     }
 
-    public function Update(Request $request) {
-        $validator = Validator::make(
-            [
-                'parent_id' => $request->parent_id,
-                'item_id' => $request->item_id
-            ],
-            [
-                'parent_id' => 'required|integer|exists:categories,id',
-                'item_id' => 'required|integer|exists:categories,id'
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
+    public function Update(UpdateRequest $request) {
         if ($request->parent_id == $request->item_id) {
             return response()->json([
                 'error' => 'Категория не может быть сама себе родительской категорией'
             ]);
         }
 
-        $i = 0;
-        while ($i<count($this->active_local)) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-                'sorting_order_'.$this->active_local[$i]->lang => 'required|integer',
-                'description_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_title_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_description_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_keywords_'.$this->active_local[$i]->lang => 'string|nullable',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
-        if (Category::UpdateItem($request->item_id,
-                                 $request->parent_id,
-                                 $request['sorting_order_'.$this->active_local[0]->lang])) {
+        if (Category::UpdateItem($request->item_id, $request->parent_id, $request['sorting_order_'.$this->active_local[0]->lang])) {
             $i = 0;
             while ($i < count($this->active_local)) {
                 $name = $request['name_'.$this->active_local[$i]->lang];

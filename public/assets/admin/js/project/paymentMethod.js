@@ -6,12 +6,12 @@ var paymentMethod = {
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при добавлении Метода оплаты');
+                return false;
+            },
             success: function (response) {
-                console.log(response);
-                if (response.errors != undefined) {
-                    insertErrorArray(form, response.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (response.status == 'success') {
                     form.attr('action', '/admin/payment_method/update');
                     $('input[name="item_id"]').val(response.item_id);
@@ -23,20 +23,18 @@ var paymentMethod = {
         });
     },
     'update': function () {
-        var itemId  = $('input[name="item_id"]').val();
         var form = $('#form');
-        console.log(form.serialize());
         $.ajax({
             method: form.attr('method'),
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при обновлении данных Метода оплаты');
+                return false;
+            },
             success: function (response) {
-                console.log(response);
-                if (response.errors != undefined) {
-                    insertErrorArray(form, response.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (response.status == 'success') {
                     callToast.success('Метод оплаты', 'успешно изменен');
                     return true;

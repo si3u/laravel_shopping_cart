@@ -6,16 +6,12 @@ var filterColor = {
             url: '/admin/filter_color/add',
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors_add_color'), $('#errors_list_add_color'));
+                callToast.error('Ошибка', 'при добавлении фильтра');
+                return false;
+            },
             success: function (result) {
-                if (result.errors != undefined) {
-                    insertErrorArray(
-                        form,
-                        result.errors,
-                        $('#group_errors_add_color'),
-                        $('#errors_list_add_color')
-                    );
-                    return false;
-                }
                 if (result.status == 'success') {
                     var hex = $('#hex').val();
                     var name = $('#name').val();
@@ -34,22 +30,28 @@ var filterColor = {
                         '</tr>'
                     );
                     form[0].reset();
-                    callToast.success('Цвет', 'успешно добавлен');
+                    callToast.success('Фильтр', 'успешно добавлен');
                     return true;
                 }
             }
         });
     },
     'delete': function (id) {
+        var form = $('#form_add_color');
         $.ajax({
             method: "POST",
             url: '/admin/filter_color/delete',
             data: {'id': id},
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при удалении фильтра');
+                return false;
+            },
             success: function (result) {
                 if (result.status == 'success') {
                     $('#item_'+id).remove();
-                    callToast.success('Цвет', 'успешно удален');
+                    callToast.success('Фильтр', 'успешно удален');
                     return true;
                 }
             }

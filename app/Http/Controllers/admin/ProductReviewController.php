@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductReview\SearchRequest;
+use App\Http\Requests\Admin\ProductReview\UpdateRequest;
 use App\ProductReview;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductReviewController extends Controller {
@@ -38,26 +39,9 @@ class ProductReviewController extends Controller {
         return view('admin.reviews.work_on', ['page' => $data]);
     }
 
-    public function Update(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:product_reviews,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'message' => 'required|string',
-            'score' => 'required|integer|between:1,5',
-            'status' => 'required|boolean',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-        if (ProductReview::UpdateItem($request->id,
-                                      $request->status,
-                                      $request->score,
-                                      $request->name,
-                                      $request->email,
-                                      $request->message)) {
+    public function Update(UpdateRequest $request) {
+        if (ProductReview::UpdateItem($request->id, $request->status, $request->score, $request->name,
+                                      $request->email, $request->message)) {
             return response()->json([
                 'status' => 'success'
             ]);
@@ -80,20 +64,7 @@ class ProductReviewController extends Controller {
         return redirect()->route('products/reviews')->with('success', 'Отзыв успешно удален');
     }
 
-    public function Search(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'vendor_code' => 'nullable|integer',
-            'email' => 'nullable|email',
-            'text_search' => 'nullable|string',
-            'check_status' => 'nullable|integer',
-            'read_status' => 'nullable|integer',
-            'score' => 'nullable|integer',
-            'date_start' => 'nullable|date',
-            'date_end' => 'nullable|date'
-        ]);
-        if ($validator->fails()) {
-            redirect()->back()->withErrors($validator);
-        }
+    public function Search(SearchRequest $request) {
         $data = (object)[
             'title' => 'Поиск по отзывам',
             'route_name' => $this->route_name,

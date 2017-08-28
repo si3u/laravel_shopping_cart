@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TextPage\UpdateRequest;
 use App\TextPage;
 use App\Traits\Controllers\Admin\TextPageTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TextPageController extends Controller {
@@ -43,30 +43,7 @@ class TextPageController extends Controller {
         return view('admin.text_page.work_on', ['page' => $data]);
     }
 
-    public function Update(Request $request) {
-        $validator = Validator::make(
-            ['id' => $request->id],
-            ['id' => 'required|integer|exists:text_pages,id']
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
-        $i = 0;
-        while ($i<count($this->active_local)) {
-            $validator = Validator::make($request->all(), [
-                'value_'.$this->active_local[$i]->lang => 'required|string|min:10'
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
+    public function Update(UpdateRequest $request) {
         $i = 0;
         while ($i<count($this->active_local)) {
             $value = $request['value_'.$this->active_local[$i]->lang];

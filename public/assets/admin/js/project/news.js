@@ -40,17 +40,17 @@ var news = {
             data: formData,
             contentType: false,
             processData: false,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(
+                    $('#form_work_on'),
+                    XMLHttpRequest.responseJSON.errors,
+                    $('#group_errors'),
+                    $('#errors_list')
+                );
+                callToast.error('Ошибка', 'при добавлении новости');
+                return false;
+            },
             success: function (result) {
-                console.log(result);
-                if (result.errors != undefined) {
-                    insertErrorArray(
-                        $('#form_work_on'),
-                        result.errors,
-                        $('#group_errors'),
-                        $('#errors_list')
-                    );
-                    return false;
-                }
                 if (result.status == 'success') {
                     $('#image').val(null);
                     $('input[name="item_id"]').val(result.item_id);
@@ -109,18 +109,14 @@ var news = {
             data: formData,
             contentType: false,
             processData: false,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray($('#form_work_on'), XMLHttpRequest.responseJSON.errors, $('#group_errors_contact'), $('#errors_list_contact'));
+                callToast.error('Ошибка', 'при обновлении данных новости');
+                return false;
+            },
             success: function (result) {
                 console.log(result);
                 $('#image').val(null);
-                if (result.errors != undefined) {
-                    insertErrorArray(
-                        $('#form_work_on'),
-                        result.errors,
-                        $('#group_errors'),
-                        $('#errors_list')
-                    );
-                    return false;
-                }
                 if (result.status == 'success') {
                     if (result.image != undefined) {
                         $('#group_now_image').show();

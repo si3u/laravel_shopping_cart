@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\FilterByColor;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Admin\FilterByColor\AddRequest;
+use App\Http\Requests\Admin\FilterByColor\DeleteRequest;
 
 class FilterByColorController extends Controller {
     public function Page() {
@@ -17,32 +17,14 @@ class FilterByColorController extends Controller {
         return view('admin.filters.colors', ['page' => $data]);
     }
 
-    public function Add(Request $request)  {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:filter_by_colors,name',
-            'hex' => 'required|string|max:255|unique:filter_by_colors,hex',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
+    public function Add(AddRequest $request)  {
         return response()->json([
             'status' => 'success',
             'item_id' => FilterByColor::CreateItem($request->name, $request->hex)
         ]);
     }
 
-    public function Delete(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:filter_by_colors,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Delete(DeleteRequest $request) {
         if (FilterByColor::DeleteItem($request->id)) {
             return response()->json([
                 'status' => 'success',

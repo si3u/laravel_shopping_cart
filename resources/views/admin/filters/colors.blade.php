@@ -19,6 +19,7 @@
                     </div>
                 </div>
                 <div class="row">
+                    @include('admin.includes.alerts.error_ajax')
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card-box">

@@ -6,7 +6,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-12">
-        <h5 class="m-t-0 header-title">Текст новости:</h5>
+        <h5 class="m-t-0 header-title text-center"><span class="text-danger">*</span> Текст новости</h5>
         <div class="editor" id="text_ru">@isset($page->data->ru->topic) {!! $page->data->ru->text !!} @endisset</div>
     </div>
 </div>

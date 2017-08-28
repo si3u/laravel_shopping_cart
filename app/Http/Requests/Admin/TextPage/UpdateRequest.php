@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\DeliveryMethod;
+namespace App\Http\Requests\Admin\TextPage;
 
 use App\Base\FormRequestBase;
 
-class AddRequest extends FormRequestBase
+class UpdateRequest extends FormRequestBase
 {
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
     {
@@ -12,20 +12,14 @@ class AddRequest extends FormRequestBase
 
         $i = 0;
         while ($i<$this->count_active_local) {
-            $this->rules_local['name_'.$this->active_local[$i]->lang] = 'required|string';
+            $this->rules_local['value_'.$this->active_local[$i]->lang] = 'required|string';
 
-            $this->messages_local['name_'.$this->active_local[$i]->lang.'.required'] = 'Наименование ('.$this->active_local[$i]->lang.') должно быть заполнено';
-            $this->messages_local['name_'.$this->active_local[$i]->lang.'.string'] = 'Наименование ('.$this->active_local[$i]->lang.') должно быть текстовым значением';
+            $this->messages_local['value_'.$this->active_local[$i]->lang.'.required'] = 'Вы не передали Текст страницы ('.$this->active_local[$i]->lang.')';
+            $this->messages_local['value_'.$this->active_local[$i]->lang.'.string'] = 'Текст страницы ('.$this->active_local[$i]->lang.') должно быть текстовым значением';
 
             $i++;
         }
-
-        $this->rules_local['payment_methods'] = 'required';
-        $this->rules_local['payment_methods.*'] = 'integer|exists:payment_methods,id';
-
-        $this->messages_local['payment_methods.required'] = 'Вы не выбрали Метода оплаты';
-        $this->messages_local['payment_methods.*.integer'] = 'Значение Методов оплаты должно быть целочисленным';
-        $this->messages_local['payment_methods.*.exists'] = 'Один с Методов оплаты не существует';
+        $this->rules_local['id'] = 'required|integer|exists:text_pages,id';
     }
 
     /**

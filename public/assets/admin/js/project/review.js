@@ -23,11 +23,12 @@ $(document).ready(function () {
             url: '/admin/review/update',
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при обновлении данных Отзыва');
+                return false;
+            },
             success: function (response) {
-                if (response.errors != null) {
-                    insertErrorArray(form, response.errors, $('#group_errors'), $('#errors_list'));
-                    return false;
-                }
                 if (response.status == 'success') {
                     callToast.success('Данные', 'успешно обновлены');
                     return true;

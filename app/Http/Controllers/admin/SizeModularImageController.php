@@ -2,23 +2,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SizeModularImage\AddRequest;
+use App\Http\Requests\Admin\SizeModularImage\DeleteRequest;
 use App\SizeModularImage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class SizeModularImageController extends Controller {
-    public function Add(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'modular_id' => 'required|integer|exists:modular_images,id',
-            'number' => 'required|integer',
-            'width' => 'required|integer',
-            'height' => 'required|integer',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Add(AddRequest $request) {
         $count_number = SizeModularImage::CountNumber($request->modular_id, $request->number);
         if ($count_number > 0) {
             return response()->json([
@@ -32,15 +21,7 @@ class SizeModularImageController extends Controller {
         ]);
     }
 
-    public function Delete(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:size_modular_images,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Delete(DeleteRequest $request) {
         SizeModularImage::DeleteItem($request->id);
         return response()->json([
             'status' => 'success'

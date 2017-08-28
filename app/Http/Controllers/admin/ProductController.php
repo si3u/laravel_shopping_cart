@@ -7,6 +7,9 @@ use App\DataProduct;
 use App\DefaultSize;
 use App\FilterByColor;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Product\AddRequest;
+use App\Http\Requests\Admin\Product\SearchRequest;
+use App\Http\Requests\Admin\Product\UpdateRequired;
 use App\ImageBase\ImageBase;
 use App\Product;
 use App\ProductCategory;
@@ -81,18 +84,7 @@ class ProductController extends Controller {
         return view('admin.product.work_on', ['page' => $data]);
     }
 
-    public function Search(Request $request) {
-        $validate = Validator::make($request->all(), [
-            'vendor_code' => 'nullable|integer',
-            'status' => 'nullable|integer',
-            'name' => 'nullable|string',
-            'date_start' => 'nullable|date',
-            'date_end' => 'nullable|date',
-            'category.*' => 'exists:categories,id'
-        ]);
-        if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate);
-        }
+    public function Search(SearchRequest $request) {
         if ($request->has('category')) {
             if(($key = array_search(1, $request->category)) !== false) {
                 $collect = new Collection($request->category);
@@ -137,48 +129,7 @@ class ProductController extends Controller {
         return view('admin.product.main', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                    'name_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                    'meta_title_'.$this->active_local[$i]->lang => 'string|max:255|nullable',
-                    'meta_description_'.$this->active_local[$i]->lang => 'string|nullable',
-                    'meta_keywords_'.$this->active_local[$i]->lang => 'string|nullable',
-                    'tags_'.$this->active_local[$i]->lang => 'string|nullable'
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
-        $validator = Validator::make($request->all(), [
-            'vendor_code' => 'required|integer|unique:products,vendor_code',
-            'image' => 'required|mimes:jpg,jpeg,png|max:2048',
-            'min_width' => 'required|integer',
-            'max_width' => 'required|integer',
-            'min_height' => 'required|integer',
-            'max_height' => 'required|integer',
-            'category' => 'required',
-            'category.*' => 'required|integer|exists:categories,id',
-            'size' => 'required',
-            'size.*' => 'required|integer|exists:default_sizes,id',
-            'color.*' => 'nullable|integer|exists:filter_by_colors,id',
-            'status' => 'required|boolean',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-        if (in_array(1, $request->category)) {
-            return response()->json([
-                'error' => 'Уберите с списка категорий "Корневая категория"'
-            ]);
-        }
+    public function Add(AddRequest $request) {
         $date = Carbon::now()->toDateString();
         $path = public_path('assets/images/products/' . $date);
         File::makeDirectory($path, $mode = 0777, true, true);
@@ -227,44 +178,7 @@ class ProductController extends Controller {
         ]);
     }
 
-    public function Update(Request $request) {
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                'meta_title_'.$this->active_local[$i]->lang => 'string|max:255|nullable',
-                'meta_description_'.$this->active_local[$i]->lang => 'string|nullable',
-                'meta_keywords_'.$this->active_local[$i]->lang => 'string|nullable',
-                'tags_'.$this->active_local[$i]->lang => 'string|nullable'
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
-        $validator = Validator::make($request->all(), [
-            'item_id' => 'required|integer|exists:products,id',
-            'vendor_code' => 'required|integer',
-            'image' => 'mimes:jpg,jpeg,png|max:2048',
-            'min_width' => 'required|integer',
-            'max_width' => 'required|integer',
-            'min_height' => 'required|integer',
-            'max_height' => 'required|integer',
-            'category' => 'required',
-            'category.*' => 'required|integer|exists:categories,id',
-            'size' => 'required',
-            'size.*' => 'required|integer|exists:default_sizes,id',
-            'color.*' => 'nullable|integer|exists:filter_by_colors,id',
-            'status' => 'required|boolean',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
+    public function Update(UpdateRequired $request) {
         if (in_array(1, $request->category)) {
             return response()->json([
                 'error' => 'Уберите с списка категорий "Корневая категория"'

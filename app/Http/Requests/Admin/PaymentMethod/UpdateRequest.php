@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\DeliveryMethod;
+namespace App\Http\Requests\Admin\PaymentMethod;
 
 use App\Base\FormRequestBase;
 
@@ -12,25 +12,19 @@ class UpdateRequest extends FormRequestBase
 
         $i = 0;
         while ($i<$this->count_active_local) {
-            $this->rules_local['name_'.$this->active_local[$i]->lang] = 'required|string';
+            $this->rules_local['name_'.$this->active_local[$i]->lang] = 'required|string|max:255';
 
-            $this->messages_local['name_'.$this->active_local[$i]->lang.'.required'] = 'Наименование ('.$this->active_local[$i]->lang.') должно быть заполнено';
+            $this->messages_local['name_'.$this->active_local[$i]->lang.'.required'] = 'Вы не указали Наименование ('.$this->active_local[$i]->lang.')';
             $this->messages_local['name_'.$this->active_local[$i]->lang.'.string'] = 'Наименование ('.$this->active_local[$i]->lang.') должно быть текстовым значением';
+            $this->messages_local['name_'.$this->active_local[$i]->lang.'.max'] = 'Наименование ('.$this->active_local[$i]->lang.') не должно превышать 255 символов';
 
             $i++;
         }
 
-        $this->rules_local['item_id'] = 'required|integer|exists:delivery_methods,id';
-        $this->rules_local['payment_methods'] = 'required';
-        $this->rules_local['payment_methods.*'] = 'integer|exists:payment_methods,id';
-
-        $this->messages_local['item_id.required'] = 'Не указан ID Метода доставки';
-        $this->messages_local['item_id.integer'] = 'ID Метода доставки должен быть целочисленным';
-        $this->messages_local['item_id.exists'] = 'Метод доставки не существует';
-
-        $this->messages_local['payment_methods.required'] = 'Вы не выбрали Метода оплаты';
-        $this->messages_local['payment_methods.*.integer'] = 'Значение Методов оплаты должно быть целочисленным';
-        $this->messages_local['payment_methods.*.exists'] = 'Один с Методов оплаты не существует';
+        $this->rules_local['item_id'] = 'required|integer|exists:payment_methods,id';
+        $this->messages_local['item_id.required'] = 'Вы не указали ID Метода оплаты';
+        $this->messages_local['item_id.integer'] = 'ID Метода оплаты должен быть целочисленным значением';
+        $this->messages_local['item_id.exists'] = 'Этот Метод оплаты не существует в БД';
     }
 
     /**

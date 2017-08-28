@@ -3,9 +3,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataPaymentMethod;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PaymentMethod\AddRequest;
+use App\Http\Requests\Admin\PaymentMethod\UpdateRequest;
 use App\PaymentMethod;
 use App\Traits\Controllers\Admin\PaymentMethodTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentMethodController extends Controller {
@@ -47,19 +48,7 @@ class PaymentMethodController extends Controller {
         ];
         return view('admin.payment_methods.work_on', ['page' => $data]);
     }
-    public function Add(Request $request) {
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
+    public function Add(AddRequest $request) {
         $item_id = PaymentMethod::CreateItem();
         $i = 0;
         while ($i < $this->count_active_local) {
@@ -72,27 +61,7 @@ class PaymentMethodController extends Controller {
             'item_id' => $item_id
         ]);
     }
-    public function Update(Request $request) {
-        $validator = Validator::make(
-            ['item_id' => $request->item_id],
-            ['item_id' => 'required|integer|exists:payment_methods,id']
-        );
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'name_'.$this->active_local[$i]->lang => 'required|string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
+    public function Update(UpdateRequest $request) {
         $i = 0;
         while ($i<$this->count_active_local) {
             $name = $request['name_'.$this->active_local[$i]->lang];

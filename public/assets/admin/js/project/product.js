@@ -40,19 +40,23 @@ $(document).ready(function () {
                 data: formData,
                 contentType: false,
                 processData: false,
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    insertErrorArray(
+                        $('#form_work_on'),
+                        XMLHttpRequest.responseJSON.errors,
+                        $('#group_errors'),
+                        $('#errors_list')
+                    );
+                    callToast.error('Ошибка', 'при добавлении товара');
+                    spinner.hide();
+                    btnSubmit.removeClass('disabled');
+                    return false;
+                },
                 success: function(response) {
                     spinner.hide();
                     btnSubmit.removeClass('disabled');
                     if (response.error !== undefined) {
                         callToast.error('Ошибка', response.error);
-                        return false;
-                    }
-                    if (response.errors !== undefined) {
-                        insertErrorArray(
-                            $('#form_work_on'),
-                            response.errors,
-                            $('#group_errors'), $('#errors_list')
-                        );
                         return false;
                     }
                     if (response.status == 'success') {
@@ -76,19 +80,23 @@ $(document).ready(function () {
                 data: formData,
                 contentType: false,
                 processData: false,
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    insertErrorArray(
+                        $('#form_work_on'),
+                        XMLHttpRequest.responseJSON.errors,
+                        $('#group_errors'),
+                        $('#errors_list')
+                    );
+                    callToast.error('Ошибка', 'при обновлении данных о товара');
+                    spinner.hide();
+                    btnSubmit.removeClass('disabled');
+                    return false;
+                },
                 success: function(response) {
                     spinner.hide();
                     btnSubmit.removeClass('disabled');
                     if (response.error !== undefined) {
                         callToast.error('Ошибка', response.error);
-                        return false;
-                    }
-                    if (response.errors !== undefined) {
-                        insertErrorArray(
-                            $('#form_work_on'),
-                            response.errors,
-                            $('#group_errors'), $('#errors_list')
-                        );
                         return false;
                     }
                     if (response.status == 'success') {

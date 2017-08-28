@@ -14,14 +14,15 @@ var modularSize = {
             url: form.attr('action'),
             data: form.serialize(),
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при добавлении размера Модуля');
+                return false;
+            },
             success: function (result) {
                 console.log(result);
                 if (result.error != undefined) {
                     callToast.error('Ошибка', result.error);
-                    return false;
-                }
-                if (result.errors != undefined) {
-                    insertErrorArray(form, result.errors, $('#group_errors'), $('#errors_list'));
                     return false;
                 }
                 if (result.status == 'success') {
@@ -46,11 +47,17 @@ var modularSize = {
         });
     },
     'delete': function (id) {
+        var form = $('#form');
         $.ajax({
             method: "POST",
             url: '/admin/size_modular_image/delete',
             data: {'id': id},
             dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors'), $('#errors_list'));
+                callToast.error('Ошибка', 'при удалении размера Модуля');
+                return false;
+            },
             success: function (response) {
                 if (response.status == 'success') {
                     $('#item_'+id).remove();

@@ -27,7 +27,13 @@
                             <div class="form-group">
                                 <textarea id="address" name="address" class="form-control" placeholder="Введите адресс"></textarea>
                             </div>
-                            @include('admin.includes.alerts.error_ajax')
+                            <div class="form-group" style="display: none;" id="group_errors_contact">
+                                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                    <div class="text-left" id="errors_list_contact">
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

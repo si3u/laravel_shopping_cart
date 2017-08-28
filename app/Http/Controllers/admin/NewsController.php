@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataNews;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\News\AddRequest;
+use App\Http\Requests\Admin\News\SearchRequest;
+use App\Http\Requests\Admin\News\UpdateRequest;
+use App\Http\Requests\Common\ImageNotRequireRequest;
 use App\ImageBase\ImageBase;
 use App\News;
 use App\Traits\Controllers\Admin\NewsTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller {
@@ -54,37 +57,7 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
-    public function Add(Request $request) {
-        if (isset($request->image)) {
-            $validator = Validator::make(
-                ['image' => $request->image],
-                ['image' => 'mimes:jpg,jpeg,png|max:2048']
-            );
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-        }
-
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'topic_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                'text_'.$this->active_local[$i]->lang => 'required|string',
-                'meta_title_'.$this->active_local[$i]->lang => 'string|max:255',
-                'meta_description_'.$this->active_local[$i]->lang => 'string',
-                'meta_keywords_'.$this->active_local[$i]->lang => 'string',
-                'tags_'.$this->active_local[$i]->lang => 'string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
+    public function Add(AddRequest $request) {
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
             $image_name = uniqid('img_').'.'.$exp;
@@ -127,46 +100,7 @@ class NewsController extends Controller {
         ]);
     }
 
-    public function Update(Request $request) {
-        if (isset($request->image)) {
-            $validator = Validator::make(
-                ['image' => $request->image],
-                ['image' => 'mimes:jpg,jpeg,png|max:2048']
-            );
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-        }
-        $validator = Validator::make(
-            ['item_id' => $request->item_id],
-            ['item_id' => 'required|integer|exists:news,id']
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
-        $i = 0;
-        while ($i<$this->count_active_local) {
-            $validator = Validator::make($request->all(), [
-                'topic_'.$this->active_local[$i]->lang => 'required|string|min:1|max:255',
-                'text_'.$this->active_local[$i]->lang => 'required|string',
-                'meta_title_'.$this->active_local[$i]->lang => 'string|max:255',
-                'meta_description_'.$this->active_local[$i]->lang => 'string',
-                'meta_keywords_'.$this->active_local[$i]->lang => 'string',
-                'tags_'.$this->active_local[$i]->lang => 'string',
-            ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'errors' => $validator->messages()
-                ]);
-            }
-            $i++;
-        }
-
+    public function Update(UpdateRequest $request) {
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
             $image_name = uniqid('img_').'.'.$exp;
@@ -216,16 +150,7 @@ class NewsController extends Controller {
         return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
 
-    public function Search(Request $request) {
-        $validation = Validator::make($request->all(), [
-            'text' => 'nullable|string',
-            'option' => 'nullable|integer',
-            'date_start' => 'nullable|date',
-            'date_end' => 'nullable|date',
-        ]);
-        if ($validation->fails()) {
-            return redirect()->back()->withErrors($validation);
-        }
+    public function Search(SearchRequest $request) {
         $news = News::Search($request);
         $data = (object)[
             'title' => 'Поиск новостей',
