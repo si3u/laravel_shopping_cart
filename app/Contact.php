@@ -33,4 +33,8 @@ class Contact extends Model
         $item->addresses = $address;
         $item->save();
     }
+
+    public static function GetEmail() {
+        return Contact::find(1);
+    }
 }

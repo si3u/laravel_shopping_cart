@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web']], function() {
         'uses' => 'OrderController@Create'
     ]);
 
+    // // //support
+    Route::post('/send_mail', [
+        'uses' => 'MailController@SendEmail'
+    ])->name('send_mail');
 
     Route::get('/admin/login', function () {
         return view('admin.login');
