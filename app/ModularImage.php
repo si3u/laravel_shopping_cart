@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\ImageBase\ImageBase;
+use App\Classes\Image;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,6 +23,13 @@ use Illuminate\Database\Eloquent\Model;
 class ModularImage extends Model
 {
     protected $primaryKey = 'id';
+    private $image_intervention;
+
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+        $this->image_intervention = new Image();
+    }
+
     protected function Sizes() {
         return $this->hasMany('App\SizeModularImage', 'modular_image_id');
     }
@@ -54,7 +61,7 @@ class ModularImage extends Model
 
     protected function DeleteItem($id) {
         $item = ModularImage::find($id);
-        ImageBase::DeleteImages('/assets/images/modular/', [
+        $this->image_intervention->DeleteImages('/assets/images/modular/', [
             $item->image, $item->preview_image
         ]);
         $item->delete();

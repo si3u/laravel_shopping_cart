@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\ImageBase\ImageBase;
+use App\Classes\Image;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +27,12 @@ class News extends Model
     public $primaryKey = 'id';
     public $timestamps = true;
     private $carbon;
+    private $image_intervention;
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
         $this->carbon = Carbon::now();
+        $this->image_intervention = new Image();
     }
     protected function DataLocalization() {
         return $this->hasMany('App\DataNews', 'news_id');
@@ -63,7 +65,7 @@ class News extends Model
     protected function UpdateItem($id, $image, $image_preview) {
         $item = News::find($id);
         if ($item->image != null) {
-            ImageBase::DeleteImages('/assets/images/news/', [
+            $this->image_intervention->DeleteImages('/assets/images/news/', [
                 $item->image,
                 $item->image_preview
             ]);
@@ -80,7 +82,7 @@ class News extends Model
     protected function DeleteItem($id) {
         $news = News::find($id);
         if ($news->image != null) {
-            ImageBase::DeleteImages('/assets/images/news/', [
+            $this->image_intervention->DeleteImages('/assets/images/news/', [
                 $news->image,
                 $news->image_preview
             ]);

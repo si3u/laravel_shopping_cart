@@ -8,6 +8,10 @@ use App\ProductReview;
 use Illuminate\Support\Facades\Validator;
 
 class ProductReviewController extends Controller {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Управление отзывами',
@@ -17,6 +21,10 @@ class ProductReviewController extends Controller {
         return view('admin.reviews.main', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -39,6 +47,10 @@ class ProductReviewController extends Controller {
         return view('admin.reviews.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param UpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Update(UpdateRequest $request) {
         if (ProductReview::UpdateItem($request->id, $request->status, $request->score, $request->name,
                                       $request->email, $request->message)) {
@@ -51,6 +63,10 @@ class ProductReviewController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -64,6 +80,10 @@ class ProductReviewController extends Controller {
         return redirect()->route('products/reviews')->with('success', 'Отзыв успешно удален');
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Search(SearchRequest $request) {
         $data = (object)[
             'title' => 'Поиск по отзывам',

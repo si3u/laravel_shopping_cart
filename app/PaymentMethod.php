@@ -4,7 +4,6 @@ namespace App;
 
 use App\Traits\Models\PaymentMethodTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 /**
  * App\PaymentMethod

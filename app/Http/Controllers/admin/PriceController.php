@@ -8,6 +8,9 @@ use App\Price;
 
 class PriceController extends Controller {
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Настройка цен',
@@ -16,6 +19,10 @@ class PriceController extends Controller {
         return view('admin.price.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param UpdateRequest $request
+     * @return $this
+     */
     public function Update(UpdateRequest $request) {
         if (Price::UpdateItem($request->natural_canvas,
                               $request->artificial_canvas,

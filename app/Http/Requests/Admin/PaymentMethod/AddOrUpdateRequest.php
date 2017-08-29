@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\PaymentMethod;
 
 use App\Base\FormRequestBase;
 
-class UpdateRequest extends FormRequestBase
+class AddOrUpdateRequest extends FormRequestBase
 {
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
     {
@@ -20,11 +20,6 @@ class UpdateRequest extends FormRequestBase
 
             $i++;
         }
-
-        $this->rules_local['item_id'] = 'required|integer|exists:payment_methods,id';
-        $this->messages_local['item_id.required'] = 'Вы не указали ID Метода оплаты';
-        $this->messages_local['item_id.integer'] = 'ID Метода оплаты должен быть целочисленным значением';
-        $this->messages_local['item_id.exists'] = 'Этот Метод оплаты не существует в БД';
     }
 
     /**
@@ -44,6 +39,13 @@ class UpdateRequest extends FormRequestBase
      */
     public function rules()
     {
+        if ($this->route()->getName() == 'payment_method/update') {
+            $this->rules_local['item_id'] = 'required|integer|exists:payment_methods,id';
+            $this->messages_local['item_id.required'] = 'Вы не указали ID Метода оплаты';
+            $this->messages_local['item_id.integer'] = 'ID Метода оплаты должен быть целочисленным значением';
+            $this->messages_local['item_id.exists'] = 'Этот Метод оплаты не существует в БД';
+        }
+
         return $this->rules_local;
     }
     public function messages ()

@@ -4,6 +4,11 @@ namespace App\Traits\Controllers\Admin;
 use App\News;
 
 trait NewsTrait {
+
+    /**
+     * @param $id
+     * @return object
+     */
     private function PrepareDataLocal($id) {
         $data_local = News::GetItemAndLocalData($id, $this->active_local_id);
         $prepare_data_local = null;

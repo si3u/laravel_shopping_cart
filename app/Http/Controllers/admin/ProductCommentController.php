@@ -5,10 +5,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductComment\SearchRequest;
 use App\Http\Requests\Admin\ProductComment\UpdateRequest;
 use App\ProductComment;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductCommentController extends Controller {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Управление комментариями',
@@ -18,6 +21,10 @@ class ProductCommentController extends Controller {
         return view('admin.comments.main', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -39,6 +46,10 @@ class ProductCommentController extends Controller {
         return view('admin.comments.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param UpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Update(UpdateRequest $request) {
         if (ProductComment::UpdateItem($request->id,
                                        $request->status,
@@ -54,6 +65,10 @@ class ProductCommentController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -66,6 +81,10 @@ class ProductCommentController extends Controller {
         return redirect()->route('admin/comments')->with('success', 'Комментарий успешно удален');
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Search(SearchRequest $request) {
         $data = (object)[
             'title' => 'Поиск по комментариям',
@@ -97,6 +116,10 @@ class ProductCommentController extends Controller {
         return view('admin.comments.main', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function SendTrueStatus($id) {
         $validator = Validator::make(
             ['id' => $id],

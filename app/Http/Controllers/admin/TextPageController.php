@@ -12,6 +12,10 @@ class TextPageController extends Controller {
 
     use TextPageTrait;
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
     public function Get($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -43,6 +47,10 @@ class TextPageController extends Controller {
         return view('admin.text_page.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param UpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Update(UpdateRequest $request) {
         $i = 0;
         while ($i<count($this->active_local)) {

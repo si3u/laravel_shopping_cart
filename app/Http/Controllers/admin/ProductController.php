@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Classes\Image;
 use App\DataProduct;
 use App\DefaultSize;
 use App\FilterByColor;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Product\AddRequest;
+use App\Http\Requests\Admin\Product\AddOrUpdateRequest;
 use App\Http\Requests\Admin\Product\SearchRequest;
-use App\Http\Requests\Admin\Product\UpdateRequired;
-use App\ImageBase\ImageBase;
 use App\Product;
 use App\ProductCategory;
 use App\ProductFilterByColor;
@@ -20,13 +19,22 @@ use App\Traits\Controllers\Admin\ProductTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller {
+    private $image_intervention;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->image_intervention = new Image();
+    }
 
     use ProductTrait;
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $products = Product::GetItemsForAdmin();
         $i = 0;
@@ -44,6 +52,9 @@ class ProductController extends Controller {
         return view('admin.product.main', ['page' => $data]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Добавление товара',
@@ -56,6 +67,10 @@ class ProductController extends Controller {
         return view('admin.product.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -84,6 +99,10 @@ class ProductController extends Controller {
         return view('admin.product.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Search(SearchRequest $request) {
         if ($request->has('category')) {
             if(($key = array_search(1, $request->category)) !== false) {
@@ -129,7 +148,11 @@ class ProductController extends Controller {
         return view('admin.product.main', ['page' => $data]);
     }
 
-    public function Add(AddRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Add(AddOrUpdateRequest $request) {
         $date = Carbon::now()->toDateString();
         $path = public_path('assets/images/products/' . $date);
         File::makeDirectory($path, $mode = 0777, true, true);
@@ -137,7 +160,7 @@ class ProductController extends Controller {
         $image = uniqid('img_').'.'.$exp;
         $request->file('image')->move(public_path('assets/images/products/'.$date.'/'), $image);
 
-        $preview_image = ImageBase::CreatePreview(
+        $preview_image = $this->image_intervention->CreatePreview(
             'assets/images/products/'.$date.'/'.$image,
             'assets/images/products/'.$date.'/',
             $exp, 580, 435
@@ -178,7 +201,11 @@ class ProductController extends Controller {
         ]);
     }
 
-    public function Update(UpdateRequired $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Update(AddOrUpdateRequest $request) {
         if (in_array(1, $request->category)) {
             return response()->json([
                 'error' => 'Уберите с списка категорий "Корневая категория"'
@@ -198,7 +225,7 @@ class ProductController extends Controller {
         }
         if (isset($request->image)) {
             Product::DeleteModularImages($request->item_id);
-            ImageBase::DeleteImages('/assets/images/products/', [
+            $this->image_intervention->DeleteImages('/assets/images/products/', [
                 $item->image, $item->preview_image
             ]);
 
@@ -209,7 +236,7 @@ class ProductController extends Controller {
             $image = uniqid('img_').'.'.$exp;
             $request->file('image')->move(public_path('assets/images/products/'.$date.'/'), $image);
 
-            $preview_image = ImageBase::CreatePreview(
+            $preview_image = $this->image_intervention->CreatePreview(
                 'assets/images/products/'.$date.'/'.$image,
                 'assets/images/products/'.$date.'/',
                 $exp, 580, 435
@@ -260,6 +287,10 @@ class ProductController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],

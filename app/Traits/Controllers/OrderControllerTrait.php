@@ -1,16 +1,37 @@
 <?php
 namespace App\Traits\Controllers;
-use App\ImageBase\ImageBase;
+use App\Classes\Image;
 use App\Product;
 
 trait OrderControllerTrait {
+
+    private $image_intervention;
+
+    public function __construct() {
+        $this->image_intervention = new Image();
+    }
+
+    /**
+     * @param $product_id
+     * @param $width
+     * @param $height
+     * @param $top
+     * @param $left
+     * @return string
+     */
     private function CreateCropImage($product_id, $width, $height, $top, $left) {
         $product = Product::GetItem($product_id);
         $image_url = '/assets/images/products/'.$product->preview_image;
         $save_url = '/assets/images/orders/'.$this->date.'/';
-        return $this->date.'/'.ImageBase::ImageCrop($image_url, $save_url, $width, $height, $top, $left);
+        return $this->date.'/'.$this->image_intervention->ImageCrop($image_url, $save_url, $width, $height, $top, $left);
     }
 
+    /**
+     * @param $canvas
+     * @param $width
+     * @param $height
+     * @return mixed
+     */
     private function CalculatePrice($canvas, $width, $height) {
         $x = null;
         $y = null;
@@ -25,6 +46,10 @@ trait OrderControllerTrait {
         return $x + $y;
     }
 
+    /**
+     * @param $order_id
+     * @param $items
+     */
     private function CreateOrderItems($order_id, $items) {
         foreach ($items as $item) {
             $item_price = null;

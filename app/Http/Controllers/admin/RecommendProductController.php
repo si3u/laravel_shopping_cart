@@ -8,6 +8,10 @@ use App\ProductCategory;
 use App\RecommendProduct;
 
 class RecommendProductController extends Controller {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $products = RecommendProduct::GetItems();
         $i = 0;
@@ -23,11 +27,20 @@ class RecommendProductController extends Controller {
         ];
         return view('admin.product.main', ['page' => $data]);
     }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     private function Check() {
         if (!isset($request->check_products)) {
             return redirect()->back();
         }
     }
+
+    /**
+     * @param CommonRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Add(CommonRequest $request) {
         $this->Check();
         RecommendProduct::CreateItems($request->check_products);
@@ -36,6 +49,10 @@ class RecommendProductController extends Controller {
         ]);
     }
 
+    /**
+     * @param CommonRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function Delete(CommonRequest $request) {
         $this->Check();
         RecommendProduct::DeleteItems($request->check_products);

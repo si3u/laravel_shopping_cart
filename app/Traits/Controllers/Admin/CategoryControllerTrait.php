@@ -3,6 +3,11 @@ namespace App\Traits\Controllers\Admin;
 use App\Category;
 
 trait CategoryControllerTrait {
+
+    /**
+     * @param $id
+     * @return object
+     */
     private function PrepareDataLocal($id) {
         $data_local = Category::GetDataLocalization($id);
         $prepare_data_local = null;

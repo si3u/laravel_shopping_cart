@@ -2,6 +2,11 @@
 namespace App\Traits\Controllers\Admin;
 
 trait DeliveryMethodTrait {
+
+    /**
+     * @param $data_local
+     * @return object
+     */
     private function PrepareDataLocal($data_local) {
         $prepare_data_local = null;
         foreach ($data_local as $item) {

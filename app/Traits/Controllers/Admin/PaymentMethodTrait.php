@@ -4,6 +4,11 @@ namespace App\Traits\Controllers\Admin;
 use App\PaymentMethod;
 
 trait PaymentMethodTrait {
+
+    /**
+     * @param $id
+     * @return object
+     */
     private function PrepareDataLocal($id) {
         $data_local = PaymentMethod::GetDataLocalization($id);
         $prepare_data_local = null;

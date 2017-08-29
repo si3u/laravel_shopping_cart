@@ -16,6 +16,9 @@ class NotificationComposer {
         $this->new_orders = Order::where('read_status', false)->count();
     }
 
+    /**
+     * @param View $view
+     */
     public function compose(View $view) {
         $view->with([
             'count_new_comments' => $this->new_comments,

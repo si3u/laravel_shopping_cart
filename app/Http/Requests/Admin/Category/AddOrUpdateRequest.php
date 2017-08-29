@@ -1,8 +1,14 @@
 <?php
-namespace App\Traits\FormRequests\Admin;
 
-trait CategoryTrait {
-    private function GenerateRules() {
+namespace App\Http\Requests\Admin\Category;
+
+use App\Base\FormRequestBase;
+
+class AddOrUpdateRequest extends FormRequestBase
+{
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
         $i = 0;
         while ($i<$this->count_active_local) {
             $this->rules_local['name_'.$this->active_local[$i]->lang] = 'required|string';
@@ -28,5 +34,45 @@ trait CategoryTrait {
         $this->messages_local['parent_id.required'] = 'Укажите ID родительской категории';
         $this->messages_local['parent_id.integer'] = 'ID родительской категории должен быть целочисленным значением';
         $this->messages_local['parent_id.exists'] = 'ID родительской категории не существует в БД';
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        if ($this->route()->getName() == 'categories/update') {
+            $this->messages_local['item_id.required'] = 'Укажите ID категории';
+            $this->messages_local['item_id.integer'] = 'ID категории должен быть целочисленным значением';
+            $this->messages_local['item_id.exists'] = 'ID категории не существует в БД';
+        }
+
+        return $this->rules_local;
+    }
+    public function messages ()
+    {
+        return $this->messages_local;
+    }
+    public function response(array $errors) {
+        if ($this->expectsJson()) {
+            $response = [
+                'errors' => $errors
+            ];
+
+            return response()->json($response, 422);
+        }
+        return false;
     }
 }

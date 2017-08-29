@@ -2,11 +2,11 @@
 
 namespace App;
 
+use App\Classes\Image;
 use App\Traits\Models\ProductTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\ImageBase\ImageBase;
 
 /**
  * App\Product
@@ -39,7 +39,12 @@ class Product extends Model
 {
     public $timestamps = true;
     protected $primaryKey = 'id';
-    private $whereOptions;
+    private $image_intervention;
+
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+        $this->image_intervention = new Image();
+    }
 
     use ProductTrait;
 
@@ -125,7 +130,7 @@ class Product extends Model
 
     protected function DeleteItem($id) {
         $item = Product::find($id);
-        ImageBase::DeleteImages('/assets/images/products/', [
+        $this->image_intervention->DeleteImages('/assets/images/products/', [
             $item->image, $item->preview_image
         ]);
         $item->delete();
@@ -146,7 +151,7 @@ class Product extends Model
             $prepare_array[] = $datum->image;
             $prepare_array[] = $datum->preview_image;
         }
-        ImageBase::DeleteImages('/assets/images/product_modular/', $prepare_array);
+        $this->image_intervention->DeleteImages('/assets/images/product_modular/', $prepare_array);
         Product::find($id)->ModularImages()->delete();
     }
     protected function DeleteComments($id) {

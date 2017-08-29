@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Classes\Image;
 use App\DataNews;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\News\AddRequest;
+use App\Http\Requests\Admin\News\AddOrUpdateRequest;
 use App\Http\Requests\Admin\News\SearchRequest;
-use App\Http\Requests\Admin\News\UpdateRequest;
-use App\Http\Requests\Common\ImageNotRequireRequest;
-use App\ImageBase\ImageBase;
 use App\News;
 use App\Traits\Controllers\Admin\NewsTrait;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +15,17 @@ class NewsController extends Controller {
 
     use NewsTrait;
 
+    private $image_intervention;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->image_intervention = new Image();
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Новости',
@@ -26,6 +35,9 @@ class NewsController extends Controller {
         return view('admin.news.main', ['page' => $data]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Добавление новости',
@@ -35,6 +47,10 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -57,12 +73,16 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
-    public function Add(AddRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Add(AddOrUpdateRequest $request) {
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
             $image_name = uniqid('img_').'.'.$exp;
             $request->image->move(public_path('assets/images/news/'), $image_name);
-            $preview_image_name = ImageBase::CreatePreview(
+            $preview_image_name = $this->image_intervention->CreatePreview(
                 'assets/images/news/'.$image_name,
                 'assets/images/news/',
                 $exp,
@@ -100,12 +120,16 @@ class NewsController extends Controller {
         ]);
     }
 
-    public function Update(UpdateRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Update(AddOrUpdateRequest $request) {
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
             $image_name = uniqid('img_').'.'.$exp;
             $request->image->move(public_path('assets/images/news/'), $image_name);
-            $preview_image_name = ImageBase::CreatePreview(
+            $preview_image_name = $this->image_intervention->CreatePreview(
                 'assets/images/news/'.$image_name,
                 'assets/images/news/',
                 $exp,
@@ -139,6 +163,10 @@ class NewsController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id], ['id' => 'required|integer|exists:news,id']
@@ -150,6 +178,10 @@ class NewsController extends Controller {
         return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Search(SearchRequest $request) {
         $news = News::Search($request);
         $data = (object)[

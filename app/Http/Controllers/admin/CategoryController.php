@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\DataCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Category\AddRequest;
-use App\Http\Requests\Admin\Category\UpdateRequest;
+use App\Http\Requests\Admin\Category\AddOrUpdateRequest;
 use App\Traits\Controllers\Admin\CategoryControllerTrait;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,6 +13,9 @@ class CategoryController extends Controller {
 
     use CategoryControllerTrait;
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Древо категорий',
@@ -22,6 +24,9 @@ class CategoryController extends Controller {
         return view('admin.categories.main', ['page' => $data]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageAdd() {
         $data = [
             'title' => 'Добавить категорию',
@@ -32,6 +37,10 @@ class CategoryController extends Controller {
         return view('admin.categories.work_on', ['page' => (object)$data]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         if ($id == 1) {
             $error = 'Эту категорию изменить нельзя. 
@@ -62,7 +71,11 @@ class CategoryController extends Controller {
         return view('admin.categories.work_on', ['page' => $data]);
     }
 
-    public function Add(AddRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Add(AddOrUpdateRequest $request) {
         $parent_id = $request['parent_id'];
         $sorting_order = $request['sorting_order_'.$this->active_local[0]->lang];
         $last_id = Category::CreateItem($parent_id, $sorting_order);
@@ -87,7 +100,11 @@ class CategoryController extends Controller {
         ]);
     }
 
-    public function Update(UpdateRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Update(AddOrUpdateRequest $request) {
         if ($request->parent_id == $request->item_id) {
             return response()->json([
                 'error' => 'Категория не может быть сама себе родительской категорией'
@@ -118,6 +135,10 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make([
             'id' => $id

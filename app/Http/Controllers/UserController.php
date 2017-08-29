@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
-    public function SignIn (Request $request) {
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function SignIn(Request $request) {
         $validator = Validator::make($request->all(), [
             'login' => 'required|min:2|max:16|alpha_dash',
             'password' => 'required|min:5|max:32|alpha_num',
@@ -25,10 +29,19 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['errors' => 'Неверный логин или пароль.']);
         }
     }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function SignOut() {
         Auth::logout();
         return redirect()->route('admin/login');
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function EditPass(Request $request) {
         $validator = Validator::make($request->all(), [
             'now_pass' => 'required|min:5|max:32|alpha_num',

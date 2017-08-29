@@ -4,6 +4,11 @@ namespace App\Traits\Controllers\Admin;
 use App\TextPage;
 
 trait TextPageTrait {
+
+    /**
+     * @param $id
+     * @return object
+     */
     private function PrepareData($id) {
         $data = TextPage::GetItems($id);
         $prepare_data = null;

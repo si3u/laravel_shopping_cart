@@ -26,6 +26,10 @@ class OrderController extends Controller
 
     use OrderControllerTrait;
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Create(Request $request) {
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string',

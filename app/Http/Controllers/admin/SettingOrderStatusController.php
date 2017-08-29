@@ -7,6 +7,10 @@ use App\SettingOrderStatus;
 use Illuminate\Support\Facades\Validator;
 
 class SettingOrderStatusController extends Controller {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Управление статусами заказов',
@@ -15,6 +19,10 @@ class SettingOrderStatusController extends Controller {
         return view('admin.setting_order_status.main', ['page' => $data]);
     }
 
+    /**
+     * @param AddRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Add(AddRequest $request) {
         return response()->json([
             'status' => 'success',
@@ -22,6 +30,10 @@ class SettingOrderStatusController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -38,6 +50,10 @@ class SettingOrderStatusController extends Controller {
         return redirect()->back()->with('success', 'Статус успешно удален');
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function ChangeUponReceipt($id) {
         $validator = Validator::make(
             ['id' => $id],

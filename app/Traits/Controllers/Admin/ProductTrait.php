@@ -1,12 +1,23 @@
 <?php
 namespace App\Traits\Controllers\Admin;
 
-use App\ImageBase\ImageBase;
+use App\Classes\Image;
 use App\ModularImage;
 use App\Product;
 use Illuminate\Support\Facades\File;
 
 trait ProductTrait {
+    private $image_intervention;
+
+    public function __construct() {
+        $this->image_intervention = new Image();
+    }
+
+    /**
+     * @param $data
+     * @param $option
+     * @return array
+     */
     private function PrepareActiveData($data, $option) {
         $i = 0;
         $count = count($data);
@@ -28,6 +39,10 @@ trait ProductTrait {
         return $result;
     }
 
+    /**
+     * @param $id
+     * @return object
+     */
     private function PrepareDataLocal($id) {
         $data_local = Product::GetDataLocalization($id);
         $prepare_data_local = null;
@@ -55,6 +70,13 @@ trait ProductTrait {
         return (object)$prepare_data_local;
     }
 
+    /**
+     * @param $date
+     * @param $item_id
+     * @param $image
+     * @param $exp
+     * @return array
+     */
     private function CreateModularImages($date, $item_id, $image, $exp) {
         $modular_images = ModularImage::GetAllItems();
         $count = count($modular_images);
@@ -66,10 +88,10 @@ trait ProductTrait {
             $url_img = 'assets/images/products/'.$date.'/'.$image;
             $url_modular = 'assets/images/modular/'.$modular_images[$i]->image;
             $url_save = 'assets/images/product_modular/' . $item_id . '/';
-            $name_modular_image = ImageBase::CreateMask(
+            $name_modular_image = $this->image_intervention->CreateMask(
                 $url_img, $url_modular, $url_save, $exp
             );
-            $preview_modular_image = ImageBase::CreatePreview(
+            $preview_modular_image = $this->image_intervention->CreatePreview(
                 'assets/images/product_modular/'.$item_id.'/'.$name_modular_image,
                 $url_save,
                 $exp, 520, 320

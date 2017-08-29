@@ -11,7 +11,6 @@ var news = {
             var mDescription = $('#meta_description_'+local[i].lang).val();
             var mKeywords = $('#meta_keywords_'+local[i].lang).val();
             var tags = $('#tags_'+local[i].lang).val();
-
             if (topic.length > 0 && value.length > 0) {
                 formData.append('topic_' + local[i].lang, topic);
                 formData.append('text_' + local[i].lang, value);
@@ -29,10 +28,6 @@ var news = {
                     formData.append('tags_' + local[i].lang, tags);
                 }
             }
-            else {
-                callToast.error('Заполните все поля', 'На активных вкладках должны быть заполнены обязательные поля');
-                return false;
-            }
         }
         $.ajax({
             method: "POST",
@@ -41,6 +36,7 @@ var news = {
             contentType: false,
             processData: false,
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.responseJSON);
                 insertErrorArray(
                     $('#form_work_on'),
                     XMLHttpRequest.responseJSON.errors,
@@ -96,10 +92,6 @@ var news = {
                 if (tags.length > 0) {
                     formData.append('tags_' + local[i].lang, tags);
                 }
-            }
-            else {
-                callToast.error('Заполните все поля', 'На активных вкладках должны быть заполнены обязательные поля');
-                return false;
             }
         }
 

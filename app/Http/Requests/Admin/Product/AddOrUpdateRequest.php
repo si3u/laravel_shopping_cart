@@ -1,8 +1,15 @@
 <?php
-namespace App\Traits\FormRequests\Admin;
 
-trait ProductTrait {
-    private function GenerateRules() {
+namespace App\Http\Requests\Admin\Product;
+
+use App\Base\FormRequestBase;
+
+class AddOrUpdateRequest extends FormRequestBase
+{
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
         $i = 0;
         while ($i<$this->count_active_local) {
             $this->rules_local['name_'.$this->active_local[$i]->lang] = 'required|string|max:255';
@@ -53,5 +60,56 @@ trait ProductTrait {
         $this->messages_local['color.*.integer'] = 'ID фильтра по цвету должен быть целочисленным значением';
         $this->messages_local['status.required'] = 'Вы не передали Статус отображения товара';
         $this->messages_local['status.boolean'] = 'Статус отображения должен быть логическим значением';
+
+        $this->ImageRules(true);
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        if ($this->route()->getName() == 'product/update') {
+            $this->rules_local['item_id'] = 'required|integer|exists:products,id';
+            $this->rules_local['image'] = 'mimes:jpg,jpeg,png|max:2048';
+
+            $this->messages_local['image.required'] = 'Вы не выбрали изображение';
+            $this->messages_local['item_id.required'] = 'Вы не передали ID товара';
+            $this->messages_local['item_id.integer'] = 'ID товара должен быть целочисленным';
+            $this->messages_local['item_id.exists'] = 'Товара с данным ID не существует';
+        }
+        else {
+            $this->rules_local['image'] = 'required|mimes:jpg,jpeg,png|max:2048';
+        }
+        $this->messages_local['image.mimes'] = 'Допустимые разширения для изображения: jpg,jpeg, png';
+        $this->messages_local['image.max'] = 'Изображение не должно превышать 2Мб.';
+
+        return $this->rules_local;
+    }
+    public function messages ()
+    {
+        return $this->messages_local;
+    }
+    public function response(array $errors) {
+        if ($this->expectsJson()) {
+            $response = [
+                'errors' => $errors
+            ];
+
+            return response()->json($response, 422);
+        }
+        return false;
     }
 }

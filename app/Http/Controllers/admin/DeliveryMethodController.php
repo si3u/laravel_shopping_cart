@@ -5,8 +5,7 @@ use App\CommunicationDeliveryPayment;
 use App\DataDeliveryMethod;
 use App\DeliveryMethod;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\DeliveryMethod\AddRequest;
-use App\Http\Requests\Admin\DeliveryMethod\UpdateRequest;
+use App\Http\Requests\Admin\DeliveryMethod\AddOrUpdateRequest;
 use App\PaymentMethod;
 use App\Traits\Controllers\Admin\DeliveryMethodTrait;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +14,9 @@ class DeliveryMethodController extends Controller {
 
     use DeliveryMethodTrait;
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function Page() {
         $data = (object)[
             'title' => 'Управление методами доставки',
@@ -26,6 +28,9 @@ class DeliveryMethodController extends Controller {
         return view('admin.delivery_method.main', ['page' => $data]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Управление методами доставки',
@@ -37,6 +42,10 @@ class DeliveryMethodController extends Controller {
         return view('admin.delivery_method.work_on', ['page' => $data]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -59,7 +68,11 @@ class DeliveryMethodController extends Controller {
         return view('admin.delivery_method.work_on', ['page' => $data]);
     }
 
-    public function Add(AddRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Add(AddOrUpdateRequest $request) {
         $item_id = DeliveryMethod::CreateItem();
         $i = 0;
         while ($i<$this->count_active_local) {
@@ -74,7 +87,11 @@ class DeliveryMethodController extends Controller {
         ]);
     }
 
-    public function Update(UpdateRequest $request) {
+    /**
+     * @param AddOrUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function Update(AddOrUpdateRequest $request) {
         $i = 0;
         while ($i<$this->count_active_local) {
             $name = $request['name_'.$this->active_local[$i]->lang];
@@ -89,6 +106,10 @@ class DeliveryMethodController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],

@@ -7,13 +7,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ActiveLocalizationController extends Controller {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Get() {
         return response()->json(ActiveLocalization::GetAll());
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function GetActive() {
         return response()->json(ActiveLocalization::GetActive());
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function Update(Request $request) {
         $status = [false, false, false];
         if (isset($request->ru)) {
