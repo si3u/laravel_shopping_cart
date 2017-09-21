@@ -25,7 +25,7 @@ Route::group(['middleware' => ['web']], function() {
 
 Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/', function () {
-        echo "test";
+        echo "index page";
     });
 
     Route::get('/admin', function () {
@@ -34,6 +34,15 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/main', function () {
         return view('admin.main');
     })->name('admin/main');
+
+    // // //user
+    Route::post('/admin/user/edit_password', [
+        'uses' => 'UserController@ChangePass'
+    ]);
+    Route::post('/admin/user/change_email', [
+        'uses' => 'UserController@ChangeEmail'
+    ]);
+
 
     // // //category
     Route::get('/admin/categories', [

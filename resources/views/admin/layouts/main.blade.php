@@ -26,9 +26,13 @@
 </head>
 <body>
 {{ csrf_field() }}
+
 @yield('content')
+
 @include('admin.active_localization.modal')
 @include('admin.includes.modal.contacts')
+@include('admin.includes.modal.edit_pass')
+@include('admin.includes.modal.change_email')
 <script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
 {!! script_ts('/assets/admin/js/bootstrap.min.js') !!}
 {!! script_ts('/assets/admin/js/metisMenu.min.js') !!}

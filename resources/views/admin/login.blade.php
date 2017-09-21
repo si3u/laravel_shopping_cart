@@ -22,7 +22,7 @@
             <div class="col-sm-12">
                 <div class="wrapper-page">
                     <div class="account-pages">
-                        <div class="account-box">
+                        <div class="account-box" style="max-width: 600px;">
                             <div class="account-logo-box">
                                 <h2 class="text-uppercase text-center">
                                     <a href="{{$_SERVER['SERVER_NAME']}}" class="text-success">
@@ -42,6 +42,7 @@
 
                                     <div class="form-group m-b-20">
                                         <div class="col-xs-12">
+                                            <a href="{{route('password.request')}}" class="text-muted pull-right"><small>Забыли пароль?</small></a>
                                             <label for="password">Пароль</label>
                                             <input class="form-control" value="{{ old('password') }}" type="password" name="password" placeholder="Введите пароль">
                                         </div>
@@ -60,9 +61,16 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            {!! app('captcha')->display() !!}
+                                        </div>
+                                    </div>
                                     <div class="form-group text-center m-t-10">
                                         <div class="col-xs-12">
-                                            <button type="submit" class="btn btn-md btn-block btn-primary waves-effect waves-light">Войти</button>
+                                            <button style="height: 50px;" type="submit" class="btn btn-lg btn-block btn-primary waves-effect waves-light">
+                                                Войти
+                                            </button>
                                         </div>
                                     </div>
                                     {{ csrf_field() }}

@@ -189,9 +189,70 @@ var activeLocalization = {
         });
     }
 };
-
 $(document).ready(function () {
     console.log('ready');
+    $('#btn_edit_pass').click(function () {
+        var form = $('#form_edit_pass');
+        var selector = $('#group_errors_edit_pass');
+        var insertInto = $('#edit_pass_error_list');
+
+        $.ajax({
+            method: 'POST',
+            url: '/admin/user/edit_password',
+            data: {
+                'now_pass': $('#now_pass').val(),
+                'new_pass1': $('#new_pass1').val(),
+                'new_pass2': $('#new_pass2').val()
+            },
+            dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, selector, insertInto);
+                callToast.error('Ошибка', 'при обновлении пароля');
+                return false;
+            },
+            success: function (response) {
+                if (response.error !== undefined) {
+                    callToast.error('Ошибка при изменении пароля', response.error);
+                    return false;
+                }
+                if (response.status === 'true') {
+                    callToast.success('Пароль', 'Успешно изменен');
+                    return true;
+                }
+            }
+        });
+    });
+
+    $('#btn_change_email').click(function () {
+        var form = $('#form_change_email');
+        var selector = $('#group_errors_change_email');
+        var insertInto = $('#change_email_error_list');
+
+        $.ajax({
+            method: 'POST',
+            url: '/admin/user/change_email',
+            data: {
+                'email': $('#change_email').val()
+            },
+            dataType: 'JSON',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, selector, insertInto);
+                callToast.error('Ошибка', 'при обновлении данных');
+                return false;
+            },
+            success: function (response) {
+                if (response.error !== undefined) {
+                    callToast.error('Ошибка при изменении данных', response.error);
+                    return false;
+                }
+                if (response.status === 'success') {
+                    callToast.success('E-mail', 'Успешно изменен');
+                    return true;
+                }
+            }
+        });
+    });
+
     $('*.editor').css('height', '350');
     var config = {
         autosubmit: false,

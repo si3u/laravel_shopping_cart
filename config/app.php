@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'artvitrina.com.ua'),
 
     /*
     |--------------------------------------------------------------------------
@@ -181,9 +181,11 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         //ide helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-
+        //tree categories
         Nestable\NestableServiceProvider::class,
         InsertOnDuplicateKey\InsertOnDuplicateKeyServiceProvider::class,
+        //recaptcha google
+        Buzz\LaravelGoogleCaptcha\CaptchaServiceProvider::class,
     ],
 
     /*

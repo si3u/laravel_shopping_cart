@@ -24,6 +24,12 @@
                     <img src="{{asset('assets/admin/images/user_default.jpg')}}" alt="user-img" class="img-circle user-img">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
+                    <li>
+                        <a href="javascript:;" onclick="$('#modal_change_email').modal('show');"><span> E-mail для восстановления пароля</span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="$('#modal_edit_pass').modal('show');"><span> Пароль</span></a>
+                    </li>
                     <li class="divider"></li>
                     <li>
                         <a href="/admin/exit"><span> Выйти </span></a>
