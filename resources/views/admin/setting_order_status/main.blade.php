@@ -23,7 +23,7 @@
                         <div class="panel-heading">
                             <p class="panel-sub-title text-muted">
                                 <i class="dripicons-paperclip"></i> - Обозначается статус который используется при получении заказа.
-                                Этот статус будет отправляться на E-mail заказчика.
+                                Этот статус будет отправляться на E-mail клиента.
                             </p>
                         </div>
                         <div class="panel-body">

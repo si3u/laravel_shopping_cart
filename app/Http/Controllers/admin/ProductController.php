@@ -300,6 +300,7 @@ class ProductController extends Controller {
             return redirect()->route('admin/products')->withErrors($validator);
         }
 
+        Product::DeleteData($id);
         Product::DeleteCategories($id);
         Product::DeleteFilterColors($id);
         Product::DeleteSizes($id);

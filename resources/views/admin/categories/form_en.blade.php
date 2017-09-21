@@ -37,9 +37,6 @@
         <div id="parents_block">
             {!! $page->parents !!}
         </div>
-        <span class="help-block">
-            <small>Не определено - если хотите чтобы это была родительская категория</small>
-        </span>
     </div>
 </div>
 

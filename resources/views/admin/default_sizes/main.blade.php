@@ -37,7 +37,7 @@
                                 <tbody>
                                 <tr id="row_add">
                                     <td class="text-center">
-                                        <input id="width" name="width" class="form-control" type="text" placeholder="Введите ширену">
+                                        <input id="width" name="width" class="form-control" type="text" placeholder="Введите ширину">
                                     </td>
                                     <td>
                                         <input id="height" name="height" class="form-control" type="text" placeholder="Введите высоту">

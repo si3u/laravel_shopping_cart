@@ -61,7 +61,6 @@ class AddOrUpdateRequest extends FormRequestBase
         $this->messages_local['status.required'] = 'Вы не передали Статус отображения товара';
         $this->messages_local['status.boolean'] = 'Статус отображения должен быть логическим значением';
 
-        $this->ImageRules(true);
     }
 
     /**

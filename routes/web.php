@@ -25,7 +25,7 @@ Route::group(['middleware' => ['web']], function() {
 
 Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/', function () {
-        echo "auth";
+        echo "test";
     });
 
     Route::get('/admin', function () {

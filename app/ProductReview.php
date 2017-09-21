@@ -55,7 +55,7 @@ class ProductReview extends Model
         $query->join('products', 'product_reviews.product_id', '=', 'products.id');
         $query->join('data_products', 'product_reviews.product_id', '=', 'data_products.product_id');
         $query->where('data_products.lang_id', 1);
-        if ($id == null) {
+        if ($id === null) {
             return $query->orderBy('created_at', 'desc')
                 ->mainSelect()
                 ->paginate(10);

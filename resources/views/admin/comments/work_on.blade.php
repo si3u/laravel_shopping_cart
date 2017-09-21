@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <p class="text-center text-custom font-13">
-                                        <strong>Отзыв</strong>
+                                        <strong>Комментарий</strong>
                                     </p>
                                     <hr>
                                     <form id="form_work_on" action="javascript:void(0);" class="form-horizontal">

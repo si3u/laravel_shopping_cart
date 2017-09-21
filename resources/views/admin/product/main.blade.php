@@ -78,7 +78,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="text-center">
-                                                    <img class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
+                                                    <img style="height: auto; max-width: 100%;" class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
                                                 </th>
                                                 <th class="text-center">
                                                     {{$product->vendor_code}}

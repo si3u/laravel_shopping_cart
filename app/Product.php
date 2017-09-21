@@ -160,6 +160,9 @@ class Product extends Model
     protected function DeleteReviews($id) {
         Product::find($id)->Reviews()->delete();
     }
+    protected function DeleteData($id) {
+        Product::find($id)->DataLocalization()->delete();
+    }
 
     protected function Search($options) {
         $query = Product::query();

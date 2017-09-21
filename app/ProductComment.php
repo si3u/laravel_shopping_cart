@@ -48,19 +48,21 @@ class ProductComment extends Model
     }
 
 
-    protected function GetData($id = null) {
+    protected function GetData($product_id = null) {
         $query = ProductComment::query();
         $query->join('products', 'product_comments.product_id', '=', 'products.id');
         $query->join('data_products', 'product_comments.product_id', '=', 'data_products.product_id');
         $query->where('data_products.lang_id', 1);
-        if ($id != null) {
-            $query->where('product_comments.id', $id);
+        if ($product_id != null) {
+            $query->where('product_comments.id', $product_id);
         }
-        if ($id == null) {
-            $query->orderBy('product_comments.created_at', 'desc');
+        if ($product_id == null) {
+            $query->orderBy('product_comments.id', 'desc');
             return $query->mainSelect()->paginate(10);
         }
-        return $query->mainSelect()->first();
+        else {
+            return $query->mainSelect()->first();
+        }
     }
 
     protected function UpdateItem($id, $status, $name, $email, $message) {
