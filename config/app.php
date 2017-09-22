@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'rus',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'rus',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -186,6 +186,8 @@ return [
         InsertOnDuplicateKey\InsertOnDuplicateKeyServiceProvider::class,
         //recaptcha google
         Buzz\LaravelGoogleCaptcha\CaptchaServiceProvider::class,
+        //file manager
+        Barryvdh\Elfinder\ElfinderServiceProvider::class,
     ],
 
     /*

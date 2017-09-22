@@ -266,7 +266,7 @@ $(document).ready(function () {
                     formData.append('image', data.blob());
                     $.ajax({
                         method: "POST",
-                        url: '/admin/upload_file/',
+                        url: '/admin/upload_file',
                         data: formData,
                         contentType: false,
                         processData: false,

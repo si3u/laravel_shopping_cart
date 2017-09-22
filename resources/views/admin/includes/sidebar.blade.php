@@ -84,6 +84,12 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="/admin/file_manager">
+                        <i class="mdi mdi-file-outline"></i>
+                        <span> Файловый менеджер </span>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-gear"></i>
                         <span> Настройки </span>
