@@ -188,6 +188,8 @@ return [
         Buzz\LaravelGoogleCaptcha\CaptchaServiceProvider::class,
         //file manager
         Barryvdh\Elfinder\ElfinderServiceProvider::class,
+        //google analytics
+        Spatie\Analytics\AnalyticsServiceProvider::class,
     ],
 
     /*
@@ -237,7 +239,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Nestable' => Nestable\Facades\NestableService::class
+        'Nestable' => Nestable\Facades\NestableService::class,
+        'Analytics' => Spatie\Analytics\AnalyticsFacade::class
     ],
 
 ];

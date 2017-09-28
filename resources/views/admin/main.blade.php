@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 @section('title')
-
+    {{$_SERVER['HTTP_HOST']}}
 @endsection
 @section('content')
     <div id="wrapper">

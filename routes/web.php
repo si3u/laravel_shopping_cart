@@ -322,6 +322,11 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/exit', [
         'uses' => 'UserController@SignOut',
     ])->middleware('auth');
+
+    // // //google analytics
+    Route::get('/admin/analytics', [
+        'uses' => 'admin\AnalyticsController@Page'
+    ])->name('admin/analytics');
 });
 
 Auth::routes();

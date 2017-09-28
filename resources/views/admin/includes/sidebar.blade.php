@@ -90,6 +90,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('admin/analytics')}}">
+                        <i class="icon-chart"></i>
+                        <span> Аналитика </span>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-gear"></i>
                         <span> Настройки </span>

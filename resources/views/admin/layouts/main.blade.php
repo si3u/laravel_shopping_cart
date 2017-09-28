@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107195213-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)};
+        gtag('js', new Date());
+
+        gtag('config', 'UA-107195213-1');
+    </script>
+
     {!! style_ts('/assets/admin/plugins/c3/c3.min.css') !!}
     {!! style_ts('/assets/admin/css/bootstrap.min.css') !!}
     {!! style_ts('/assets/admin/css/core.css') !!}
@@ -21,6 +31,8 @@
     {!! style_ts('/assets/admin/plugins/bootstrap-fileupload/bootstrap-fileupload.css') !!}
     <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/modernizr.min.js') }}"></script>
+
+    @yield('my_styles')
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.css" rel="stylesheet">
 </head>
