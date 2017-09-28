@@ -1,11 +1,11 @@
-# Магазин Картин/Модульных картин
+# Shop Pictures / Modular Pictures
 
-#####  Установка
+#####  Install
 
 - git clone https://github.com/DmitrySkibitsky/laravel_shopping_cart
 - composer install
-- Изменить настройки в файле /.env
-- Выставить права 755 на /
-- Выставить права 777 на: /public/assets/images, /storage 
+- change /.env
+- set the right 755 to /
+- set the right 777 to: /public/assets/images, /storage 
 - php artisan migrate
 - php artisan db:seed
