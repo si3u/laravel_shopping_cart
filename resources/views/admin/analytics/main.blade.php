@@ -3,7 +3,8 @@
     Аналитика
 @endsection
 @section('my_styles')
-    {!! style_ts('/assets/admin/css/chartist.min.css') !!}
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 @endsection
 @section('content')
     <div id="wrapper">
@@ -16,59 +17,139 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">Аналитика</h4>
+                            <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
-
+                                <form action="{{route('admin/analytics')}}" method="get" class="form-inline">
+                                    <div class="form-group m-r-10">
+                                        <label for="period">Отчет </label>
+                                        <div class="input-group">
+                                            <select name="period" id="period" class="form-control">
+                                                <option value="week">за неделю</option>
+                                                <option value="month">за месяц</option>
+                                                <option value="year">за год</option>
+                                                <option value="at_first">с самого начала</option>
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button style="height: 38px;" class="btn btn-primary" type="submit" tabindex="-1">
+                                                    Показать
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
                             </ol>
                             <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="card-box widget-box-two widget-two-custom">
-                            <i class="mdi mdi-account-multiple widget-two-icon"></i>
-                            <div class="wigdet-two-content">
-                                <p class="m-0 text-uppercase font-bold font-secondary text-overflow">
-                                    Сейчас на сайте
-                                </p>
-                                <h2 class="">
+
+                <div class="col-xs-12">
+                    <div class="card-box widget-box-two widget-two-custom">
+                        <i class="mdi mdi-account-multiple widget-two-icon"></i>
+                        <div class="wigdet-two-content">
+                            <p class="m-0 text-uppercase font-bold font-secondary text-overflow">
+                                Сейчас на сайте
+                            </p>
+                            <h2 class="">
                                     <span data-plugin="counterup">
                                         {{$page->active_users}}
                                     </span>
-                                </h2>
-                                <p class="m-0">человек</p>
+                            </h2>
+                            <p class="m-0">человек</p>
+                        </div>
+                    </div>
+
+                    <div class="portlet">
+                        <div class="portlet-heading bg-custom">
+                            <h3 class="portlet-title">
+                                Общее количество посетителей и просмотренных ими страниц
+                            </h3>
+                            <div class="portlet-widgets">
+                                <a data-toggle="collapse"
+                                   data-parent="#total_visitors_and_page_views"
+                                   href="#bg-default" class="" aria-expanded="true">
+                                    <i class="mdi mdi-minus"
+                                       data-toggle="tooltip" data-placement="top" title="Свернуть"
+                                    ></i>
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="bg-default" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="portlet-body">
+                                <div id="total_visitors_and_page_views"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="card-box">
-                        <h4 class="m-t-0 header-title text-center"><b>Общее количество посетителей и просмотренных ими страниц</b></h4>
-                        <p class="text-muted font-14 m-b-20">
-                            <code class="text-danger">Красная</code> шкала - количество посетителей
-                        </p>
-                        <p class="text-muted font-14 m-b-20">
-                            <code class="text-primary">Синяя</code> шкала - количество просмотренных ими страниц
-                        </p>
-                        <div class="ct-chart ct-perfect-fourth" id="total_visitors_and_page_views"></div>
+
+                    <div class="portlet">
+                        <div class="portlet-heading bg-custom">
+                            <h3 class="portlet-title">
+                                Последние 20 страниц просмотренные посетителями
+                            </h3>
+                            <div class="portlet-widgets">
+                                <a data-toggle="collapse"
+                                   data-parent="#body_most_visited_pages"
+                                   href="#pb_most_visited_pages" class="" aria-expanded="true">
+                                    <i class="mdi mdi-minus"
+                                       data-toggle="tooltip" data-placement="top" title="Свернуть"
+                                    ></i>
+                                </a>
+                            </div>
+                            <div class="clearfix" style="height: 30px;"></div>
+                        </div>
+                        <div id="pb_most_visited_pages" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="portlet-body">
+                                <div id="body_most_visited_pages"></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card-box">
-                        <h4 class="m-t-0 header-title text-center"><b>Последние 20 страниц просмотренные посетителями</b></h4>
-                        <div id="body_most_visited_pages"></div>
+                    <div class="portlet">
+                        <div class="portlet-heading bg-custom">
+                            <h3 class="portlet-title">
+                                visitors_and_page_views
+                            </h3>
+                            <div class="portlet-widgets">
+                                <a data-toggle="collapse"
+                                   data-parent="#visitors_and_page_views"
+                                   href="#pb_visitors_and_page_views" class="" aria-expanded="true">
+                                    <i class="mdi mdi-minus"
+                                       data-toggle="tooltip" data-placement="top" title="Свернуть"
+                                    ></i>
+                                </a>
+                            </div>
+                            <div class="clearfix" style="height: 30px;"></div>
+                        </div>
+                        <div id="pb_visitors_and_page_views" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="portlet-body">
+                                <div id="visitors_and_page_views" style="height: 320px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet">
+                        <div class="portlet-heading bg-custom">
+                            <h3 class="portlet-title">
+                                Топ браузеров
+                            </h3>
+                            <div class="portlet-widgets">
+                                <a data-toggle="collapse"
+                                   data-parent="#top_browser"
+                                   href="#pb_top_browser" class="" aria-expanded="true">
+                                    <i class="mdi mdi-minus"
+                                       data-toggle="tooltip" data-placement="top" title="Свернуть"
+                                    ></i>
+                                </a>
+                            </div>
+                            <div class="clearfix" style="height: 30px;"></div>
+                        </div>
+                        <div id="pb_top_browser" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="portlet-body">
+                                <div id="drow_top_browsers"></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card-box">
-                        <h4 class="m-t-0 header-title text-center"><b>Топ браузеров</b></h4>
-                        <p class="text-muted font-14 m-b-20">
-                            С этих браузеров заходили к Вам на сайт.
-                        </p>
-                        <p class="text-muted font-14 m-b-20">
-                            Количество посещений - Y. X - Наименование браузеров.
-                        </p>
-                        <div class="ct-chart ct-perfect-fourth" id="top_browser"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -77,67 +158,108 @@
 @include('admin.includes.javascript')
 @section('my_scripts')
     {!! script_ts('/assets/admin/js/chartist.min.js') !!}
+
     <script>
         $(document).ready(function () {
             var data = {!! json_encode($page) !!};
 
-            var dataLibels = [];
-            var dataSeries = [];
-            for (var i in data.top_browsers) {
-                dataLibels.push(data.top_browsers[i].browser);
-                dataSeries.push(data.top_browsers[i].sessions);
-            }
-            new Chartist.Bar('#top_browser', {
-                labels: dataLibels,
-                series: dataSeries
-            }, {
-                distributeSeries: true
-            });
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartTopBrowsers);
+            function drawChartTopBrowsers() {
+                var dataGoogle = new google.visualization.DataTable();
+                dataGoogle.addColumn('string', 'Topping');
+                dataGoogle.addColumn('number', 'Slices');
 
-            var dataLibels = [];
-            var dataVisitors = [];
-            var dataPageViews = [];
-            for (var i in data.total_visitors_and_page_views) {
-                var date = new Date(Date.parse(data.total_visitors_and_page_views[i].date.date));
-                dataLibels.push(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear());
-                dataVisitors.push(data.total_visitors_and_page_views[i].visitors);
-                dataPageViews.push(data.total_visitors_and_page_views[i].pageViews);
-            }
-            new Chartist.Bar('#total_visitors_and_page_views', {
-                labels: dataLibels,
-                series: [dataVisitors, dataPageViews]
-            }, {
-                seriesBarDistance: 10,
-                reverseData: true,
-                horizontalBars: true,
-                axisY: {
-                    offset: 70
+                var dataChars = [];
+                for (var i in data.top_browsers) {
+                    dataChars.push([
+                        data.top_browsers[i].browser,
+                        data.top_browsers[i].sessions
+                    ]);
                 }
-            });
+                dataGoogle.addRows(dataChars);
 
-            if (data.most_visited_pages.length > 0) {
-                $('#body_most_visited_pages').append('<table class="table table-striped m-0">\n' +
-                    '                                        <thead>\n' +
-                    '                                        <tr>\n' +
-                    '                                            <th class="text-center">Заголовок</th>\n' +
-                    '                                            <th class="text-center">URL</th>\n' +
-                    '                                            <th class="text-center">Просмотров</th>\n' +
-                    '                                        </tr>\n' +
-                    '                                        </thead>\n' +
-                    '                                        <tbody id="tbody_most_visited_pages">\n' +
-                    '                                        </tbody>\n' +
-                    '                                    </table>');
+                var options = {
+                    'title':'С этих браузеров заходили к Вам на сайт',
+                    'height':400
+                };
 
+                var chart = new google.visualization.PieChart(document.getElementById('drow_top_browsers'));
+                chart.draw(dataGoogle, options);
+            }
 
+            google.charts.load('current', {'packages':['line']});
+            google.charts.setOnLoadCallback(drawTotalVisitorsAndPageViews);
+            function drawTotalVisitorsAndPageViews() {
+                var dataGoogle = new google.visualization.DataTable();
+                dataGoogle.addColumn('string', 'дата');
+                dataGoogle.addColumn('number', 'Посетителей');
+                dataGoogle.addColumn('number', 'Просмотренных ими страниц');
+
+                var dataChart = [];
+                for (var i in data.total_visitors_and_page_views) {
+                    var date = new Date(Date.parse(data.total_visitors_and_page_views[i].date.date));
+                    dataChart.push([
+                        date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(),
+                        data.total_visitors_and_page_views[i].visitors,
+                        data.total_visitors_and_page_views[i].pageViews
+                    ]);
+                }
+                dataGoogle.addRows(dataChart);
+
+                var options = {
+                    height: 600
+                };
+
+                var chart = new google.charts.Line(document.getElementById('total_visitors_and_page_views'));
+
+                chart.draw(dataGoogle, google.charts.Line.convertOptions(options));
+            }
+
+            google.charts.load('current', {'packages':['bar']});
+            google.charts.setOnLoadCallback(drawMostVisitedPages);
+            function drawMostVisitedPages() {
+                var dataChart = [];
+                dataChart.push(['Страницы', 'Количество посетителей']);
                 for (var i in data.most_visited_pages) {
-                    var tbody = $('#tbody_most_visited_pages');
-                    tbody.append('<tr>\n' +
-                        '              <th scope="row">'+data.most_visited_pages[i].pageTitle+'</th>\n' +
-                        '              <td>'+data.most_visited_pages[i].url+'</td>\n' +
-                        '              <td class="text-center">'+data.most_visited_pages[i].pageViews+'</td>\n' +
-                        '         </tr>');
+                    dataChart.push([
+                        data.most_visited_pages[i].pageTitle+'('+data.most_visited_pages[i].url+')',
+                        data.most_visited_pages[i].pageViews
+                    ]);
+                }
+                var dataGoogle = new google.visualization.arrayToDataTable(dataChart);
+
+                var options = {
+                    height: 600,
+                    legend: { position: 'none' },
+                    bars: 'horizontal', // Required for Material Bar Charts.
+                    axes: {
+                        x: {
+                            0: { side: 'top', label: 'Количество посещений'} // Top x-axis.
+                        }
+                    },
+                    bar: { groupWidth: "100%" }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('body_most_visited_pages'));
+                chart.draw(dataGoogle, options);
+            }
+
+            console.log(data.visitors_and_page_views);
+            var dataChart = [];
+            for (var i in data.visitors_and_page_views) {
+                var date = new Date(Date.parse(data.visitors_and_page_views[i].date.date));
+                var key = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+                //this
+                if (('date' in dataChart)) {
+                    if (!(key in dataChart.date)) {
+                        dataChart.push({
+                            date: key
+                        });
+                    }
                 }
             }
+            console.log(dataChart);
         });
     </script>
 @endsection
