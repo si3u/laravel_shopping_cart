@@ -16,22 +16,22 @@ class AnalyticsController extends Controller {
     public function __construct() {
         parent::__construct();
         $this->end_data = Carbon::now();
+        $this->start_date = Carbon::now();
     }
 
     public function Page(Request $request) {
-        $title = '';
         switch ($request->period) {
             case 'week':
                 $title = ' | За неделю';
-                $this->start_date = Carbon::create($this->end_data->year, $this->end_data->month, $this->end_data->day-7);
+                $this->start_date->subWeek();
                 break;
             case 'month':
                 $title = ' | За месяц';
-                $this->start_date = Carbon::create($this->end_data->year, $this->end_data->month-1, $this->end_data->day);
+                $this->start_date->subMonth();
                 break;
             case 'year':
                 $title = ' | За год';
-                $this->start_date = Carbon::create($this->end_data->year-1, $this->end_data->month, $this->end_data->day);
+                $this->start_date->subYear();
                 break;
             case 'at_first':
                 $title = ' | С самого начала';
@@ -39,18 +39,28 @@ class AnalyticsController extends Controller {
                 break;
             default:
                 $title = ' | За неделю';
-                $this->start_date = Carbon::create($this->end_data->year, $this->end_data->month, $this->end_data->day-7);
+                $this->start_date->subWeek();
         }
 
         $this->period = Period::create($this->start_date, $this->end_data);
 
         $data = (object)[
+            'period' => $request->period,
             'title' => 'Аналитика'.$title,
-            'visitors_and_page_views' => Analytics::fetchVisitorsAndPageViews($this->period),
             'total_visitors_and_page_views' => Analytics::fetchTotalVisitorsAndPageViews($this->period),
-            'most_visited_pages' => Analytics::fetchMostVisitedPages($this->period, 20),
+            'most_visited_pages' => Analytics::fetchMostVisitedPages($this->period),
             'top_browsers' => Analytics::fetchTopBrowsers($this->period, 10),
-            'active_users' => Analytics::getAnalyticsService()->data_realtime->get('ga:161302566', 'rt:activeUsers')->rows[0][0]
+            'active_users' => Analytics::getAnalyticsService()->data_realtime->get('ga:161302566', 'rt:activeUsers')->rows[0][0],
+            'user_devices' => Analytics::performQuery(
+                $this->period,
+                'ga:users',
+                ['dimensions' => 'ga:deviceCategory']
+            )->rows,
+            'user_countries' => Analytics::performQuery(
+                $this->period,
+                'ga:users',
+                ['dimensions' => 'ga:country']
+            )->rows
         ];
         return view('admin.analytics.main', ['page' => $data]);
     }

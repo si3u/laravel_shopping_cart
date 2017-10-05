@@ -11,7 +11,7 @@ return [
      * Path to the client secret json file. Take a look at the README of this package
      * to learn how to get this file.
      */
-    'service_account_credentials_json' => storage_path('app/Analytics/Google/service-account-credentials.json'),
+    'service_account_credentials_json' => storage_path('app/Analytics/google-8866373030bd.json'),
 
     /*
      * The amount of minutes the Google API responses will be cached.

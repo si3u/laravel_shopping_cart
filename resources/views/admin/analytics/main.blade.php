@@ -23,12 +23,21 @@
                                     <div class="form-group m-r-10">
                                         <label for="period">Отчет </label>
                                         <div class="input-group">
-                                            <select name="period" id="period" class="form-control">
-                                                <option value="week">за неделю</option>
-                                                <option value="month">за месяц</option>
-                                                <option value="year">за год</option>
-                                                <option value="at_first">с самого начала</option>
-                                            </select>
+                                            @if(isset($page->period))
+                                                <select name="period" id="period" class="form-control">
+                                                    <option @if($page->period === 'week') selected @endif value="week">за неделю</option>
+                                                    <option @if($page->period === 'month') selected @endif value="month">за месяц</option>
+                                                    <option @if($page->period === 'year') selected @endif value="year">за год</option>
+                                                    <option @if($page->period === 'at_first') selected @endif value="at_first">с самого начала</option>
+                                                </select>
+                                            @else
+                                                <select name="period" id="period" class="form-control">
+                                                    <option selected value="week">за неделю</option>
+                                                    <option value="month">за месяц</option>
+                                                    <option value="year">за год</option>
+                                                    <option value="at_first">с самого начала</option>
+                                                </select>
+                                            @endif
                                             <span class="input-group-btn">
                                                 <button style="height: 38px;" class="btn btn-primary" type="submit" tabindex="-1">
                                                     Показать
@@ -108,12 +117,12 @@
                     <div class="portlet">
                         <div class="portlet-heading bg-custom">
                             <h3 class="portlet-title">
-                                visitors_and_page_views
+                                Страны с которых заходили на сайт
                             </h3>
                             <div class="portlet-widgets">
                                 <a data-toggle="collapse"
-                                   data-parent="#visitors_and_page_views"
-                                   href="#pb_visitors_and_page_views" class="" aria-expanded="true">
+                                   data-parent="#user_countries"
+                                   href="#pb_user_countries" class="" aria-expanded="true">
                                     <i class="mdi mdi-minus"
                                        data-toggle="tooltip" data-placement="top" title="Свернуть"
                                     ></i>
@@ -121,12 +130,15 @@
                             </div>
                             <div class="clearfix" style="height: 30px;"></div>
                         </div>
-                        <div id="pb_visitors_and_page_views" class="panel-collapse collapse in" aria-expanded="true" style="">
+                        <div id="pb_user_countries" class="panel-collapse collapse in" aria-expanded="true" style="">
                             <div class="portlet-body">
-                                <div id="visitors_and_page_views" style="height: 320px;"></div>
+                                <div id="draw_user_countries"></div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-6">
                     <div class="portlet">
                         <div class="portlet-heading bg-custom">
                             <h3 class="portlet-title">
@@ -145,11 +157,34 @@
                         </div>
                         <div id="pb_top_browser" class="panel-collapse collapse in" aria-expanded="true" style="">
                             <div class="portlet-body">
-                                <div id="drow_top_browsers"></div>
+                                <div id="draw_top_browsers"></div>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-6">
+                    <div class="portlet">
+                        <div class="portlet-heading bg-custom">
+                            <h3 class="portlet-title">
+                                С этих устройств заходили к Вам на сайт
+                            </h3>
+                            <div class="portlet-widgets">
+                                <a data-toggle="collapse"
+                                   data-parent="#user_devices"
+                                   href="#pb_user_devices" class="" aria-expanded="true">
+                                    <i class="mdi mdi-minus"
+                                       data-toggle="tooltip" data-placement="top" title="Свернуть"
+                                    ></i>
+                                </a>
+                            </div>
+                            <div class="clearfix" style="height: 30px;"></div>
+                        </div>
+                        <div id="pb_user_devices" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="portlet-body">
+                                <div id="draw_user_devices"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,13 +198,68 @@
         $(document).ready(function () {
             var data = {!! json_encode($page) !!};
 
-            google.charts.load('current', {'packages':['corechart']});
+            google.charts.load('current', {'packages': ['line']});
+            google.charts.setOnLoadCallback(drawTotalVisitorsAndPageViews);
+
+            function drawTotalVisitorsAndPageViews() {
+                var dataGoogle = new google.visualization.DataTable();
+                dataGoogle.addColumn('string', 'дата');
+                dataGoogle.addColumn('number', 'Посетителей');
+                dataGoogle.addColumn('number', 'Просмотренных ими страниц');
+                var dataChart = [];
+                for (var i in data.total_visitors_and_page_views) {
+                    var date = new Date(Date.parse(data.total_visitors_and_page_views[i].date.date));
+                    dataChart.push([
+                        date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                        data.total_visitors_and_page_views[i].visitors,
+                        data.total_visitors_and_page_views[i].pageViews
+                    ]);
+                }
+                dataGoogle.addRows(dataChart);
+                var options = {
+                    height: 600
+                };
+                var chart = new google.charts.Line(document.getElementById('total_visitors_and_page_views'));
+                chart.draw(dataGoogle, google.charts.Line.convertOptions(options));
+            }
+
+            google.charts.load('current', {'packages': ['bar']});
+            google.charts.setOnLoadCallback(drawMostVisitedPages);
+
+            function drawMostVisitedPages() {
+                var dataChart = [];
+                dataChart.push(['Страницы', 'Количество посетителей']);
+                for (var i in data.most_visited_pages) {
+                    dataChart.push([
+                        data.most_visited_pages[i].pageTitle + '(' + data.most_visited_pages[i].url + ')',
+                        data.most_visited_pages[i].pageViews
+                    ]);
+                }
+                var dataGoogle = new google.visualization.arrayToDataTable(dataChart);
+                var options = {
+                    height: 600,
+                    legend: {position: 'none'},
+                    bars: 'horizontal', // Required for Material Bar Charts.
+                    axes: {
+                        x: {
+                            0: {side: 'top', label: 'Количество посещений'} // Top x-axis.
+                        }
+                    },
+                    bar: {groupWidth: "100%"}
+                };
+                var chart = new google.charts.Bar(document.getElementById('body_most_visited_pages'));
+                chart.draw(dataGoogle, options);
+            }
+
+            google.charts.load('current', {'packages': ['corechart']});
             google.charts.setOnLoadCallback(drawChartTopBrowsers);
+            google.charts.setOnLoadCallback(drawUserDevices);
+            google.charts.setOnLoadCallback(drawUserCountries);
+
             function drawChartTopBrowsers() {
                 var dataGoogle = new google.visualization.DataTable();
                 dataGoogle.addColumn('string', 'Topping');
                 dataGoogle.addColumn('number', 'Slices');
-
                 var dataChars = [];
                 for (var i in data.top_browsers) {
                     dataChars.push([
@@ -178,88 +268,49 @@
                     ]);
                 }
                 dataGoogle.addRows(dataChars);
-
                 var options = {
-                    'title':'С этих браузеров заходили к Вам на сайт',
-                    'height':400
+                    'title': 'С этих браузеров заходили к Вам на сайт',
+                    'height': 400
                 };
-
-                var chart = new google.visualization.PieChart(document.getElementById('drow_top_browsers'));
+                var chart = new google.visualization.PieChart(document.getElementById('draw_top_browsers'));
                 chart.draw(dataGoogle, options);
             }
-
-            google.charts.load('current', {'packages':['line']});
-            google.charts.setOnLoadCallback(drawTotalVisitorsAndPageViews);
-            function drawTotalVisitorsAndPageViews() {
+            function drawUserDevices() {
                 var dataGoogle = new google.visualization.DataTable();
-                dataGoogle.addColumn('string', 'дата');
-                dataGoogle.addColumn('number', 'Посетителей');
-                dataGoogle.addColumn('number', 'Просмотренных ими страниц');
-
-                var dataChart = [];
-                for (var i in data.total_visitors_and_page_views) {
-                    var date = new Date(Date.parse(data.total_visitors_and_page_views[i].date.date));
-                    dataChart.push([
-                        date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(),
-                        data.total_visitors_and_page_views[i].visitors,
-                        data.total_visitors_and_page_views[i].pageViews
+                dataGoogle.addColumn('string', 'Topping');
+                dataGoogle.addColumn('string', 'Slices');
+                var dataChars = [];
+                for (var i in data.user_devices) {
+                    dataChars.push([
+                        data.user_devices[i][0],
+                        data.user_devices[i][1]
                     ]);
                 }
-                dataGoogle.addRows(dataChart);
-
+                dataGoogle.addRows(dataChars);
                 var options = {
-                    height: 600
+                    'height': 400
                 };
-
-                var chart = new google.charts.Line(document.getElementById('total_visitors_and_page_views'));
-
-                chart.draw(dataGoogle, google.charts.Line.convertOptions(options));
-            }
-
-            google.charts.load('current', {'packages':['bar']});
-            google.charts.setOnLoadCallback(drawMostVisitedPages);
-            function drawMostVisitedPages() {
-                var dataChart = [];
-                dataChart.push(['Страницы', 'Количество посетителей']);
-                for (var i in data.most_visited_pages) {
-                    dataChart.push([
-                        data.most_visited_pages[i].pageTitle+'('+data.most_visited_pages[i].url+')',
-                        data.most_visited_pages[i].pageViews
-                    ]);
-                }
-                var dataGoogle = new google.visualization.arrayToDataTable(dataChart);
-
-                var options = {
-                    height: 600,
-                    legend: { position: 'none' },
-                    bars: 'horizontal', // Required for Material Bar Charts.
-                    axes: {
-                        x: {
-                            0: { side: 'top', label: 'Количество посещений'} // Top x-axis.
-                        }
-                    },
-                    bar: { groupWidth: "100%" }
-                };
-
-                var chart = new google.charts.Bar(document.getElementById('body_most_visited_pages'));
+                var chart = new google.visualization.PieChart(document.getElementById('draw_user_devices'));
                 chart.draw(dataGoogle, options);
             }
-
-            console.log(data.visitors_and_page_views);
-            var dataChart = [];
-            for (var i in data.visitors_and_page_views) {
-                var date = new Date(Date.parse(data.visitors_and_page_views[i].date.date));
-                var key = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
-                //this
-                if (('date' in dataChart)) {
-                    if (!(key in dataChart.date)) {
-                        dataChart.push({
-                            date: key
-                        });
-                    }
+            function drawUserCountries() {
+                var dataGoogle = new google.visualization.DataTable();
+                dataGoogle.addColumn('string', 'Topping');
+                dataGoogle.addColumn('string', 'Slices');
+                var dataChars = [];
+                for (var i in data.user_countries) {
+                    dataChars.push([
+                        data.user_countries[i][0],
+                        data.user_countries[i][1]
+                    ]);
                 }
+                dataGoogle.addRows(dataChars);
+                var options = {
+                    'height': 400
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('draw_user_countries'));
+                chart.draw(dataGoogle, options);
             }
-            console.log(dataChart);
         });
     </script>
 @endsection
