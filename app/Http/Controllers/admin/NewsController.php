@@ -9,6 +9,8 @@ use App\Http\Requests\Admin\News\AddOrUpdateRequest;
 use App\Http\Requests\Admin\News\SearchRequest;
 use App\News;
 use App\Traits\Controllers\Admin\NewsTrait;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller {
@@ -26,11 +28,18 @@ class NewsController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function Page() {
+    public function Page(Request $request) {
+        $page = 1;
+        if ($request->page !== null) {
+            $page = $request->page;
+        }
+        $news = Cache::tags(['page', $page])->rememberForever('news', function() {
+            return News::GetItems();
+        });
         $data = (object)[
             'title' => 'Новости',
             'route_name' => $this->route_name,
-            'news' => News::GetItems()
+            'news' => $news
         ];
         return view('admin.news.main', ['page' => $data]);
     }
