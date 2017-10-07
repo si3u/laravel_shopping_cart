@@ -55,8 +55,15 @@ class AddOrUpdateRequest extends FormRequestBase
             $this->messages_local['image.required'] = 'Вы не выбрали изображение';
         }
         else {
+            $this->rules_local['item_id'] = 'required|integer|exists:news,id';
             $this->rules_local['image'] = 'mimes:jpg,jpeg,png|max:2048';
+
+            $this->messages_local['item_id.required'] = 'Вы не передали ID новости';
+            $this->messages_local['item_id.integer'] = 'Переданный ID новости имеет не верный тип';
+            $this->messages_local['item_id.exists'] = 'Новость не найдена в БД';
+
         }
+
         $this->messages_local['image.mimes'] = 'Допустимые разширения для изображения: jpg,jpeg, png';
         $this->messages_local['image.max'] = 'Изображение не должно превышать 2Мб.';
 

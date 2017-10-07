@@ -2,6 +2,7 @@
 namespace App\Traits\Controllers\Admin;
 
 use App\News;
+use Illuminate\Support\Facades\Cache;
 
 trait NewsTrait {
 
@@ -35,5 +36,33 @@ trait NewsTrait {
             ];
         }
         return (object)$prepare_data_local;
+    }
+
+    public function ExistItemInCache() {
+        return Cache::tags(['news', 'item', $this->item_id])->has('news');
+    }
+
+    public function GetItemFromCache() {
+        return Cache::tags(['news', 'item', $this->item_id])->get('news');
+    }
+
+    public function CreateItemFromCahe() {
+        return Cache::tags(['news', 'item', $this->item_id])->rememberForever('news', function () {
+            return News::GetItem($this->item_id);
+        });
+    }
+
+    public function ForgetItemInCache() {
+        Cache::tags(['news', 'item', $this->item_id])->forget('news');
+    }
+
+    public function GetItemsFromPaginate($page) {
+        return Cache::tags(['news', 'paginate', $page])->rememberForever('news', function() {
+            return News::GetItems();
+        });
+    }
+    
+    public function ForgetItemsOfPaginate() {
+        Cache::tags(['news', 'paginate'])->flush();
     }
 }

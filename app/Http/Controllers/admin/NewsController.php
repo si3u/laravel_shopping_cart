@@ -9,7 +9,6 @@ use App\Http\Requests\Admin\News\AddOrUpdateRequest;
 use App\Http\Requests\Admin\News\SearchRequest;
 use App\News;
 use App\Traits\Controllers\Admin\NewsTrait;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,6 +17,7 @@ class NewsController extends Controller {
     use NewsTrait;
 
     private $image_intervention;
+    private $item_id;
 
     public function __construct() {
         parent::__construct();
@@ -33,9 +33,7 @@ class NewsController extends Controller {
         if ($request->page !== null) {
             $page = $request->page;
         }
-        $news = Cache::tags(['page', $page])->rememberForever('news', function() {
-            return News::GetItems();
-        });
+        $news = $this->GetItemsFromPaginate($page);
         $data = (object)[
             'title' => 'Новости',
             'route_name' => $this->route_name,
@@ -61,8 +59,10 @@ class NewsController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
     public function PageUpdate($id) {
+        $this->item_id = $id;
+
         $validator = Validator::make(
-            ['id' => $id],
+            ['id' => $this->item_id],
             ['id' => 'required|integer|exists:news,id']
         );
         if ($validator->fails()) {
@@ -71,12 +71,19 @@ class NewsController extends Controller {
             ]);
         }
 
+        if ($this->ExistItemInCache()) {
+            $news = $this->GetItemFromCache();
+        }
+        else {
+            $news = $this->CreateItemFromCahe();
+        }
+
         $data = (object)[
             'title' => 'Обновление новости',
             'active_lang' => $this->active_local,
             'route_name' => $this->route_name,
             'item_id' => $id,
-            'news' => News::GetItem($id),
+            'news' => $news,
             'data' => $this->PrepareDataLocal($id)
         ];
         return view('admin.news.work_on', ['page' => $data]);
@@ -116,6 +123,9 @@ class NewsController extends Controller {
                                  $meta_title, $meta_description, $meta_keywords, $tags);
             $i++;
         }
+
+        $this->ForgetItemsOfPaginate();
+
         if (isset($request->image)) {
             return response()->json([
                 'status' => 'success',
@@ -134,6 +144,8 @@ class NewsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function Update(AddOrUpdateRequest $request) {
+        $this->item_id = $request->item_id;
+
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
             $image_name = uniqid('img_').'.'.$exp;
@@ -161,6 +173,11 @@ class NewsController extends Controller {
             $i++;
         }
 
+        if ($this->ExistItemInCache()) {
+            $this->ForgetItemInCache();
+        }
+        $this->ForgetItemsOfPaginate();
+
         if (isset($request->image)) {
             return response()->json([
                 'status' => 'success',
@@ -177,13 +194,22 @@ class NewsController extends Controller {
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function Delete($id) {
+        $this->item_id = $id;
+
         $validator = Validator::make(
-            ['id' => $id], ['id' => 'required|integer|exists:news,id']
+            ['id' => $this->item_id], ['id' => 'required|integer|exists:news,id']
         );
         if ($validator->failed()) {
             return redirect()->route('admin/news')->withErrors($validator);
         }
+        
         News::DeleteItem($id);
+
+        if ($this->ExistItemInCache()) {
+            $this->ForgetItemInCache();
+        }
+        $this->ForgetItemsOfPaginate();
+
         return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
 

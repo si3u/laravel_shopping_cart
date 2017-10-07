@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits\Controllers\Admin;
 use App\Category;
+use Illuminate\Support\Facades\Cache;
 
 trait CategoryControllerTrait {
 
