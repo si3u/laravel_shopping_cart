@@ -1,6 +1,9 @@
 <?php
 namespace App\Traits\Controllers\Admin;
 
+use App\DeliveryMethod;
+use Illuminate\Support\Facades\Cache;
+
 trait DeliveryMethodTrait {
 
     /**
@@ -42,5 +45,51 @@ trait DeliveryMethodTrait {
             $i++;
         }
         return $result;
+    }
+
+    private function GetPaymentMethodsFromCache() {
+        return Cache::rememberForever('payment_method', function() {
+            return PaymentMethod::GetItemsStatic();
+        });
+    }
+
+    public function ExistItemInCache($id) {
+        return Cache::tags(['delivery_method', 'item', $id])->has('delivery_method');
+    }
+
+    public function GetItemFromCache($id) {
+        return Cache::tags(['delivery_method', 'item', $id])->get('delivery_method');
+    }
+
+    public function CreateItemFromCahe() {
+        return Cache::tags(['delivery_method', 'item', $this->id])->rememberForever('delivery_method', function () {
+            return DeliveryMethod::GetDataLocalization($this->id);
+        });
+    }
+
+    public function ForgetItemInCache($id) {
+        Cache::tags(['delivery_method', 'item', $id])->forget('delivery_method');
+    }
+
+    public function GetItemsFromPaginate($page) {
+        return Cache::tags(['delivery_method', 'paginate', $page])->rememberForever('delivery_method', function() {
+            return DeliveryMethod::GetItems();
+        });
+    }
+    
+    public function ForgetItemsOfPaginate() {
+        Cache::tags(['delivery_method', 'paginate'])->flush();
+    }
+
+    private function ForgetCommunicationsIfExistsInCache() {
+        if (Cache::tags(['communications_delivery_method', $this->id])->has('communications_delivery_method')) {
+            Cache::tags(['communications_delivery_method', $this->id])->flush('communications_delivery_method');
+        }
+    }
+
+    private function GetActiveCommunicationsFromCache() {
+        return Cache::tags(['communications_delivery_method', $this->id])->get('communications_delivery_method', function() {
+            return DeliveryMethod::ActiveCommunications($this->id);
+        });
     }
 }

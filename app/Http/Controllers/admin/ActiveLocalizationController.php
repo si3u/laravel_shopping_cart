@@ -5,20 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\ActiveLocalization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Traits\Controllers\Admin\ActiveLocalizationTrait;
 
 class ActiveLocalizationController extends Controller {
+    use ActiveLocalizationTrait;
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function Get() {
-        return response()->json(ActiveLocalization::GetAll());
+        return response()->json($this->GetItemsFromCache('all'));
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function GetActive() {
-        return response()->json(ActiveLocalization::GetActive());
+        return response()->json($this->GetItemsFromCache('active'));
     }
 
     /**
@@ -47,6 +50,8 @@ class ActiveLocalizationController extends Controller {
             ]);
         }
         if (ActiveLocalization::UpdateItem($status)) {
+            $this->ForgetItemsOfCache();
+
             return response()->json([
                 'status' => 'success'
             ]);

@@ -20,6 +20,9 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLogin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
+ * @property string|null $email
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
  */
 class User extends Model implements Authenticatable, \Illuminate\Contracts\Auth\CanResetPassword
 {
