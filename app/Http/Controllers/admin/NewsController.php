@@ -43,7 +43,7 @@ class NewsController extends Controller {
         $data = (object)[
             'title' => 'Новости',
             'route_name' => $this->route_name,
-            'news' => $this->GetItemsFromPaginate()
+            'news' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.news.main', ['page' => $data]);
     }

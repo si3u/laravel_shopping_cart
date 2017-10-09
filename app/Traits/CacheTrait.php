@@ -12,29 +12,22 @@ trait CacheTrait {
         return Cache::tags($this->tags_cache)->get($this->key_cache);
     }
 
-    private function CreateItemFromCahe() {
+    private function GetOrCreateItemFromCache() {
         return Cache::tags($this->tags_cache)->rememberForever($this->key_cache, function () {
-            return call_user_func_array('App\\'.$this->model_cache.'::'.$this->method_cache, $this->parameters_cache);
+            return call_user_func_array(
+                'App\\'.$this->model_cache.'::'.$this->method_cache, 
+                $this->parameters_cache
+            );
         });
     }
 
     private function ForgetItemInCache() {
-        Cache::tags($this->tags_cache)->forget($this->key_cache);
-    }
-
-    private function GetItemsFromPaginate() {
-        return Cache::tags($this->tags_cache)
-		        ->rememberForever($this->key_cache, function() {
-		            return call_user_func_array(
-		            	'App\\'.$this->model_cache.'::'.$this->method_cache, 
-		            	$this->parameters_cache
-		            );
-		        });
+        if ($this->ExistItemInCache()) {
+            Cache::tags($this->tags_cache)->forget($this->key_cache);
+        }
     }
     
     private function ForgetItemsOfPaginate() {
         Cache::tags($this->tags_cache)->flush();
     }
-
-
 }

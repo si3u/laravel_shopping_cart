@@ -6,42 +6,40 @@ use App\DefaultSize;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DefaultSize\AddRequest;
 use App\Http\Requests\Admin\DefaultSize\DeleteRequest;
-use App\Traits\Controllers\Admin\DefaultSizeTrait;
+use App\Traits\CacheTrait;
 
 class DefaultSizeController extends Controller {
+    
+    use CacheTrait;
 
-    use DefaultSizeTrait;
+    public function __construct() {
+        parent::__construct();
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+        $this->model_cache = 'DefaultSize';
+        $this->method_cache = 'GetItems';
+        $this->key_cache = 'default_size';
+    }
+
     public function Page() {
         $data = (object)[
             'title' => 'Список размеров картин',
             'route_name' => $this->route_name,
-            'size' => $this->GetItemFromCache()
+            'size' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.default_sizes.main', ['page' => $data]);
     }
 
-    /**
-     * @param AddRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Add(AddRequest $request) {
-        
+        $item_id = DefaultSize::CreateItem($request->width, $request->height);
+
         $this->ForgetItemInCache();
 
         return response()->json([
             'status' => 'success',
-            'item_id' => DefaultSize::CreateItem($request->width, $request->height)
+            'item_id' => $item_id
         ]);
     }
 
-    /**
-     * @param DeleteRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Delete(DeleteRequest $request) {
         DefaultSize::DeleteItem($request->id);
 

@@ -7,12 +7,12 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Traits\Controllers\Admin\ActiveLocalizationTrait;
+use App\Traits\CacheTrait;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use ActiveLocalizationTrait;
+    use CacheTrait;
 
     protected $active_local;
     protected $active_local_id;
@@ -29,8 +29,22 @@ class Controller extends BaseController
     protected $current_controller;
 
     public function __construct() {
-        $this->active_local = $this->GetItemsFromCache('active');
+        $this->parameters_cache = [];
+        
+        $this->key_cache = 'active_local';
+        $this->model_cache = 'ActiveLocalization';
+        $this->method_cache = 'GetActive';
+        $this->tags_cache = ['active_local', 'active'];
+
+        $this->active_local = $this->GetOrCreateItemFromCache();
+
+        $this->key_cache = null; 
+        $this->model_cache = null; 
+        $this->method_cache = null; 
+        $this->tags_cache = null;
+        
         $this->route_name = \Route::currentRouteName();
+        
         $this->count_active_local = count($this->active_local);
         $i = 0;
         while ($i < $this->count_active_local) {
@@ -39,7 +53,5 @@ class Controller extends BaseController
         }
 
         $this->current_controller = preg_replace('/.*\\\/', '', explode('@', \Route::currentRouteAction()))[0];
-
-        $this->parameters_cache = [];
     }
 }

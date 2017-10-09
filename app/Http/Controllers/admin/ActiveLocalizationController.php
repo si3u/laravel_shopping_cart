@@ -2,26 +2,37 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\CacheTrait;
 use App\ActiveLocalization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Traits\Controllers\Admin\ActiveLocalizationTrait;
 
 class ActiveLocalizationController extends Controller {
-    use ActiveLocalizationTrait;
+    use CacheTrait;
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function __construct() {
+        parent::__construct();
+
+        $this->model_cache = 'ActiveLocalization';
+        $this->key_cache = 'active_local';
+        $this->parameters_cache = [];
+    }
+
     public function Get() {
-        return response()->json($this->GetItemsFromCache('all'));
+        $this->method_cache = 'GetAll';
+        $this->tags_cache = ['active_local', 'all'];
+        
+        return response()->json($this->GetOrCreateItemFromCache());
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function GetActive() {
-        return response()->json($this->GetItemsFromCache('active'));
+        $this->method_cache = 'GetActive';
+        $this->tags_cache = ['active_local', 'active'];
+
+        return response()->json($this->GetOrCreateItemFromCache());
     }
 
     /**
@@ -50,8 +61,12 @@ class ActiveLocalizationController extends Controller {
             ]);
         }
         if (ActiveLocalization::UpdateItem($status)) {
-            $this->ForgetItemsOfCache();
-
+            
+            $this->tags_cache = ['active_local', 'active'];
+            $this->ForgetItemInCache();
+            $this->tags_cache = ['active_local', 'all'];
+            $this->ForgetItemInCache();
+            
             return response()->json([
                 'status' => 'success'
             ]);
