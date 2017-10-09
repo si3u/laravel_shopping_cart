@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\News\AddOrUpdateRequest;
 use App\Http\Requests\Admin\News\SearchRequest;
 use App\News;
+use App\Traits\CacheTrait;
 use App\Traits\Controllers\Admin\NewsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class NewsController extends Controller {
 
     use NewsTrait;
+    use CacheTrait;
 
     private $image_intervention;
     private $item_id;
@@ -23,28 +25,29 @@ class NewsController extends Controller {
         parent::__construct();
 
         $this->image_intervention = new Image();
+
+        //cache
+        $this->key_cache = 'news';
+        $this->model_cache = 'News';
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function Page(Request $request) {
         $page = 1;
         if ($request->page !== null) {
             $page = $request->page;
         }
-        $news = $this->GetItemsFromPaginate($page);
+
+        $this->method_cache = 'GetItems';
+        $this->tags_cache = ['news', 'paginate', $page];
+
         $data = (object)[
             'title' => 'Новости',
             'route_name' => $this->route_name,
-            'news' => $news
+            'news' => $this->GetItemsFromPaginate()
         ];
         return view('admin.news.main', ['page' => $data]);
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Добавление новости',
@@ -54,10 +57,6 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
-     */
     public function PageUpdate($id) {
         $this->item_id = $id;
 
@@ -70,6 +69,10 @@ class NewsController extends Controller {
                 'errors' => $validator->messages()
             ]);
         }
+
+        $this->tags_cache = ['news', 'item', $this->item_id];
+        $this->method_cache = 'GetItem';
+        $this->parameters_cache = [$this->item_id];
 
         if ($this->ExistItemInCache()) {
             $news = $this->GetItemFromCache();
@@ -89,10 +92,6 @@ class NewsController extends Controller {
         return view('admin.news.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param AddOrUpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Add(AddOrUpdateRequest $request) {
         if (isset($request->image)) {
             $exp = $request->image->getClientOriginalExtension();
@@ -124,6 +123,7 @@ class NewsController extends Controller {
             $i++;
         }
 
+        $this->tags_cache = ['news', 'paginate'];
         $this->ForgetItemsOfPaginate();
 
         if (isset($request->image)) {
@@ -139,10 +139,16 @@ class NewsController extends Controller {
         ]);
     }
 
-    /**
-     * @param AddOrUpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    private function DeleteAllItemsInCache() {
+        $this->tags_cache = ['news', 'item', $this->item_id];
+        if ($this->ExistItemInCache()) {
+            $this->ForgetItemInCache();
+        }
+        $this->tags_cache = ['news', 'paginate'];
+        $this->ForgetItemsOfPaginate();
+    }
+
+
     public function Update(AddOrUpdateRequest $request) {
         $this->item_id = $request->item_id;
 
@@ -173,10 +179,7 @@ class NewsController extends Controller {
             $i++;
         }
 
-        if ($this->ExistItemInCache()) {
-            $this->ForgetItemInCache();
-        }
-        $this->ForgetItemsOfPaginate();
+        $this->DeleteAllItemsInCache();
 
         if (isset($request->image)) {
             return response()->json([
@@ -203,20 +206,13 @@ class NewsController extends Controller {
             return redirect()->route('admin/news')->withErrors($validator);
         }
         
-        News::DeleteItem($id);
+        News::DeleteItem($this->item_id);
 
-        if ($this->ExistItemInCache()) {
-            $this->ForgetItemInCache();
-        }
-        $this->ForgetItemsOfPaginate();
+        $this->DeleteAllItemsInCache();
 
         return redirect()->route('admin/news')->with('success', 'Новость была успешно удалена');
     }
 
-    /**
-     * @param SearchRequest $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function Search(SearchRequest $request) {
         $news = News::Search($request);
         $data = (object)[
