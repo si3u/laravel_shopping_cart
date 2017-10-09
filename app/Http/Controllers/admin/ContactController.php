@@ -11,7 +11,6 @@ class ContactController extends Controller {
 
     use CacheTrait;
 
-
     public function __construct() {
         parent::__construct();
 
