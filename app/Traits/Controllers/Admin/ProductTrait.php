@@ -43,8 +43,7 @@ trait ProductTrait {
      * @param $id
      * @return object
      */
-    private function PrepareDataLocal($id) {
-        $data_local = Product::GetDataLocalization($id);
+    private function PrepareDataLocal($data_local) {
         $prepare_data_local = null;
         foreach ($data_local as $item) {
             $key = '';

@@ -6,25 +6,38 @@ use App\Http\Requests\Admin\ProductReview\SearchRequest;
 use App\Http\Requests\Admin\ProductReview\UpdateRequest;
 use App\ProductReview;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\CacheTrait;
+use Illuminate\Http\Request;
 
 class ProductReviewController extends Controller {
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function Page() {
+    public function __construct() {
+        parent::__construct();
+
+        $this->model_cache = 'ProductReview';
+        $this->key_cache = 'product_review';
+        $this->tags_cache = ['product_review', 'page'];
+    }
+
+    use CacheTrait;
+
+    public function Page(Request $request) {
+        $page = 1;
+        if (isset($request->page)) {
+            $page = $request->page;
+        }
+
+        $this->tags_cache = ['product_review', 'page', $page];
+        $this->method_cache = 'GetData';
+
         $data = (object)[
             'title' => 'Управление отзывами',
             'route_name' => $this->route_name,
-            'reviews' => ProductReview::GetData()
+            'reviews' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.reviews.main', ['page' => $data]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -35,6 +48,8 @@ class ProductReviewController extends Controller {
         }
         $review = ProductReview::GetData($id);
         if (!$review->read_status) {
+            $this->ForgetItemsOfPaginate();
+            
             $review->read_status = true;
             $review->save();
         }
@@ -47,13 +62,12 @@ class ProductReviewController extends Controller {
         return view('admin.reviews.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param UpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Update(UpdateRequest $request) {
         if (ProductReview::UpdateItem($request->id, $request->status, $request->score, $request->name,
                                       $request->email, $request->message)) {
+            
+            $this->ForgetItemsOfPaginate();
+
             return response()->json([
                 'status' => 'success'
             ]);
@@ -63,10 +77,6 @@ class ProductReviewController extends Controller {
         ]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Http\RedirectResponse
-     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -77,13 +87,12 @@ class ProductReviewController extends Controller {
         }
 
         ProductReview::DeleteItem($id);
+
+        $this->ForgetItemsOfPaginate();
+
         return redirect()->route('products/reviews')->with('success', 'Отзыв успешно удален');
     }
 
-    /**
-     * @param SearchRequest $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function Search(SearchRequest $request) {
         $data = (object)[
             'title' => 'Поиск по отзывам',

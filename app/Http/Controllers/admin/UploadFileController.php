@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UploadFileController extends Controller {
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Http\JsonResponse|string
-     */
     public function Upload(Request $request) {
         $validator = Validator::make($request->all(), [
             'image' => 'required|mimes:jpg,jpeg,png|max:2048'
@@ -29,11 +25,7 @@ class UploadFileController extends Controller {
 
         return url(url($url . $image_name));
     }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    
     public function Delete(Request $request) {
         $validator = Validator::make($request->all(), [
             'url' => 'required|string|url'

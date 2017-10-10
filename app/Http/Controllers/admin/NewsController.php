@@ -26,7 +26,6 @@ class NewsController extends Controller {
 
         $this->image_intervention = new Image();
 
-        //cache
         $this->key_cache = 'news';
         $this->model_cache = 'News';
     }

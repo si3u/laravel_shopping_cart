@@ -7,26 +7,37 @@ use App\Http\Requests\Admin\PaymentMethod\AddOrUpdateRequest;
 use App\PaymentMethod;
 use App\Traits\Controllers\Admin\PaymentMethodTrait;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use App\Traits\CacheTrait;
 
 class PaymentMethodController extends Controller {
+    public function __construct() {
+        parent::__construct();
+
+        $this->model_cache = 'PaymentMethod';
+        $this->key_cache = 'payment_method';
+    }
 
     use PaymentMethodTrait;
+    use CacheTrait;
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function Page() {
+    public function Page(Request $request) {
+        $page = 1;
+        if (isset($request)) {
+            $page = $request->page;
+        }
+
+        $this->tags_cache = ['payment_method', 'page', $page];
+        $this->method_cache = 'GetItems';
+
         $data = (object)[
             'title' => 'Управлениями методами оплаты',
             'route_name' => $this->route_name,
-            'payment_methods' => PaymentMethod::GetItems()
+            'payment_methods' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.payment_methods.main', ['page' => $data]);
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Добавление метода оплаты',
@@ -36,10 +47,6 @@ class PaymentMethodController extends Controller {
         return view('admin.payment_methods.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -48,20 +55,21 @@ class PaymentMethodController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
+
+        $this->method_cache = 'GetDataLocalization';
+        $this->tags_cache = ['payment_method', 'item', $id];
+        $this->parameters_cache = [$id];
+
         $data = (object)[
             'title' => 'Редактирование метода оплаты',
             'route_name' => $this->route_name,
             'active_lang' => $this->active_local,
             'item_id' => $id,
-            'data' => $this->PrepareDataLocal($id)
+            'data' => $this->PrepareDataLocal($this->GetOrCreateItemFromCache())
         ];
         return view('admin.payment_methods.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param AddOrUpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Add(AddOrUpdateRequest $request) {
         $item_id = PaymentMethod::CreateItem();
         $i = 0;
@@ -70,16 +78,16 @@ class PaymentMethodController extends Controller {
             DataPaymentMethod::CreateItem($item_id, $this->active_local[$i]->id, $name);
             $i++;
         }
+
+        $this->tags_cache = ['payment_method', 'page'];
+        $this->ForgetItemsOfPaginate();
+
         return response()->json([
             'status' => 'success',
             'item_id' => $item_id
         ]);
     }
 
-    /**
-     * @param AddOrUpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Update(AddOrUpdateRequest $request) {
         $i = 0;
         while ($i<$this->count_active_local) {
@@ -88,15 +96,16 @@ class PaymentMethodController extends Controller {
             $i++;
         }
 
+        $this->tags_cache = ['payment_method', 'item', $request->item_id];
+        $this->ForgetItemInCache();
+        $this->tags_cache = ['payment_method', 'page'];
+        $this->ForgetItemsOfPaginate();
+
         return response()->json([
             'status' => 'success'
         ]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Http\RedirectResponse
-     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -107,6 +116,12 @@ class PaymentMethodController extends Controller {
         }
 
         PaymentMethod::DeleteItem($id);
+        
+        $this->tags_cache = ['payment_method', 'item', $id];
+        $this->ForgetItemInCache();
+        $this->tags_cache = ['payment_method', 'page'];
+        $this->ForgetItemsOfPaginate();
+
         return redirect()->route('admin/payment_methods')->with('success', 'Метод успешно удален');
     }
 }

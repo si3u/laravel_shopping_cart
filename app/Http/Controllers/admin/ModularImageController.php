@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ModularImage\AddRequest;
 use App\ModularImage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use App\Traits\CacheTrait;
 
 class ModularImageController extends Controller
 {
@@ -14,23 +16,31 @@ class ModularImageController extends Controller
 
     public function __construct() {
         parent::__construct();
+
         $this->image_intervention = new Image();
+
+        $this->model_cache = 'ModularImage';
+        $this->key_cache = 'modular_images';
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function Page() {
+    use CacheTrait;
+
+    public function Page(Request $request) {
+        $page = 1;
+        if (isset($request->page)) {
+            $page = $request->page;
+        }
+
+        $this->method_cache = 'GetItems';
+        $this->tags_cache = ['modular_images', 'page', $page];
+
         $data = (object)[
             'title' => 'Управление модулями',
-            'modular' => ModularImage::GetItems()
+            'modular' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.modular_image.main', ['page' => $data]);
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function PageAdd() {
         $data = (object)[
             'title' => 'Добавление модулей'
@@ -38,10 +48,7 @@ class ModularImageController extends Controller
         return view('admin.modular_image.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+    
     public function PageUpdate($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -50,17 +57,18 @@ class ModularImageController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
+
+        $this->method_cache = 'GetItem';
+        $this->tags_cache = ['modular_images', 'item', $id];
+        $this->parameters_cache = [$id];
+
         $data = (object)[
             'title' => 'Редактирование модуля',
-            'item' => ModularImage::GetItem($id)
+            'item' => $this->GetOrCreateItemFromCache()
         ];
         return view('admin.modular_image.update', ['page' => $data]);
     }
 
-    /**
-     * @param AddRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Add(AddRequest $request) {
         $exp = $request->file('file')->getClientOriginalExtension();
         $image = uniqid('img_').'.'.$exp;
@@ -70,16 +78,18 @@ class ModularImageController extends Controller
             'assets/images/modular/',
             $exp, 360, 270, '#4169E0'
         );
+
+
         ModularImage::CreateItem($image, $preview_image);
+        
+        $this->tags_cache = ['modular_images', 'page'];
+        $this->ForgetItemsOfPaginate();
+
         return response()->json([
             'status' => 'success'
         ]);
     }
 
-    /**
-     * @param $id
-     * @return $this|\Illuminate\Http\RedirectResponse
-     */
     public function Delete($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -88,7 +98,14 @@ class ModularImageController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
+
         ModularImage::DeleteItem($id);
+
+        $this->tags_cache = ['modular_images', 'page'];
+        $this->ForgetItemsOfPaginate();
+        $this->tags_cache = ['modular_images', 'item', $id];
+        $this->ForgetItemInCache();
+
         return redirect()->back()->with('success', 'Модуль успешно удален');
     }
 }

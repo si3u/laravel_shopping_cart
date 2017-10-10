@@ -30,7 +30,6 @@ class AddOrUpdateRequest extends FormRequestBase
             $i++;
         }
 
-        $this->rules_local['vendor_code'] = 'required|integer|unique:products,vendor_code';
         $this->rules_local['min_width'] = 'required|integer';
         $this->rules_local['max_width'] = 'required|integer';
         $this->rules_local['min_height'] = 'required|integer';
@@ -42,9 +41,6 @@ class AddOrUpdateRequest extends FormRequestBase
         $this->rules_local['color.*'] = 'nullable|integer|exists:filter_by_colors,id';
         $this->rules_local['status'] = 'required|boolean';
 
-        $this->messages_local['vendor_code.required'] = 'Вы не ввели Артикел товара';
-        $this->messages_local['vendor_code.integer'] = 'Артикул товара должен быть целочисленным значением';
-        $this->messages_local['vendor_code.unique'] = 'Товар с этим Артикулом уже существует';
         $this->messages_local['min_width.required'] = 'Вы не указали Минимальную ширину';
         $this->messages_local['min_width.integer'] = 'Минимальная ширина должена быть целочисленным значением';
         $this->messages_local['max_width.required'] = 'Вы не указали Максимальную ширину';
@@ -90,6 +86,11 @@ class AddOrUpdateRequest extends FormRequestBase
             $this->messages_local['item_id.exists'] = 'Товара с данным ID не существует';
         }
         else {
+            $this->rules_local['vendor_code'] = 'required|integer|unique:products,vendor_code';
+            $this->messages_local['vendor_code.required'] = 'Вы не ввели Артикел товара';
+            $this->messages_local['vendor_code.integer'] = 'Артикул товара должен быть целочисленным значением';
+            $this->messages_local['vendor_code.unique'] = 'Товар с этим Артикулом уже существует';
+
             $this->rules_local['image'] = 'required|mimes:jpg,jpeg,png|max:2048';
         }
         $this->messages_local['image.mimes'] = 'Допустимые разширения для изображения: jpg,jpeg, png';

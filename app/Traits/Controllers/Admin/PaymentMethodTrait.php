@@ -5,12 +5,7 @@ use App\PaymentMethod;
 
 trait PaymentMethodTrait {
 
-    /**
-     * @param $id
-     * @return object
-     */
-    private function PrepareDataLocal($id) {
-        $data_local = PaymentMethod::GetDataLocalization($id);
+    private function PrepareDataLocal($data_local) {
         $prepare_data_local = null;
         foreach ($data_local as $item) {
             if ($item->lang_id == 1) {

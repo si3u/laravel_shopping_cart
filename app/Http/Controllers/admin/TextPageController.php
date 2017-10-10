@@ -7,15 +7,22 @@ use App\Http\Requests\Admin\TextPage\UpdateRequest;
 use App\TextPage;
 use App\Traits\Controllers\Admin\TextPageTrait;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use App\Traits\CacheTrait;
 
 class TextPageController extends Controller {
 
-    use TextPageTrait;
+    public function __construct() {
+        parent::__construct();
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
-     */
+        $this->model_cache = 'TextPage';
+        $this->key_cache = 'text_page';
+        $this->method_cache = 'GetItems';
+    }
+
+    use TextPageTrait;
+    use CacheTrait;
+
     public function Get($id) {
         $validator = Validator::make(
             ['id' => $id],
@@ -37,20 +44,20 @@ class TextPageController extends Controller {
                 $name = 'Сотрудничество';
                 break;
         }
+
+        $this->parameters_cache = [$id];
+        $this->tags_cache = ['text_page', 'item', $id];
+
         $data = (object)[
             'title' => 'Текстовая страница | '.$name,
             'id' => $id,
             'active_lang' => $this->active_local,
-            'data' => $this->PrepareData($id)
+            'data' => $this->PrepareData($this->GetOrCreateItemFromCache())
         ];
 
         return view('admin.text_page.work_on', ['page' => $data]);
     }
 
-    /**
-     * @param UpdateRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Update(UpdateRequest $request) {
         $i = 0;
         while ($i<count($this->active_local)) {
@@ -58,6 +65,10 @@ class TextPageController extends Controller {
             TextPage::UpdateItem($request->id, $this->active_local[$i]->id, $value);
             $i++;
         }
+
+        $this->tags_cache = ['text_page', 'item', $request->id];
+        $this->ForgetItemInCache();
+
         return response()->json(['status' => 'success']);
     }
 }

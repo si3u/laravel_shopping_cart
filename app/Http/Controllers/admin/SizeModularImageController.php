@@ -8,10 +8,6 @@ use App\SizeModularImage;
 
 class SizeModularImageController extends Controller {
 
-    /**
-     * @param AddRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function Add(AddRequest $request) {
         $count_number = SizeModularImage::CountNumber($request->modular_id, $request->number);
         if ($count_number > 0) {
@@ -25,11 +21,7 @@ class SizeModularImageController extends Controller {
             'item_id' => $id
         ]);
     }
-
-    /**
-     * @param DeleteRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    
     public function Delete(DeleteRequest $request) {
         SizeModularImage::DeleteItem($request->id);
         return response()->json([

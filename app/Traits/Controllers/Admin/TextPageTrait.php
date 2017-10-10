@@ -9,8 +9,7 @@ trait TextPageTrait {
      * @param $id
      * @return object
      */
-    private function PrepareData($id) {
-        $data = TextPage::GetItems($id);
+    private function PrepareData($data) {
         $prepare_data = null;
         foreach ($data as $datum) {
             if ($datum->lang_id == 1) {
