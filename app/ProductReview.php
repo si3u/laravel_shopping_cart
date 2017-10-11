@@ -110,10 +110,10 @@ class ProductReview extends Model
         if (isset($request->email)) {
             $query->where('product_reviews.email', $request->email);
         }
-        if (isset($request->text_search) {
+        if (isset($request->text_search)) {
             $query->where('product_reviews.message', 'LIKE', '%'.$request->text_search.'%');
         }
-        if (isset($request->check_status) {
+        if (isset($request->check_status)) {
             if ($request->check_status == '1') {
                 $query->where('product_reviews.check_status', true);
             }
@@ -121,10 +121,10 @@ class ProductReview extends Model
                 $query->where('product_reviews.check_status', false);
             }
         }
-        if (isset($request->read_status) {
+        if (isset($request->read_status)) {
             $query->where('product_reviews.read_status', false);
         }
-        if (isset($request->score) {
+        if (isset($request->score)) {
             if ($request->score != 0) {
                 $query->where('rating', $request->score);
             }
