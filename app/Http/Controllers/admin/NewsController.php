@@ -73,12 +73,7 @@ class NewsController extends Controller {
         $this->method_cache = 'GetItem';
         $this->parameters_cache = [$this->item_id];
 
-        if ($this->ExistItemInCache()) {
-            $news = $this->GetItemFromCache();
-        }
-        else {
-            $news = $this->CreateItemFromCahe();
-        }
+        $news = $this->GetOrCreateItemFromCache();
 
         $data = (object)[
             'title' => 'Обновление новости',

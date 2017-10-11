@@ -94,7 +94,7 @@ class News extends Model
     protected function Search($request) {
         $query = News::query();
         $query->join('data_news', 'news.id', '=', 'data_news.news_id');
-        if ($request->has('text')) {
+        if (isset($request->text)) {
             switch ($request->option) {
                 case '1':
                     $query->where('data_news.topic', 'LIKE', '%'.$request->text.'%');
@@ -108,13 +108,13 @@ class News extends Model
                     break;
             }
         }
-        if ($request->has('date_start') && $request->has('date_end')) {
+        if (isset($request->date_start) && isset($request->date_end)) {
             $query->whereBetween('news.created_at', [$request->date_start, $request->date_end]);
         }
-        if (!$request->has('date_start') && $request->has('date_end')) {
+        if (!isset($request->date_start) && isset($request->date_end)) {
             $query->where('news.created_at', '<=', $request->date_end);
         }
-        if ($request->has('date_start') && !$request->has('date_end')) {
+        if (isset($request->date_start) && !isset($request->date_end)) {
             $query->where('news.created_at', '>=', $request->date_start);
         }
         $query->select(

@@ -166,33 +166,33 @@ class Product extends Model
 
     protected function Search($options) {
         $query = Product::query();
-        if ($options->has('status')) {
+        if (isset($options->status)) {
             $query->where('products.status', $options->status);
         }
         $query->join('data_products', 'products.id', '=', 'data_products.product_id');
         $query->join('product_categories', 'products.id', '=', 'product_categories.product_id');
 
-        if ($options->has('vendor_code')) {
+        if (isset($options->vendor_code)) {
             $query->where('products.vendor_code', $options->vendor_code);
         }
 
-        if ($options->has('name')) {
+        if (isset($options->name)) {
             $query->where('data_products.name', 'LIKE', '%'.$options->name.'%');
         }
 
-        if ($options->has('category')) {
+        if (isset($options->category)) {
             $query->whereIn('product_categories.category_id', $options->category);
         }
-        if ($options->has('date_start') && $options->has('date_end')) {
+        if (isset($options->date_start) && isset($options->date_end)) {
             $query->where([
                 ['created_at', '>=', $options->date_start],
                 ['created_at', '<=', $options->date_end]
             ]);
         }
-        if ($options->has('date_start') && !$options->has('date_end')) {
+        if (isset($options->date_start) && !isset($options->date_end)) {
             $query->where('created_at', '>=', $options->date_start);
         }
-        if (!$options->has('date_start') && $options->has('date_end')) {
+        if (!isset($options->date_start) && isset($options->date_end)) {
             $query->where('created_at', '<=', $options->date_end);
         }
         $query->select(

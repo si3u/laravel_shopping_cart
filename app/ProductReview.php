@@ -104,16 +104,16 @@ class ProductReview extends Model
         $query->join('products', 'product_reviews.product_id', '=', 'products.id');
         $query->join('data_products', 'product_reviews.product_id', '=', 'data_products.product_id');
         $query->where('data_products.lang_id', 1);
-        if ($request->has('vendor_code')) {
+        if (isset($request->vendor_code)) {
             $query->where('products.vendor_code', $request->vendor_code);
         }
-        if ($request->has('email')) {
+        if (isset($request->email)) {
             $query->where('product_reviews.email', $request->email);
         }
-        if ($request->has('text_search')) {
+        if (isset($request->text_search) {
             $query->where('product_reviews.message', 'LIKE', '%'.$request->text_search.'%');
         }
-        if ($request->has('check_status')) {
+        if (isset($request->check_status) {
             if ($request->check_status == '1') {
                 $query->where('product_reviews.check_status', true);
             }
@@ -121,24 +121,24 @@ class ProductReview extends Model
                 $query->where('product_reviews.check_status', false);
             }
         }
-        if ($request->has('read_status')) {
+        if (isset($request->read_status) {
             $query->where('product_reviews.read_status', false);
         }
-        if ($request->has('score')) {
+        if (isset($request->score) {
             if ($request->score != 0) {
                 $query->where('rating', $request->score);
             }
         }
-        if ($request->has('date_start') && $request->has('date_end')) {
+        if (isset($request->date_start) && isset($request->date_end)) {
             $query->whereBetween(
                 'product_reviews.created_at',
                 [$request->date_start, $request->date_end]
             );
         }
-        if (!$request->has('date_start') && $request->has('date_end')) {
+        if (!isset($request->date_start) && isset($request->date_end)) {
             $query->where('product_reviews.created_at', '<=', $request->date_end);
         }
-        if ($request->has('date_start') && !$request->has('date_end')) {
+        if (isset($request->date_start) && !isset($request->date_end)) {
             $query->where('product_reviews.created_at', '>=', $request->date_start);
         }
         $query->orderBy('product_reviews.created_at', 'desc');
