@@ -95,7 +95,7 @@ class NewsController extends Controller {
                 'assets/images/news/'.$image_name,
                 'assets/images/news/',
                 $exp,
-                300, 300
+                637, 422
             );
             $item_id = News::CreateItem($image_name, $preview_image_name);
         }

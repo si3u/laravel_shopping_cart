@@ -15,16 +15,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        $this->SetRouteLang();
         view()->composer(['admin.includes.sidebar'], \App\Views\Composers\NotificationComposer::class);
+        view()->composer('*', function ($view) {
+            $view->with('active_locale', \App::getLocale());
+        });
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
+    public function SetRouteLang() {
+        $language = \Request::segment(1);
+        $route_lang = '';
+        if (isset(config('app.locales')[$language])) {
+            \App::setLocale($language);
+            $route_lang = $language;
+        }
+
+        \Config::set('route_lang', $route_lang);
     }
 }

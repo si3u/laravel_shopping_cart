@@ -51,9 +51,9 @@
                                             <tr id="item_{{$news->id}}">
                                                 <td>
                                                     @if($news->image_preview != null)
-                                                        <img class="textimg-responsive thumb-lg" src="/assets/images/news/{{$news->image_preview}}" alt="image">
+                                                        <img width="150" height="auto" class="img-responsive" src="/assets/images/news/{{$news->image_preview}}" alt="image">
                                                     @else
-                                                        <img class="img-responsive thumb-lg" src="/assets/images/default.png" alt="image">
+                                                        <img width="150" height="auto" class="img-responsive" src="/assets/images/default.png" alt="image">
                                                     @endif
                                                 </td>
                                                 <td>{{str_limit($news->topic, $limit = 100, $end = '...')}}</td>

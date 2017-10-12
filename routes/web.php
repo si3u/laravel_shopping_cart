@@ -1,8 +1,13 @@
 <?php
-Route::group(['middleware' => ['web']], function() {
+Route::group([
+    'middleware' => ['web'],
+    'prefix' => Config::get('route_lang')
+], function() {
     Route::get('/', function () {
-        echo "not auth";
-    });
+        return view('index');
+    })->name('public.index');
+
+    Route::get('/news', 'NewsController@Page')->name('public.news');
 
     // // //orders
     Route::post('/order/create', [
@@ -24,9 +29,6 @@ Route::group(['middleware' => ['web']], function() {
 });
 
 Route::group(['middleware' => ['only-administration']], function() {
-    Route::get('/', function () {
-        echo "index page";
-    });
 
     Route::get('/admin', function () {
         return view('admin.main');

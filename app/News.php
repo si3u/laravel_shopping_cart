@@ -4,7 +4,7 @@ namespace App;
 
 use App\Classes\Image;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use App\Base\ModelBase;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -22,22 +22,35 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class News extends Model
+class News extends ModelBase
 {
     public $primaryKey = 'id';
     public $timestamps = true;
     private $carbon;
     private $image_intervention;
 
-    public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
+    public function __construct() {
+        parent::__construct();
+
         $this->carbon = Carbon::now();
         $this->image_intervention = new Image();
     }
+
     protected function DataLocalization() {
         return $this->hasMany('App\DataNews', 'news_id');
     }
 
+
+    // // //public
+    protected function PublicGetItems() {
+        return DB::table('news')
+            ->orderBy('news.created_at', 'desc')
+            ->join('data_news', 'news.id', '=', 'data_news.news_id')
+            ->where('data_news.lang_id', $this->active_localization_id)
+            ->paginate(3);
+    }
+
+    // // //admin
     protected function GetItems() {
         return DB::table('news')
             ->orderBy('news.created_at', 'desc')
