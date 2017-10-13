@@ -16,7 +16,7 @@
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
-                                    <a href="{{route('admin/comments')}}">
+                                    <a href="{{route('admin/news/comments')}}">
                                         <i class="dripicons-arrow-thin-left"></i> Ко всем комментариям
                                     </a>
                                 </li>
@@ -52,10 +52,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="message" class="col-md-3 control-label">
-                                                Сообщение
+                                                Комментарий
                                             </label>
                                             <div class="col-md-9">
-                                                <textarea id="message" name="message" rows="3" class="form-control">{{$page->comment->message}}</textarea>
+                                                <textarea id="message" name="message" rows="3" class="form-control">{{$page->comment->text}}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -85,10 +85,10 @@
                                             <label class="col-md-3 control-label">
                                             </label>
                                             <div class="col-md-9">
+                                                <a type="button" onclick="$('#modal_news_comment_delete').modal('show');" class="btn btn-lg btn-danger">
+                                                    Удалить
+                                                </a>
                                                 <div class="pull-right">
-                                                    <button onclick="$('#modal_comment_delete').modal('show');" class="btn btn-lg btn-danger">
-                                                        Удалить
-                                                    </button>
                                                     <button type="submit" class="btn btn-lg btn-success">
                                                         Сохранить
                                                     </button>
@@ -99,21 +99,19 @@
                                 </div>
                                 <div class="col-md-5">
                                     <p class="text-center text-custom font-13">
-                                        <strong>Информация о товаре</strong>
+                                        <strong>Информация о новости</strong>
                                     </p>
                                     <hr>
                                     <div class="thumbnail">
-                                        <img src="/assets/images/products/{{$page->comment->product_image}}" class="img-responsive">
+                                        <img src="/assets/images/news/{{$page->comment->news_image}}" class="img-responsive">
                                         <div class="caption">
                                             <dl class="dl-horizontal">
-                                                <dt>Артикул:</dt>
-                                                <dd>{{$page->comment->vendor_code}}</dd>
                                                 <dt>Наименование:</dt>
-                                                <dd>{{$page->comment->product_name}}</dd>
+                                                <dd>{{$page->comment->news_topic}}</dd>
                                             </dl>
                                             <p class="text-right">
-                                                <a target="_blank" href="{{route('admin/product/update_page', ['id' => $page->comment->product_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
-                                                    Открыть товар
+                                                <a target="_blank" href="{{route('news/update_page', ['id' => $page->comment->news_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
+                                                    Открыть новость
                                                 </a>
                                             </p>
                                         </div>
@@ -126,8 +124,8 @@
             </div>
         </div>
     </div>
-    @include('admin.comments.modal_delete')
+    @include('admin.news.comments.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/js/project/comment.js') !!}
+    {!! script_ts('/assets/admin/js/project/news_comment.js') !!}
 @endsection

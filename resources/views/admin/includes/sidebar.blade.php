@@ -65,12 +65,40 @@
                         </li>
                     </ul>
                 </li>
+
                 <li>
-                    <a href="{{route('admin/news')}}">
+                    <a href="javascript: void(0);" aria-expanded="true">
                         <i class="mdi mdi-newspaper"></i>
-                        <span> Новости </span>
+                        <span>
+                            Новости
+                        </span>
+                        @if($count_new_news_comments > 0)
+                            <span class="badge badge-success pull-right">
+                                {{$count_new_news_comments}}
+                            </span>
+                        @else
+                            <span class="menu-arrow"></span>
+                        @endif
                     </a>
+                    <ul class="nav-second-level nav" aria-expanded="true">
+                        <li>
+                            <a href="{{route('admin/news')}}">
+                                Список новостей
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin/news/comments')}}">
+                                Комментарии
+                                @if($count_new_news_comments > 0)
+                                    <span class="badge badge-success pull-right">
+                                        {{$count_new_news_comments}}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                
                 <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-align-justify"></i>

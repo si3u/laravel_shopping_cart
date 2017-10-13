@@ -8,6 +8,8 @@ Route::group([
     })->name('public.index');
 
     Route::get('/news', 'NewsController@Page')->name('public.news');
+    Route::get('/news/{id}', 'NewsController@Show')->name('public.show_news');
+    Route::post('/news/comment/create', 'NewsCommentController@Create')->name('public.news.comment.create');
 
     // // //orders
     Route::post('/order/create', [
@@ -113,6 +115,20 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/news/update/{id}', [
         'uses' => 'admin\NewsController@PageUpdate'
     ])->name('news/update_page');
+
+    Route::get('/admin/news/comments', [
+        'uses' => 'admin\NewsCommentController@Page'
+    ])->name('admin/news/comments');
+    Route::get('/admin/news/comments/update/{id}', [
+        'uses' => 'admin\NewsCommentController@PageUpdate'
+    ])->name('admin/news/comment/update_page');
+
+    Route::post('/admin/news/comment/update', [
+        'uses' => 'admin\NewsCommentController@Update'
+    ])->name('admin/news/comment/update');
+    Route::get('/admin/news/comment/delete/{id}', [
+        'uses' => 'admin\NewsCommentController@Delete'
+    ])->name('admin/news/comment/delete');
 
     Route::post('/admin/news/add', [
         'uses' => 'admin\NewsController@Add'

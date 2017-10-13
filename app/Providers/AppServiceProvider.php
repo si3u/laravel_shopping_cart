@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Carbon\Carbon::setLocale(config('app.locale'));
         Schema::defaultStringLength(191);
         $this->SetRouteLang();
         view()->composer(['admin.includes.sidebar'], \App\Views\Composers\NotificationComposer::class);

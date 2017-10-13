@@ -67,7 +67,7 @@ class ProductComment extends Model
 
     protected function UpdateItem($id, $status, $name, $email, $message) {
         $item = ProductComment::find($id);
-            $item->check_status = $status;
+        $item->check_status = $status;
         $item->name = $name;
         $item->email = $email;
         $item->message = $message;

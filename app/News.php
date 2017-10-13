@@ -40,6 +40,10 @@ class News extends ModelBase
         return $this->hasMany('App\DataNews', 'news_id');
     }
 
+    protected function Comments() {
+        return $this->hasMany('App\NewsComment', 'news_id');
+    }
+
 
     // // //public
     protected function PublicGetItems() {
@@ -47,7 +51,47 @@ class News extends ModelBase
             ->orderBy('news.created_at', 'desc')
             ->join('data_news', 'news.id', '=', 'data_news.news_id')
             ->where('data_news.lang_id', $this->active_localization_id)
+            ->select(
+                'news.id',
+                'news.image_preview',
+                'news.created_at',
+                'data_news.topic',
+                'data_news.text'
+            )
             ->paginate(3);
+    }
+
+    protected function GetMultipleItems($quantity) {
+        return DB::table('news')
+            ->orderBy('news.created_at', 'desc')
+            ->join('data_news', 'news.id', '=', 'data_news.news_id')
+            ->where('data_news.lang_id', $this->active_localization_id)
+            ->select(
+                'news.id',
+                'news.image_preview',
+                'news.created_at',
+                'data_news.topic'
+            )
+            ->limit($quantity)->get();
+    }
+
+    protected function PublicGetItem($id) {
+        return DB::table('news')
+            ->where('news.id', $id)
+            ->join('data_news', 'news.id', '=', 'data_news.news_id')
+            ->where('data_news.lang_id', $this->active_localization_id)
+            ->select(
+                'news.id',
+                'news.image',
+                'news.created_at',
+                'data_news.topic',
+                'data_news.text'
+            )
+            ->first();
+    }
+
+    protected function GetComments($id) {
+        return News::find($id)->Comments()->where('check_status', true)->orderBy('id', 'desc')->paginate(10);
     }
 
     // // //admin

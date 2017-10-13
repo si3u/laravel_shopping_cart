@@ -11,18 +11,34 @@
                     </nav>
                     <div class="language-switcher-wrap">
                         <ul class="language-flag-switcher">
-                            <li class="current-lang lang-switcher-li">
-                                <a href="/ru">
-                                    <img width="18" height="12" alt="ua" src="{{asset('assets/images/ru.png')}}"> Русский <span class="icon-lang"><i class="fa fa-angle-down"></i></span>
-                                <a/>
-                                <ul class="language-switcher-inner">
-                                    <li class="lang-switcher-li">
-                                        <a href="/ua">
-                                            <img width="18" height="12" alt="ua" src="{{asset('assets/images/ua.png')}}"> Українська
-                                        <a/>
-                                    </li>
-                                </ul>
-                            </li>
+                            @if (app()->getLocale() === 'ru')
+                                <li class="current-lang lang-switcher-li">
+                                    <a href="/ru">
+                                        <img width="18" height="12" alt="ua" src="{{asset('assets/images/ru.png')}}"> Русский <span class="icon-lang"><i class="fa fa-angle-down"></i></span>
+                                    <a/>
+                                    <ul class="language-switcher-inner">
+                                        <li class="lang-switcher-li">
+                                            <a href="/ua">
+                                                <img width="18" height="12" alt="ua" src="{{asset('assets/images/ua.png')}}"> Українська
+                                            <a/>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @else
+                                <li class="current-lang lang-switcher-li">
+                                    <a href="/ua">
+                                        <img width="18" height="12" alt="ua" src="{{asset('assets/images/ua.png')}}"> Українська <span class="icon-lang"><i class="fa fa-angle-down"></i></span>
+                                    <a/>
+                                    <ul class="language-switcher-inner">
+                                        <li class="lang-switcher-li">
+                                            <a href="/ru">
+                                                <img width="18" height="12" alt="ua" src="{{asset('assets/images/ru.png')}}"> Русский
+                                            <a/>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+
                         </ul>
                     </div>
                 </div>
