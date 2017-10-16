@@ -6,7 +6,7 @@
                 <p class="panel-sub-title text-muted">Ни один с параметров не являтся обязательным параметром для поиска</p>
             </div>
             <div class="panel-body">
-                <form action="{{route('comments/search')}}" method="get" class="form-horizontal" role="form">
+                <form action="{{route('admin/news/comments/search')}}" method="get" class="form-horizontal" role="form">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -74,6 +74,9 @@
                             <div class="form-group">
                                 <label for="status" class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
+                                    <button type="reset" value="Reset" class="btn btn-lg btn-default">
+                                        Сбросить
+                                    </button>
                                     <button type="submit" class="btn btn-lg btn-success">
                                         Поиск
                                     </button>

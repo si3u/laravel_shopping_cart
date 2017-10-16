@@ -3,6 +3,11 @@ namespace App\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Base\ModelBase
+ *
+ * @mixin \Eloquent
+ */
 class ModelBase extends Model {
 
     protected $active_localization_id;

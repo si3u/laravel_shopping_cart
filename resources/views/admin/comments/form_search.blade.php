@@ -74,6 +74,9 @@
                             <div class="form-group">
                                 <label for="status" class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
+                                    <button type="reset" value="Reset" class="btn btn-lg btn-default">
+                                        Сбросить
+                                    </button>
                                     <button type="submit" class="btn btn-lg btn-success">
                                         Поиск
                                     </button>

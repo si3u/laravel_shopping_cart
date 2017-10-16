@@ -35,10 +35,10 @@ class TextPageController extends Controller {
         }
         switch ($id) {
             case 1:
-                $name = 'Доставка и оплата';
+                $name = 'Оплата';
                 break;
             case 2:
-                $name = 'О нас';
+                $name = 'Доставка';
                 break;
             case 3:
                 $name = 'Сотрудничество';

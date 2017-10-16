@@ -11,6 +11,13 @@ Route::group([
     Route::get('/news/{id}', 'NewsController@Show')->name('public.show_news');
     Route::post('/news/comment/create', 'NewsCommentController@Create')->name('public.news.comment.create');
 
+    Route::get('/payment', 'TextPageController@Page')->name('public.text_page.payment');
+    Route::get('/delivery', 'TextPageController@Page')->name('public.text_page.delivery');
+    Route::get('/cooperation', 'TextPageController@Page')->name('public.text_page.cooperation');
+
+    Route::get('/price', 'PriceController@Page')->name('public.price');
+    Route::post('/calculate_price', 'PriceController@PublicCalculatePrice')->name('public.calculate_price');
+
     // // //orders
     Route::post('/order/create', [
         'uses' => 'OrderController@Create'
@@ -129,6 +136,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/news/comment/delete/{id}', [
         'uses' => 'admin\NewsCommentController@Delete'
     ])->name('admin/news/comment/delete');
+    Route::get('/admin/news/comments/search/', [
+        'uses' => 'admin\NewsCommentController@Search'
+    ])->name('admin/news/comments/search');
 
     Route::post('/admin/news/add', [
         'uses' => 'admin\NewsController@Add'
@@ -142,6 +152,14 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/news/search', [
         'uses' => 'admin\NewsController@Search'
     ])->name('admin/news/search');
+
+    // // //text section
+    Route::get('/admin/text_section/{section}', [
+        'uses' => 'admin\TextSectionController@Get'
+    ])->name('admin/text_section/update_page');
+    Route::post('/admin/text_section/update', [
+        'uses' => 'admin\TextSectionController@Update'
+    ])->name('admin/text_section/update');
 
 
     // // //localization
@@ -307,12 +325,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     ])->name('delivery_method/delete');
 
     // // //contacts
-    Route::post('/admin/contacts/get', [
-        'uses' => 'admin\ContactController@Get'
+    Route::get('/admin/contacts', [
+        'uses' => 'admin\ContactController@PageUpdate'
     ])->name('admin/contacts');
-    Route::post('/admin/contacts/update', [
-        'uses' => 'admin\ContactController@Update'
-    ])->name('contacts/update');
 
     // // //recommend products
     Route::get('/admin/recommend_products', [

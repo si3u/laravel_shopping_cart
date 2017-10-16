@@ -22,16 +22,16 @@ class Contact extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
 
-    protected function GetData() {
-        return Contact::find(1);
+    protected function DataLocalization() {
+        return $this->hasMany('App\DataContact', 'contact_id');
     }
 
-    protected function UpdateItem($email, $tel, $address) {
-        $item = Contact::find(1);
-        $item->email = $email;
-        $item->tel = $tel;
-        $item->addresses = $address;
-        $item->save();
+    protected function GetItem() {
+        return Contact::find('1');
+    }
+
+    protected function GetData() {
+        return Contact::find(1)->DataLocalization()->get();
     }
 
     public static function GetEmail() {

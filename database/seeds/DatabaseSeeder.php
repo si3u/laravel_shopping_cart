@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CreateTextPages');
         $this->call('CreatePrices');
         $this->call('CreateContacts');
+        $this->call('CreateContactData');
     }
 }
 class CreateAdmin extends Seeder {
@@ -98,12 +99,12 @@ class CreateTextPages extends Seeder {
         DB::table('text_pages')->delete();
         DB::table('text_pages')->truncate();
         $data = [
-            ['id' => 1, 'value' => 'Доставка и оплата', 'lang_id' => 1],
-            ['id' => 1, 'value' => 'Доставка і оплата', 'lang_id' => 2],
-            ['id' => 1, 'value' => 'Payment and delivery', 'lang_id' => 3],
-            ['id' => 2, 'value' => 'О нас', 'lang_id' => 1],
-            ['id' => 2, 'value' => 'Про нас', 'lang_id' => 2],
-            ['id' => 2, 'value' => 'About us', 'lang_id' => 3],
+            ['id' => 1, 'value' => 'Оплата', 'lang_id' => 1],
+            ['id' => 1, 'value' => 'Оплата', 'lang_id' => 2],
+            ['id' => 1, 'value' => 'Payment', 'lang_id' => 3],
+            ['id' => 2, 'value' => 'Доставка', 'lang_id' => 1],
+            ['id' => 2, 'value' => 'Доставка', 'lang_id' => 2],
+            ['id' => 2, 'value' => 'Delivery', 'lang_id' => 3],
             ['id' => 3, 'value' => 'Сотрудничество', 'lang_id' => 1],
             ['id' => 3, 'value' => 'Співробітництво', 'lang_id' => 2],
             ['id' => 3, 'value' => 'Cooperation', 'lang_id' => 3]
@@ -130,7 +131,31 @@ class CreateContacts extends Seeder {
         DB::table('contacts')->truncate();
 
         DB::table('contacts')->insert([
-            'id' => 1
+            ['contact_id' => 1, 'lang_id' => 1],
+            ['contact_id' => 1, 'lang_id' => 2],
+            ['contact_id' => 1, 'lang_id' => 3],
+        ]);
+    }
+}
+
+class CreateContactData extends Seeder {
+    public function run() {
+        DB::table('data_contacts')->delete();
+        DB::table('data_contacts')->truncate();
+
+        DB::table('data_contacts')->insert([
+            'slug' => 'quote_of_day'
+        ]);
+    }
+}
+
+class CreateQuoteOfDay extends Seeder {
+    public function run() {
+        DB::table('text_sections')->delete();
+        DB::table('text_sections')->truncate();
+
+        DB::table('text_sections')->insert([
+            'slug' => 'quote_of_day'
         ]);
     }
 }

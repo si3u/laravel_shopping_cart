@@ -158,14 +158,14 @@
                         <nav id="right-navigation-right" class="right-navigation head-nav-extra">
                         <div id="main-menu" class="main-nav main-menu">
                             <ul class="menu-nav">
-                                <li class="menu-item"><a href="index.php?price">{{ __('header.prices') }}</a></li>
+                                <li class="menu-item"><a href="{{ route('public.price') }}">{{ __('header.prices') }}</a></li>
                                 <li class="menu-item"><a href="{{route('public.news')}}">{{ __('header.news') }}</a></li>
                                 <li class="menu-item menu-item-has-children">
                                     <a href="#">{{ __('header.help.value') }}</a>
                                     <ul class="sub-menu">
-                                        <li class="menu-item"><a href="index.php?pay">{{ __('header.help.payment') }}</a></li>
-                                        <li class="menu-item"><a href="index.php?delivery">{{ __('header.help.delivery') }}</a></li>
-                                        <li class="menu-item"><a href="index.php?cooperation">{{ __('header.help.cooperation') }}</a></li>
+                                        <li class="menu-item"><a href="{{ route('public.text_page.payment') }}">{{ __('header.help.payment') }}</a></li>
+                                        <li class="menu-item"><a href="{{ route('public.text_page.delivery') }}">{{ __('header.help.delivery') }}</a></li>
+                                        <li class="menu-item"><a href="{{ route('public.text_page.cooperation') }}">{{ __('header.help.cooperation') }}</a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item"><a href="index.php?contact">{{ __('header.contacts') }}</a></li>

@@ -65,16 +65,7 @@
                                 </div>
                             </div>
 
-                            <div class="widget widget_quote">
-                                <h4 class="title-sidebar">{{__('news.quote_day')}}</h4>
-                                <div class="blog-quote">
-                                    <span class="flaticon-left-quote"></span>
-                                    <div class="quote-content">
-                                        Если проблему можно разрешить, не стоит о ней беспокоиться. Если проблема неразрешима, беспокоиться о ней бессмысленно
-                                    </div>
-                                </div>
-                            </div>
-
+                            @include('includes.news.quote_of_day')
 
                         </div>
 

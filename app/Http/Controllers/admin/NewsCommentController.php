@@ -99,12 +99,12 @@ class NewsCommentController extends Controller {
         return redirect()->route('admin/news/comments')->with('success', 'Комментарий успешно удален');
     }
 
-    /*
+
     public function Search(SearchRequest $request) {
         $data = (object)[
-            'title' => 'Поиск по комментариям',
+            'title' => 'Поиск по комментариям новостей',
             'route_name' => $this->route_name,
-            'comments' => ProductComment::Search($request)
+            'comments' => NewsComment::Search($request)
         ];
         if ($request->has('email')) {
             $data->old_email = $request->email;
@@ -124,24 +124,10 @@ class NewsCommentController extends Controller {
         if ($request->has('date_end')) {
             $data->old_date_end = $request->date_end;
         }
-        if ($request->has('vendor_code')) {
-            $data->old_vendor_code = $request->vendor_code;
+        if ($request->has('id_news')) {
+            $data->old_id_news = $request->id_news;
         }
 
-        return view('admin.comments.main', ['page' => $data]);
+        return view('admin.news.comments.main', ['page' => $data]);
     }
-
-    public function SendTrueStatus($id) {
-        $validator = Validator::make(
-            ['id' => $id],
-            ['id' => 'required|integer|exists:product_comments,id']
-        );
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages()
-            ]);
-        }
-
-    }
-    */
 }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\Contact;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(['admin.includes.sidebar'], \App\Views\Composers\NotificationComposer::class);
         view()->composer('*', function ($view) {
             $view->with('active_locale', \App::getLocale());
+        });
+        view()->composer(['includes.header', 'includes.footer', 'contacts'], function ($view) {
+            $view->with('contact', Contact::GetData());
         });
     }
 

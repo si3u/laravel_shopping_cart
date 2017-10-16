@@ -6,6 +6,7 @@
     <title>
         @yield('title')
     </title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
     <link rel='stylesheet' type='text/css' href="{{asset('assets/css/bootstrap.min.css')}}">
@@ -24,11 +25,13 @@
     <link rel='stylesheet' type='text/css' href="{{asset('assets/css/sfdevelop.css')}}"/>
     <link rel='stylesheet' type='text/css' href="{{asset('assets/fonts/style.css')}}"/>
     <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700|Great+Vibes|Montserrat:400,700|Open+Sans:400,400i,600,600i,700,800i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i|Didact+Gothic&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i|Didact+Gothic&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
 </head>
 <body>
-    
+
     @yield('content')
+
+    @include('includes.footer')
 
     <script type='text/javascript' src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script type='text/javascript' src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
@@ -47,10 +50,15 @@
     <script type='text/javascript' src="{{asset('assets/js/jquery.row-grid.js')}}"></script>
     <script type='text/javascript' src="{{asset('assets/js/maska.js')}}"></script>
     <script type="text/javascript">
-        $(function(){
-            $("#phone").mask("+38(999) 999-99-99");
-            $("#phone_contact").mask("+38(999) 999-99-99");
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         });
-    </script>     
+    </script>
+
+    @yield('my_scripts')
 </body>
 </html>

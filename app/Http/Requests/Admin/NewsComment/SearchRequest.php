@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\ProductComment;
+namespace App\Http\Requests\Admin\NewsComment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,7 +29,7 @@ class SearchRequest extends FormRequest
             'check_status' => 'nullable|integer|between:1,2',
             'read_status' => 'nullable|integer',
             'date_start' => 'nullable|date',
-            'date_end' => 'nullable|date',
+            'date_end' => 'nullable|date'
         ];
     }
     public function messages ()
@@ -42,7 +42,7 @@ class SearchRequest extends FormRequest
             'check_status.between' => 'Статус должен быть в пределах значения от 1 до 2',
             'read_status.integer' => 'Значение "Только новые" должно быть целочисленным',
             'date_start.date' => 'Дата "От" имеет не верный формат',
-            'date_end.date' => 'Дата "До" имеет не верный формат',
+            'date_end.date' => 'Дата "До" имеет не верный формат'
         ];
     }
 }

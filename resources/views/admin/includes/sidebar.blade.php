@@ -96,9 +96,14 @@
                                 @endif
                             </a>
                         </li>
+                        <li>
+                            <a href="{{route('admin/text_section/update_page', ['section' => 'quote_of_day'])}}">
+                                Цитата дня
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                
+
                 <li>
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="dripicons-align-justify"></i>
@@ -106,8 +111,8 @@
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
-                        <li><a href="/admin/text_page/1">Оплата и доставка</a></li>
-                        <li><a href="/admin/text_page/2">О нас</a></li>
+                        <li><a href="/admin/text_page/1">Оплата</a></li>
+                        <li><a href="/admin/text_page/2">Доставка</a></li>
                         <li><a href="/admin/text_page/3">Сотрудничество</a></li>
                     </ul>
                 </li>
@@ -121,6 +126,12 @@
                     <a href="{{route('admin/analytics')}}">
                         <i class="icon-chart"></i>
                         <span> Аналитика </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin/contacts') }}">
+                        <i class="dripicons-mail"></i>
+                        <span> Контакты </span>
                     </a>
                 </li>
                 <li>
@@ -151,7 +162,6 @@
                                 <li><a href="{{route('admin/filter_colors')}}">По цвету</a></li>
                             </ul>
                         </li>
-                        <li><a href="javascript:void(0);" onclick="contacts.get()"> Контакты </a></li>
                         <li><a href="javascript:;" onclick="activeLocalization.get()"> Локализации</a></li>
                     </ul>
                 </li>

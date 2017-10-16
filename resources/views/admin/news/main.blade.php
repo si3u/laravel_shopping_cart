@@ -67,6 +67,12 @@
                                                             <i class="dripicons-trash"></i>
                                                         </button>
                                                     </div>
+                                                    <div class="btn-group m-b-10">
+                                                        <a href="{{route('admin/news/comments/search', ['id_news' => $news->id])}}"
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="mdi mdi-comment-multiple-outline"></i>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
