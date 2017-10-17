@@ -58,6 +58,7 @@
             });
         });
     </script>
+    {!! script_ts('/assets/js/project/common.js') !!}
 
     @yield('my_scripts')
 </body>

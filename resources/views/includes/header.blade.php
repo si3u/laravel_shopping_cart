@@ -2,7 +2,7 @@
     <div class="header-top">
         <div class="container">
             <div class="header-top-content">
-                <div class="header-top-left"> <span class="number-phone">+(00) 123 456 789</span></div>
+                <div class="header-top-left"> <span class="number-phone">{{$contact->tel}}</span></div>
                 <div class="header-top-right">
                     <nav class="top-bar-navigation" id="top-bar-navigation">
                         <ul class="top_bar-nav">
@@ -10,7 +10,7 @@
                         </ul>
                     </nav>
                     <div class="language-switcher-wrap">
-                        <ul class="language-flag-switcher">
+                        <ul class="language-flag-switcher" style="min-width: 120px;">
                             @if (app()->getLocale() === 'ru')
                                 <li class="current-lang lang-switcher-li">
                                     <a href="/ru">
@@ -168,7 +168,7 @@
                                         <li class="menu-item"><a href="{{ route('public.text_page.cooperation') }}">{{ __('header.help.cooperation') }}</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="index.php?contact">{{ __('header.contacts') }}</a></li>
+                                <li class="menu-item"><a href="{{ route('public.contatcs') }}">{{ __('header.contacts') }}</a></li>
                             </ul>
                         </div>
                     </nav>

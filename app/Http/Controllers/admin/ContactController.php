@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Contact;
+use App\DataContact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Contact\UpdateRequest;
 use App\Traits\CacheTrait;
+use Illuminate\Http\Request;
 use App\Traits\Controllers\Admin\ContactTrait;
 
 class ContactController extends Controller {
@@ -29,5 +31,23 @@ class ContactController extends Controller {
         ];
 
         return view('admin.contacts.work_on', ['page' => $data]);
+    }
+
+    public function Update(UpdateRequest $request) {
+        $i = 0;
+        while ($i < count($this->active_local)) {
+            $lang_id = $this->active_local[$i]->id;
+            $addresses = $request['addresses_'.$this->active_local[$i]->lang];
+            $working_days = $request['working_days_'.$this->active_local[$i]->lang];
+
+            DataContact::UpdateItem($lang_id, $addresses, $working_days);
+            $i++;
+        }
+
+        Contact::UpdateItem($request->email, $request->tel);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

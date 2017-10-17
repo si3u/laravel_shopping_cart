@@ -60,6 +60,18 @@
                                     <?php $i++; ?>
                                 @endforeach
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"><span class="text-danger">*</span> E-mail</label>
+                                <div class="col-md-10">
+                                    <input id="email" name="email" value="{{ $page->contact->email }}" class="form-control" placeholder="Введите E-mail">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"><span class="text-danger">*</span> Телефон</label>
+                                <div class="col-md-10">
+                                    <input id="tel" name="tel" value="{{ $page->contact->tel }}" class="form-control" placeholder="Введите телефон">
+                                </div>
+                            </div>
                             <div class="form-group" style="display: none;" id="group_errors">
                                 <div class="alert alert-danger alert-dismissible fade in" role="alert">
                                     <div class="text-left" id="errors_list">
@@ -80,5 +92,5 @@
     </div>
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/js/project/textPage.js') !!}
+    {!! script_ts('/assets/admin/js/project/contacts.js') !!}
 @endsection

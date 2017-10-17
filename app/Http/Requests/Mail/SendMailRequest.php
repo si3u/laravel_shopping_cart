@@ -26,24 +26,25 @@ class SendMailRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'text_message' => 'required|string',
+            'text_message' => 'required|string|max:2000',
             'name' => 'required|string|max:255'
         ];
     }
     public function messages ()
     {
         return [
-            'title.required' => 'Вы не указали Заголовок',
-            'title.string' => 'Заголовок должен иметь текстовое значение',
-            'title.max' => 'Заголовок не должен превышать 255 символов',
-            'email.required' => 'Вы не указали E-mail',
-            'email.email' => 'Не верный формат E-mail',
-            'email.max' => 'E-mail не должен превышать 255 символов',
-            'text_message.required' => 'Вы не ввели Сообщение',
-            'text_message.string' => 'Сообщение должно иметь текстовое значение',
-            'name.required' => 'Вы не указали свое Имя',
-            'name.string' => 'Имя должно быть текстовым значением',
-            'name.max' => 'Имя не должно превышать 255 символов',
+            'title.required' => __('contacts.validation.title.required'),
+            'title.string' => __('contacts.validation.title.string'),
+            'title.max' => __('contacts.validation.title.max'),
+            'email.required' => __('contacts.validation.email.required'),
+            'email.email' => __('contacts.validation.email.email'),
+            'email.max' => __('contacts.validation.email.max'),
+            'text_message.required' => __('contacts.validation.text_message.required'),
+            'text_message.string' => __('contacts.validation.text_message.string'),
+            'text_message.max' => __('contacts.validation.text_message.max'),
+            'name.required' => __('contacts.validation.name.required'),
+            'name.string' => __('contacts.validation.name.string'),
+            'name.max' => __('contacts.validation.name.max'),
         ];
     }
     public function response(array $errors) {

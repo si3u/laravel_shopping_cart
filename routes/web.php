@@ -18,15 +18,19 @@ Route::group([
     Route::get('/price', 'PriceController@Page')->name('public.price');
     Route::post('/calculate_price', 'PriceController@PublicCalculatePrice')->name('public.calculate_price');
 
+    Route::get('/contacts', function() {
+        return view('contacts');
+    })->name('public.contatcs');
+
     // // //orders
     Route::post('/order/create', [
         'uses' => 'OrderController@Create'
     ]);
 
     // // //support
-    Route::post('/send_mail', [
+    Route::post('/support/send_mail', [
         'uses' => 'MailController@SendEmail'
-    ])->name('send_mail');
+    ])->name('public.support.send_mail');
 
     Route::get('/admin/login', function () {
         return view('admin.login');
@@ -328,6 +332,9 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/contacts', [
         'uses' => 'admin\ContactController@PageUpdate'
     ])->name('admin/contacts');
+    Route::post('/admin/contacts/update', [
+        'uses' => 'admin\ContactController@Update'
+    ])->name('admin/contacts/update');
 
     // // //recommend products
     Route::get('/admin/recommend_products', [

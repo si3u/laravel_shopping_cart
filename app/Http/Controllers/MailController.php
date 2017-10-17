@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use Notification;
+use App\Notifications\SupportNotification;
 use App\Http\Requests\Mail\SendMailRequest;
 use Illuminate\Support\Facades\Mail;
 
@@ -24,13 +26,15 @@ class MailController extends Controller
             'name' => $request->get('name')
         ];
         if (isset($this->send_to)) {
-            Mail::send('email.support', $data, function ($message) use ($data) {
+            /*Mail::send('email.support', $data, function ($message) use ($data) {
                 $message->from($data['email']);
                 $message->to($this->send_to);
-                $message->subject($data['title'].' | Отправлено с '.$_SERVER['SERVER_NAME']);
-            });
+                $message->subject($data['title'].' | Отправлено с '.config('app.name'));
+            });*/
+            Notification::route('mail', $this->send_to)->notify(new SupportNotification($data));
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
+                'message' => __('contacts.send_success')
             ]);
         }
         return response()->json([

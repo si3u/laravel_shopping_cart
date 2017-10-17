@@ -48,11 +48,6 @@
     С уважением, {{ config('app.name') }}
 @endif
 
-{{-- Subcopy --}}
 @isset($actionText)
-@component('mail::subcopy')
-Если возникли проблемы с нажатием на кнопку "{{ $actionText }}", скопируйте ссылку: [{{ $actionUrl }}]({{ $actionUrl }})
-и вставте ее в адресную строку вашего браузера
-@endcomponent
 @endisset
 @endcomponent

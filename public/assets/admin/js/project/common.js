@@ -69,43 +69,7 @@ var callToast = {
         });
     }
 };
-var contacts = {
-    'get': function () {
-        var form = $('#form_contacts');
-        $.ajax({
-            method: form.attr('method'),
-            url: '/admin/contacts/get',
-            dataType: 'JSON',
-            success: function (response) {
-                form[0].reset();
-                $('#form_contacts #email').val(response.email);
-                $('#form_contacts #tel').val(response.tel);
-                $('textarea#address').val(response.addresses);
-                $('#modal_contacts').modal('show');
-            }
-        });
-    },
-    'update': function () {
-        var form = $('#form_contacts');
-        $.ajax({
-            method: form.attr('method'),
-            url: form.attr('action'),
-            data: form.serialize(),
-            dataType: 'JSON',
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                insertErrorArray(form, XMLHttpRequest.responseJSON.errors, $('#group_errors_contact'), $('#errors_list_contact'));
-                callToast.error('Ошибка', 'при обновлении контактных данных');
-                return false;
-            },
-            success: function (response) {
-                if (response.status == 'success') {
-                    callToast.success('Контактная информация', 'успешно изменена');
-                    return true;
-                }
-            }
-        });
-    }
-};
+
 function insertErrorArray(form, errorData, blockView, insertInto) {
     blockView.show();
     var keys = Object.keys(errorData);

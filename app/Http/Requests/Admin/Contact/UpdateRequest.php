@@ -2,10 +2,27 @@
 
 namespace App\Http\Requests\Admin\Contact;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Base\FormRequestBase;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends FormRequestBase
 {
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        $i = 0;
+        while ($i<$this->count_active_local) {
+            $this->rules_local['addresses_'.$this->active_local[$i]->lang] = 'string|nullable|max:1000';
+            $this->rules_local['working_days_'.$this->active_local[$i]->lang] = 'string|nullable|max:1000';
+
+            $this->messages_local['addresses_'.$this->active_local[$i]->lang.'.string'] = 'Адрес ('.$this->active_local[$i]->lang.') должен быть текстовым значением';
+            $this->messages_local['addresses_'.$this->active_local[$i]->lang.'.max'] = 'Адрес ('.$this->active_local[$i]->lang.') не должен превышать 1000 символов';
+            $this->messages_local['working_days_'.$this->active_local[$i]->lang.'.string'] = 'Рабочие дни ('.$this->active_local[$i]->lang.') поле должно быть текстовым значением';
+            $this->messages_local['working_days_'.$this->active_local[$i]->lang.'.max'] = 'Рабочие дни ('.$this->active_local[$i]->lang.') поле не должно превышать 1000 символов';
+
+            $i++;
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,24 +40,19 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'email' => 'required|string|max:255',
-            'tel' => 'required|string|max:255',
-            'address' => 'required|string'
-        ];
+        $this->rules_local['tel'] = 'string|nullable|max:1000';
+        $this->rules_local['email'] = 'email|nullable|max:1000';
+
+        return $this->rules_local;
     }
     public function messages ()
     {
-        return [
-            'email.required' => 'Вы не указали контактный E-mail',
-            'tel.required' => 'Вы не указали контактный телефон',
-            'address.required' => 'Вы не указали адресу',
-            'email.string' => 'E-mail должен быть текстовым значением',
-            'tel.string' => 'Телефон должен быть текстовым значением',
-            'address.string' => 'Адрес должен быть текстовым значением',
-            'email.max' => 'E-mail не должен превышать 255 символов',
-            'tel.max' => 'Телефон не должен превышать 255 символов',
-        ];
+        $this->messages_local['tel.srting'] = 'Телефон должен быть текстовым значением';
+        $this->messages_local['tel.max'] = 'Телефон не должен превышать 1000 символов';
+        $this->messages_local['email.email'] = 'E-mail неверного формата';
+        $this->messages_local['email.max'] = 'E-mail не должен превышать 1000 символов';
+
+        return $this->messages_local;
     }
     public function response(array $errors) {
         if ($this->expectsJson()) {

@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('active_locale', \App::getLocale());
         });
         view()->composer(['includes.header', 'includes.footer', 'contacts'], function ($view) {
-            $view->with('contact', Contact::GetData());
+            $view->with('contact', Contact::PuclicGetData());
         });
     }
 
