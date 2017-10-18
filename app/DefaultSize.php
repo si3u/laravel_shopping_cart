@@ -21,7 +21,8 @@ class DefaultSize extends Model
     public $timestamps = false;
 
     protected function GetItems() {
-        return DefaultSize::orderBy('width', 'asc')->paginate(10);
+        return DefaultSize::orderBy('width', 'asc')
+        ->paginate(10);
     }
 
     public static function GetItemsStatic() {

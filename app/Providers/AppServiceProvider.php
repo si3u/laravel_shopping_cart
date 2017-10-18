@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Contact;
+use App\DefaultSize;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
         });
         view()->composer(['includes.header', 'includes.footer', 'contacts'], function ($view) {
             $view->with('contact', Contact::PuclicGetData());
+        });
+        view()->composer('print', function ($view) {
+            $view->with('sizes', DefaultSize::GetItemsStatic());
         });
     }
 

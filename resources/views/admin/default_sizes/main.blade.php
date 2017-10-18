@@ -64,7 +64,7 @@
                         </form>
 
                         <div class="text-center">
-                            {{$page->size->render()}}
+                            {{$page->size->links()}}
                         </div>
                     </div>
                 </div>

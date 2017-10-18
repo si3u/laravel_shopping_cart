@@ -19,7 +19,7 @@
     display: block;
     position: relative;
     overflow: hidden;
-    
+
 }
 .sf_padding_15:hover{
     cursor: pointer;
@@ -38,7 +38,7 @@
     opacity: 0.5;
 }
 .icon-box-title{
-    font-family: "Didact Gothic"!important;   
+    font-family: "Didact Gothic"!important;
 }
 .sf_top_80{
     padding-bottom: 80px!impoprtant;
@@ -86,7 +86,7 @@
 }
 .sf_forma_zakaz_grey{
     background: #ccc;
-    padding: 10px;    
+    padding: 10px;
 }
 .sf_dryk ol{
     margin-left: 25px;
@@ -195,7 +195,7 @@
      -moz-transition: .2s ease-out;
      -moz-transition-delay: 0.1s;
      transition: .2s ease-out;
-     transition-delay: 0.1s;    
+     transition-delay: 0.1s;
 }
 .sf_razmer .sf_boot:hover{
     background: #df5c53;
@@ -210,7 +210,7 @@
     font-size: 15px;
 }
 .sf_raz span{
-    color:  #df5c53;  
+    color:  #df5c53;
 }
 .sf_non_pad{
     padding-left: 0px;

@@ -37,20 +37,20 @@ class ProductController extends Controller {
 
     use ProductTrait;
     use CacheTrait;
-    
+
     public function Page(Request $request) {
         $page = 1;
         if (isset($request->page)) {
             $page = $request->page;
         }
-        
+
         $this->method_cache = 'GetItemsForAdmin';
         $this->tags_cache = ['product', 'page', $page];
         $products = $this->GetOrCreateItemFromCache();
-        
+
         $i = 0;
         $count = count($products);
-        $this->model_cache = 'ProductCategory';        
+        $this->model_cache = 'ProductCategory';
         $this->method_cache = 'GetCategoriesItem';
         $this->key_cache = 'product_categories';
         while ($i < $count) {
@@ -99,7 +99,7 @@ class ProductController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
-        
+
         $this->parameters_cache = [$id];
 
         $this->tags_cache = ['product', 'item', $id];
@@ -110,7 +110,7 @@ class ProductController extends Controller {
         $this->method_cache = 'GetDataLocalization';
         $this->key_cache = 'product_data';
         $data_product = $this->GetOrCreateItemFromCache();
-        
+
         $this->method_cache = 'GetFilterColors';
         $this->tags_cache = ['active_colors_product', 'item', $id];
         $this->key_cache = 'active_colors_product';
@@ -125,7 +125,7 @@ class ProductController extends Controller {
         $this->method_cache = 'GetItemsStatic';
         $this->tags_cache = null;
         $this->key_cache = 'default_size';
-        $this->parameters_cache = null;
+        $this->parameters_cache = [];
         $default_size = $this->GetOrCreateItemFromCache();
 
         $this->model_cache = 'FilterByColor';
@@ -332,7 +332,7 @@ class ProductController extends Controller {
 
         $this->tags_cache = ['product', 'page'];
         $this->ForgetItemsOfPaginate();
-        
+
         $this->tags_cache = ['product', 'item', $id];
         $this->ForgetItemInCache();
         $this->tags_cache = ['product_data', 'item', $id];

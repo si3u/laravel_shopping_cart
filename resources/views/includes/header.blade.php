@@ -142,7 +142,7 @@
                                         <li class="menu-item"><a href="index.php?category">В дитячу</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="index.php?dryk">{{ __('header.printing') }}</a></li>
+                                <li class="menu-item"><a href="{{ route('public.print') }}">{{ __('header.printing') }}</a></li>
                             </ul>
                         </div>
                     </nav>

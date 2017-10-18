@@ -22,6 +22,11 @@ Route::group([
         return view('contacts');
     })->name('public.contatcs');
 
+    Route::get('/print', function() {
+        return view('print');
+    })->name('public.print');
+    Route::post('/print/create', 'PrintController@Create')->name('public.print.create');
+
     // // //orders
     Route::post('/order/create', [
         'uses' => 'OrderController@Create'

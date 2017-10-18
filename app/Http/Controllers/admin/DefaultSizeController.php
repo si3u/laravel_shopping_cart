@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DefaultSize\AddRequest;
 use App\Http\Requests\Admin\DefaultSize\DeleteRequest;
 use App\Traits\CacheTrait;
+use Illuminate\Http\Request;
 
 class DefaultSizeController extends Controller {
-    
+
     use CacheTrait;
 
     public function __construct() {
@@ -20,7 +21,12 @@ class DefaultSizeController extends Controller {
         $this->key_cache = 'default_size';
     }
 
-    public function Page() {
+    public function Page(Request $request) {
+        $page = 1;
+        if (isset($request->page)) {
+            $page = $request->page;
+        }
+
         $data = (object)[
             'title' => 'Список размеров картин',
             'route_name' => $this->route_name,
