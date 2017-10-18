@@ -44,6 +44,7 @@ $(document).ready(function() {
         formData.append('width', $('#width').val());
         formData.append('height', $('#height').val());
         formData.append('tel', $('#phone').val());
+        formData.append('canvas', $('#canvas').val());
 
         $.ajax({
             url: $('#form_action').attr('value'),
@@ -52,7 +53,6 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.responseJSON.errors);
                 insertAlertsArray(
                     form,
                     XMLHttpRequest.responseJSON.errors,
@@ -62,7 +62,20 @@ $(document).ready(function() {
                 );
             },
             success: function(response) {
-                console.log(response);
+                if (response.status === 'success') {
+                    var message = {message: [
+                        response.message
+                    ]};
+                    insertAlertsArray(
+                        form,
+                        message,
+                        $('#ajax_alert_group'),
+                        $('#ajax_alert_list'),
+                        'success'
+                    );
+                    form[0].reset();
+                    return true;
+                }
             }
         })
         .done(function() {

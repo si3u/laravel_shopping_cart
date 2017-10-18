@@ -18,21 +18,31 @@
         <h4 class="text-center">{{__('print.left.else')}}</h4>
 
         <div class="form-group">
-            <label class="control-label col-md-4" for="">{{__('print.left.width')}}</label>
+            <label class="control-label col-md-4" for="width">{{__('print.left.width')}}</label>
             <div class="col-md-8">
                 <input type="text" class="form-control" id="width" value="0">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4" for="">{{__('print.left.height')}}</label>
+            <label class="control-label col-md-4" for="height">{{__('print.left.height')}}</label>
             <div class="col-md-8">
                 <input type="text" class="form-control" id="height" value="0">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4" for="">{{__('print.left.tel')}}</label>
+            <label class="control-label col-md-4" for="canvas">{{__('print.left.canvas.lable')}}</label>
+            <div class="col-md-8">
+                <select class="form-control" id="canvas">
+                    <option value="1">{{__('print.left.canvas.op1')}}</option>
+                    <option value="0">{{__('print.left.canvas.op2')}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4" for="phone">{{__('print.left.tel')}}</label>
             <div class="col-md-8">
                 <input id="phone" class="form-control" placeholder="+38(XXX) XXX XX XX">
             </div>

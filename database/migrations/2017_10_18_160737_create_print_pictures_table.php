@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePrintsTable extends Migration
+class CreatePrintPicturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePrintsTable extends Migration
      */
     public function up()
     {
-        Schema::create('prints', function (Blueprint $table) {
+        Schema::create('print_pictures', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tel');
             $table->integer('width');
@@ -22,7 +22,7 @@ class CreatePrintsTable extends Migration
             $table->boolean('read_status')->default(0);
             $table->boolean('processing_status')->default(0);
             $table->text('file', 500);
-            $table->text('file_ext', 6);
+            $table->text('file_exp', 6);
             $table->string('local', 2);
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreatePrintsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prints');
+        Schema::dropIfExists('print_pictures');
     }
 }

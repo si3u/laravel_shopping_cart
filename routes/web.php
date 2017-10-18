@@ -25,7 +25,7 @@ Route::group([
     Route::get('/print', function() {
         return view('print');
     })->name('public.print');
-    Route::post('/print/create', 'PrintController@Create')->name('public.print.create');
+    Route::post('/print/create', 'PrintPictureController@Create')->name('public.print.create');
 
     // // //orders
     Route::post('/order/create', [
