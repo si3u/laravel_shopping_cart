@@ -25,7 +25,7 @@ Route::group([
     Route::get('/print', function() {
         return view('print');
     })->name('public.print');
-    Route::post('/print/create', 'PrintPictureController@Create')->name('public.print.create');
+    Route::post('/print/create', 'OrderPrintPictureController@Create')->name('public.print.create');
 
     // // //orders
     Route::post('/order/create', [
@@ -362,6 +362,21 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::post('/admin/upload_file/', [
         'uses' => 'admin\UploadFileController@Upload'
     ])->name('upload_file');
+
+    // // //order print pictures
+    Route::get('/admin/orders/print_pictures', [
+        'uses' => 'admin\OrderPrintPictureController@Page',
+    ])->name('admin/orders/print_pictures');
+    Route::get('/admin/orders/print_pictures/search', [
+        'uses' => 'admin\OrderPrintPictureController@Search',
+    ])->name('admin/orders/print_pictures/search');
+    Route::get('/admin/orders/print_pictures/delete/{id}', [
+        'uses' => 'admin\OrderPrintPictureController@Delete',
+    ])->name('admin/orders/print_pictures/delete');
+
+    Route::get('/admin/download/{model}/{file_name}', [
+        'uses' => 'admin\FileDownloadController@Run',
+    ])->name('admin/download');
 
     // // //exit
     Route::get('/admin/exit', [

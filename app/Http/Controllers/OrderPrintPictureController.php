@@ -1,36 +1,32 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PrintRequest\CreatePrintRequest;
+use App\Http\Requests\OrderPrintPicture\CreateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
-use App\PrintPicture;
+use App\OrderPrintPicture;
 
-class PrintPictureController extends Controller
+class OrderPrintPictureController extends Controller
 {
     private $date;
 
     public function __construct() {
         parent::__construct();
-
-        $this->date = Carbon::now()->toDateString();
     }
 
-    public function Create(CreatePrintRequest $request) {
-        $path = public_path('assets/print_files/' . $this->date);
-        File::makeDirectory($path, $mode = 0777, true, true);
-
+    public function Create(CreateRequest $request) {
+        $path = storage_path('print_files/');
         $exp = $request->file->getClientOriginalExtension();
         $file_name = uniqid('file_').'.'.$exp;
-        $request->file->move(public_path('assets/print_files/'.$this->date.'/'), $file_name);
+        $request->file->move(storage_path('print_files/'), $file_name);
 
-        PrintPicture::CreateItem(
+        OrderPrintPicture::CreateItem(
             $request->tel,
             $request->width,
             $request->height,
             $request->canvas,
-            $this->date.'/'.$file_name,
+            $file_name,
             $exp,
             $this->controller_lang_id
         );

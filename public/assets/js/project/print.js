@@ -77,16 +77,6 @@ $(document).ready(function() {
                     return true;
                 }
             }
-        })
-        .done(function() {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
-        })
-        .always(function() {
-            console.log("complete");
         });
-
     });
 });

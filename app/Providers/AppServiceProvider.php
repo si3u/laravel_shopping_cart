@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Carbon\Carbon::setLocale(config('app.locale'));
+        setlocale(LC_TIME, config('app.locale').'_'.strtoupper(config('app.locale')).'.utf8');
         Schema::defaultStringLength(191);
         $this->SetRouteLang();
         view()->composer(['admin.includes.sidebar'], \App\Views\Composers\NotificationComposer::class);

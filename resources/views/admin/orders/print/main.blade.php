@@ -15,10 +15,10 @@
                         <div class="page-title-box">
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
-                                @if($page->route_name == 'comments/search')
+                                @if($page->route_name == 'admin/orders/print_pictures/search')
                                     <li>
-                                        <a href="{{route('admin/comments')}}">
-                                            <i class="dripicons-arrow-thin-left"></i> Ко всем комментариям
+                                        <a href="{{route('admin/orders/print_pictures')}}">
+                                            <i class="dripicons-arrow-thin-left"></i> Ко всем заказам на печать
                                         </a>
                                     </li>
                                 @endif
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12">
-                        @include('admin.comments.form_search')
+                        @include('admin.orders.print.form_search')
                         <div class="card-box">
                             @include('admin.includes.alerts.success_alerts')
                             @include('admin.includes.alerts.error_alerts')
@@ -35,49 +35,64 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">ID</th>
-                                    <th></th>
-                                    <th class="text-center">Товар</th>
-                                    <th class="text-center">Автор</th>
-                                    <th class="text-center">E-mail автора</th>
+                                    <th class="text-center">Телефон</th>
+                                    <th class="text-center">Размер</th>
+                                    <th class="text-center">Полотно</th>
+                                    <th class="text-center">Скачать файл</th>
                                     <th class="text-center">Статус</th>
-                                    <th class="text-center">Дата добавления</th>
+                                    <th class="text-center">Инфо.</th>
                                     <th class="text-center">Операции</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(count($page->comments) > 0)
-                                    @foreach($page->comments as $comment)
+                                @if(count($page->orders) > 0)
+                                    @foreach($page->orders as $order)
                                         <tr>
                                             <td class="text-center">
-                                                {{$comment->id}}
-                                                @if(!$comment->read_status)
+                                                {{$order->id}}
+                                                @if(!$order->read_status)
                                                     <span class="badge badge-danger pull-right">New</span>
                                                 @endif
                                             </td>
-                                            <td class="text-center">
-                                                <img src="/assets/images/products/{{$comment->product_image}}" alt="image" class="img-responsive thumb-md">
+                                            <td class="text-left">
+                                                {{ $order->tel }}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{route('comments/search', ['vendor_code' => $comment->product_vendor_code])}}">
-                                                    {{$comment->product_name}}
-                                                </a>
+                                                {{ $order->width }}x{{ $order->height }}
                                             </td>
-                                            <td class="text-center">{{$comment->name}}</td>
-                                            <td class="text-center">{{$comment->email}}</td>
                                             <td class="text-center">
-                                                @if($comment->check_status)
-                                                    Включен
+                                                @if ($order->canvas === 1)
+                                                    Натуральное
                                                 @else
-                                                    Выключен
+                                                    Искуственное
                                                 @endif
                                             </td>
-                                            <td class="text-center">{{$comment->created_at}}</td>
+                                            <td class="text-center">
+                                                <span class="text-info">{{ $order->file_exp }}</span>,
+                                                <a href="{{ route('admin/download', ['model' => 'print_picture', 'file_name' => $order->file]) }}">Скачать</a>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($order->processing_status == 0)
+                                                    Ожидает
+                                                @else
+                                                    {{ $order->processing_name }}
+                                                @endif
+                                            </td>
+                                            <td class="text-left">
+                                                Создан: {{ $order->created_at }}<br>
+                                                С локализации:
+                                                @if ($order->local == 1)
+                                                    Русская
+                                                @elseif ($order->local == 2)
+                                                    Украинская
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group m-b-10">
-                                                    <a href="{{route('comment/page_update', ['id' => $comment->id])}}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
+                                                    <a href="" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
                                                         <i class="dripicons-pencil"></i>
                                                     </a>
-                                                    <button onclick="comment.delete({{$comment->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
+                                                    <button onclick="order_print.delete({{$order->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
                                                         <i class="dripicons-trash"></i>
                                                     </button>
                                                 </div>
@@ -88,7 +103,7 @@
                                     <tr>
                                         <td colspan="8">
                                             <div class="alert alert-info alert-dismissible fade in" role="alert">
-                                                По запросу нет комментариев.
+                                                По запросу нет заказов.
                                             </div>
                                         </td>
                                     </tr>
@@ -97,7 +112,7 @@
                             </table>
 
                             <div class="text-center">
-                                {{$page->comments->appends(request()->input())->render()}}
+                                {{$page->orders->appends(request()->input())->render()}}
                             </div>
                         </div>
                     </div>
@@ -105,7 +120,7 @@
             </div>
         </div>
     </div>
-    @include('admin.comments.modal_delete')
+    @include('admin.orders.print.modal_delete')
 @endsection
 @section('my_scripts')
     {!! script_ts('/assets/admin/js/project/comment.js') !!}

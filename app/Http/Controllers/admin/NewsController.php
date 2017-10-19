@@ -95,7 +95,7 @@ class NewsController extends Controller {
                 'assets/images/news/'.$image_name,
                 'assets/images/news/',
                 $exp,
-                637, 422
+                637, 422, null, 'top'
             );
             $item_id = News::CreateItem($image_name, $preview_image_name);
         }
@@ -154,7 +154,7 @@ class NewsController extends Controller {
                 'assets/images/news/'.$image_name,
                 'assets/images/news/',
                 $exp,
-                300, 300
+                637, 422, null, 'top'
             );
 
             News::UpdateItem($request->item_id, $image_name, $preview_image_name);
@@ -199,7 +199,7 @@ class NewsController extends Controller {
         if ($validator->failed()) {
             return redirect()->route('admin/news')->withErrors($validator);
         }
-        
+
         News::DeleteItem($this->item_id);
 
         $this->DeleteAllItemsInCache();

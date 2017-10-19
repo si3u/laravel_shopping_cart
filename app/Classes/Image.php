@@ -14,7 +14,7 @@ class Image {
      * @param null $bg_color
      * @return string
      */
-    public function CreatePreview($url_img, $url_save, $exp_img, $width, $height, $bg_color = null) {
+    public function CreatePreview($url_img, $url_save, $exp_img, $width, $height, $bg_color = null, $insert = null) {
         if ($bg_color == null) {
             $bg_color = '#fff';
         }
@@ -25,7 +25,11 @@ class Image {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
-        $preview_image->insert($image, 'center');
+        $insert_default = 'center';
+        if ($insert != null) {
+            $insert_default = $insert;
+        }
+        $preview_image->insert($image, $insert_default);
         $preview_image->save(public_path($url_save.$preview_name));
         return $preview_name;
     }

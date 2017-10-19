@@ -6,6 +6,8 @@ use App\NewsComment;
 use Illuminate\Http\Request;
 use Validator;
 use App\Traits\CacheTrait;
+use App\Http\Requests\News\CreateRequest;
+
 class NewsCommentController extends Controller
 {
     public function __construct() {
@@ -18,24 +20,15 @@ class NewsCommentController extends Controller
 
     use CacheTrait;
 
-    public function Create(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'news_id' => 'required|integer|exists:news,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:1000',
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->with('autofocus', true)->withInput();
-        }
+    public function Create(CreateRequest $request) {
 
         NewsComment::CreateItem($request->news_id, $request->name, $request->email, $request->message);
 
         $this->ForgetItemsOfPaginate();
 
-        return redirect()->back()->with([
-            'success' => __('news.comment.success'),
-            'autofocus' => true
+        return response()->json([
+            'status' => 'success',
+            'message' => __('news.comment.success')
         ]);
     }
 }

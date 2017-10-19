@@ -13,7 +13,7 @@
                                 <div class="blog-wrap">
                                     @if (count($news) > 0)
                                         @foreach ($news as $item)
-                                            <?php //$dt = \Carbon\Carbon::parse($item->created_at); echo $dt->toFormattedDateString(); ?>
+                                            {{$created = \Carbon\Carbon::parse($item->created_at)->formatLocalized('%d %b %Y')}}
                                             <article class="blog-item">
                                                 <header class="entry-header">
                                                     <h3 class="entry-title post-title"><a rel="bookmark" href="{{ route('public.show_news', ['id' => $item->id]) }}">{{$item->topic}}</a></h3>
@@ -24,10 +24,9 @@
                                                             <img src="{{ asset('assets/images/news/'.$item->image_preview)}}" alt="img">
                                                         </a>
                                                     </figure>
-                                                    <div class="post-time">
+                                                    <div class="post-time" style="width: 150px;height: 55px;">
                                                         <a href="{{ route('public.show_news', ['id' => $item->id]) }}">
-                                                            <span class="post-date">{{$item->created_at}}</span>
-                                                            <span>ВЕР</span>
+                                                            <span class="post-date">{{$created}}</span>
                                                         </a>
                                                     </div>
                                                 </div>

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\PrintRequest;
+namespace App\Http\Requests\OrderPrintPicture;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePrintRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

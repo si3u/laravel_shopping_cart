@@ -5,6 +5,7 @@
 @section('content')
     @include('includes.header')
     <div class="main-content">
+        <?php $created = \Carbon\Carbon::parse($news->created_at)->formatLocalized('%d %b %Y'); ?>
             <div class="site-content-inner">
                 <div class="container">
                     <div class="row">
@@ -16,13 +17,12 @@
                                             <figure>
                                                 <img src="{{ asset('assets/images/news/'.$news->image) }}" alt="img">
                                             </figure>
-                                            <div class="post-time">
+                                            <div class="post-time" style="width: 150px;height: 55px;">
                                                 <a href="#">
-                                                    <span class="post-date">{{$news->created_at}}</span>
-                                                    <span>ВЕР</span>
+                                                    <span class="post-date">{{$created}}</span>
                                                 </a>
                                             </div>
-                                        </div><!-- End Post Meta -->
+                                        </div>
                                         <div class="blog-content">
                                             <h3 class="text-center">{{ $news->topic }}</h3><br>
                                             {!! $news->text !!}
@@ -60,7 +60,7 @@
                             </div>
 
                             @include('includes.news.quote_of_day')
-                            
+
                         </div>
 
                         @if (count($comments) > 0)
@@ -70,4 +70,7 @@
                 </div>
             </div>
         </div>
+@endsection
+@section('my_scripts')
+    {!! script_ts('/assets/js/project/news.js') !!}
 @endsection

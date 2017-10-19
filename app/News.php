@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Classes\Image;
-use Carbon\Carbon;
 use App\Base\ModelBase;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +31,6 @@ class News extends ModelBase
     public function __construct() {
         parent::__construct();
 
-        $this->carbon = Carbon::now();
         $this->image_intervention = new Image();
     }
 
@@ -111,12 +109,10 @@ class News extends ModelBase
     }
 
     protected function CreateItem($image = null, $image_preview = null) {
-        return News::insertGetId([
+        return News::create([
             'image' => $image,
-            'image_preview' => $image_preview,
-            'created_at' => $this->carbon->toDateTimeString(),
-            'updated_at' => $this->carbon->toDateTimeString(),
-        ]);
+            'image_preview' => $image_preview
+        ])->id;
     }
 
     protected function UpdateItem($id, $image, $image_preview) {

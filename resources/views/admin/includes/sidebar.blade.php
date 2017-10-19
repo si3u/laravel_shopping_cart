@@ -43,7 +43,7 @@
                     <a href="javascript: void(0);" aria-expanded="true">
                         <i class="mdi mdi-cart-outline"></i>
                         <span>
-                            Продажи
+                            Заказы
                         </span>
                         @if($count_new_orders > 0)
                             <span class="badge badge-success pull-right">
@@ -55,7 +55,16 @@
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
                         <li><a href="{{route('admin/orders')}}">
-                                Заказы
+                                Картины
+                                @if($count_new_orders > 0)
+                                    <span class="badge badge-success pull-right">
+                                        {{$count_new_orders}}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+                        <li><a href="{{route('admin/orders/print_pictures')}}">
+                                На печать
                                 @if($count_new_orders > 0)
                                     <span class="badge badge-success pull-right">
                                         {{$count_new_orders}}

@@ -90,25 +90,24 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('.change_item').change(function() {
-            console.log('change');
             var canvas = $('#canvas').val();
             var width = $('#width').val();
             var height = $('#height').val();
-
-            $.ajax({
-                url: '/calculate_price',
-                type: "POST",
-                dataType: 'JSON',
-                data: {
-                    'canvas': canvas,
-                    'width': width,
-                    'height': height,
-                },
-                success: function(response) {
-                    $('#result_calculate').text(response.result+' грн.')
-                }
-            });
-
+            if (width > 0 && height > 0) {
+                $.ajax({
+                    url: '/calculate_price',
+                    type: "POST",
+                    dataType: 'JSON',
+                    data: {
+                        'canvas': canvas,
+                        'width': width,
+                        'height': height,
+                    },
+                    success: function(response) {
+                        $('#result_calculate').text(response.result+' грн.')
+                    }
+                });
+            }
         });
     });
     </script>

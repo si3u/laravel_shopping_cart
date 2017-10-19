@@ -1,7 +1,7 @@
 @if (count($comments) > 0)
-    <div id="comments" class="comments-area">
+    <div class="comments-area">
         <h5 class="comments-title title-element-blog">
-            Відгуки <span>({{ $comments->total() }})</span>
+            {{__('news.comment.name')}} <span>({{ $comments->total() }})</span>
         </h5>
         <ol class="comment-list">
             @foreach ($comments as $item)
