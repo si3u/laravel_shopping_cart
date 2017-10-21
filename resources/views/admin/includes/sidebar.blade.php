@@ -17,26 +17,40 @@
                         @endif
                     </a>
                     <ul class="nav-second-level nav" aria-expanded="true">
-                        <li><a href="{{route('admin/categories')}}">Категории</a></li>
-                        <li><a href="{{route('admin/products')}}">Товары</a></li>
-                        <li><a href="{{route('admin/recommend_products')}}">Рекомендуемые товары</a></li>
                         <li>
-                            <a href="{{route('admin/comments')}}">
-                                Комментарии
-                                @if($count_new_comments>0)
-                                    <span class="badge badge-success pull-right">{{$count_new_comments}}</span>
+                            <a href="javascript: void(0);" aria-expanded="true">
+                                Картины
+                                @if($all_notifications_catalog > 0)
+                                    <span class="badge badge-success pull-right">
+                                        {{$all_notifications_catalog}}
+                                    </span>
+                                @else
+                                    <span class="menu-arrow"></span>
                                 @endif
                             </a>
+                            <ul class="nav-third-level nav" aria-expanded="true">
+                                <li><a href="{{route('admin/categories')}}">Категории</a></li>
+                                <li><a href="{{route('admin/paintings')}}">Просмотреть</a></li>
+                                <li><a href="{{route('admin/recommend_paintings')}}">Рекомендуемые</a></li>
+                                <li>
+                                    <a href="{{route('admin/comments')}}">
+                                        Комментарии
+                                        @if($count_new_comments>0)
+                                            <span class="badge badge-success pull-right">{{$count_new_comments}}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('products/reviews')}}">
+                                        Отзывы
+                                        @if($count_new_reviews>0)
+                                            <span class="badge badge-success pull-right">{{$count_new_reviews}}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li><a href="{{route('admin/modular_images')}}">Модули</a></li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="{{route('products/reviews')}}">
-                                Отзывы
-                                @if($count_new_reviews>0)
-                                    <span class="badge badge-success pull-right">{{$count_new_reviews}}</span>
-                                @endif
-                            </a>
-                        </li>
-                        <li><a href="{{route('admin/modular_images')}}">Модули</a></li>
                     </ul>
                 </li>
                 <li>

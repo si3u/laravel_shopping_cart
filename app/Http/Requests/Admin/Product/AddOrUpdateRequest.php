@@ -76,7 +76,7 @@ class AddOrUpdateRequest extends FormRequestBase
      */
     public function rules()
     {
-        if ($this->route()->getName() == 'product/update') {
+        if ($this->route()->getName() == 'painting/update') {
             $this->rules_local['item_id'] = 'required|integer|exists:products,id';
             $this->rules_local['image'] = 'mimes:jpg,jpeg,png|max:2048';
 

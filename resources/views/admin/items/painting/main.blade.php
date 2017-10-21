@@ -15,7 +15,7 @@
                         <div class="page-title-box">
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
-                                @if ($page->route_name == 'admin/products')
+                                @if ($page->route_name == 'admin/paintings')
                                 <li>
                                     <a href="{{ url()->previous() }}">
                                         <i class="dripicons-arrow-thin-left"></i> Назад
@@ -23,13 +23,13 @@
                                 </li>
                                 @else
                                     <li>
-                                        <a href="{{route('admin/products')}}">
+                                        <a href="{{route('admin/paintings')}}">
                                             <i class="dripicons-arrow-thin-left"></i> Ко всем товарам
                                         </a>
                                     </li>
                                 @endif
                                 <li>
-                                    <a href="{{route('admin/product/add_page')}}">
+                                    <a href="{{route('admin/painting/add_page')}}">
                                         <i class="mdi mdi-plus"></i> Добавить
                                     </a>
                                 </li>
@@ -38,8 +38,8 @@
                         </div>
                     </div>
                 </div>
-                @if ($page->route_name == 'admin/products' || $page->route_name == 'admin/product/search')
-                    @include('admin.product.form_search')
+                @if ($page->route_name == 'admin/paintings' || $page->route_name == 'admin/paintings/search')
+                    @include('admin.items.painting.form_search')
                 @endif
                 <div class="row">
                     <div class="col-lg-12">
@@ -47,9 +47,9 @@
                             <div class="panel-body">
                                 @include('admin.includes.alerts.error_alerts')
                                 @include('admin.includes.alerts.success_alerts')
-                                <form @if($page->route_name == 'admin/recommend_products')
+                                <form @if($page->route_name == 'admin/recommend_paintings')
                                       method="post"
-                                      action="{{route('recommend_products/delete')}}"
+                                      action="{{route('recommend_painting/delete')}}"
                                       @else
                                       action="javascript:void(0);"
                                       @endif
@@ -78,7 +78,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="text-center">
-                                                    <img style="height: auto; max-width: 100%;" class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
+                                                    <img style="height: auto; max-width: 50px;" class="img-responsive thumb-lg" src="/assets/images/products/{{$product->image}}">
                                                 </th>
                                                 <th class="text-center">
                                                     {{$product->vendor_code}}
@@ -89,7 +89,7 @@
                                                 <td>
                                                     @foreach($product->categories as $category)
                                                         <p>
-                                                            <a href="{{route('admin/product/search', ['category[]' => $category->id])}}">
+                                                            <a href="{{route('admin/paintings/search', ['category[]' => $category->id])}}">
                                                                 {{$category->name}}
                                                             </a>
                                                         </p>
@@ -107,7 +107,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="btn-group m-b-10">
-                                                        <a href="{{route('admin/product/update_page', ['id' => $product->id])}}"
+                                                        <a href="{{route('admin/painting/update_page', ['id' => $product->id])}}"
                                                            class="btn btn-sm btn-primary">
                                                             <i class="dripicons-pencil"></i>
                                                         </a>
@@ -142,7 +142,7 @@
                                 </table>
                                     @if (count($page->products) > 0)
                                         <div class="btn-group">
-                                            @if($page->route_name == 'admin/recommend_products')
+                                            @if($page->route_name == 'admin/recommend_paintings')
                                                 {!!csrf_field()!!}
                                                 <button type="submit" class="btn btn-danger btn-sm"
                                                         data-toggle="tooltip" data-placement="top" title="Выбранные удалить с Рекомендуемых товары">
@@ -168,7 +168,7 @@
             </div>
         </div>
     </div>
-    @include('admin.product.modal_delete')
+    @include('admin.items.painting.modal_delete')
 @endsection
 @section('my_scripts')
     {!! script_ts('/assets/admin/js/project/product.js') !!}

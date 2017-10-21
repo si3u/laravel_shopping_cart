@@ -216,29 +216,41 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\SizeModularImageController@Delete'
     ])->name('size_modular_image/delete');
 
-    // // //products
-    Route::get('/admin/products', [
+    // // //paintings
+    Route::get('/admin/paintings', [
         'uses' => 'admin\ProductController@Page'
-    ])->name('admin/products');
-    Route::get('/admin/product/add', [
+    ])->name('admin/paintings');
+    Route::get('/admin/painting/add', [
         'uses' => 'admin\ProductController@PageAdd'
-    ])->name('admin/product/add_page');
-    Route::get('/admin/product/update/{id}', [
+    ])->name('admin/painting/add_page');
+    Route::get('/admin/painting/update/{id}', [
         'uses' => 'admin\ProductController@PageUpdate'
-    ])->name('admin/product/update_page');
+    ])->name('admin/painting/update_page');
 
-    Route::post('/admin/product/add', [
+    Route::post('/admin/painting/add', [
         'uses' => 'admin\ProductController@Add'
-    ])->name('product/add');
-    Route::post('/admin/product/update', [
+    ])->name('painting/add');
+    Route::post('/admin/painting/update', [
         'uses' => 'admin\ProductController@Update'
-    ])->name('product/update');
-    Route::get('/admin/product/delete/{id}', [
+    ])->name('painting/update');
+    Route::get('/admin/painting/delete/{id}', [
         'uses' => 'admin\ProductController@Delete'
-    ])->name('product/delete');
-    Route::get('/admin/product/search/', [
+    ])->name('painting/delete');
+    Route::get('/admin/paintings/search/', [
         'uses' => 'admin\ProductController@Search'
-    ])->name('admin/product/search');
+    ])->name('admin/paintings/search');
+
+    // // //recommend paintings
+    Route::get('/admin/recommend_paintings', [
+        'uses' => 'admin\RecommendProductController@Page'
+    ])->name('admin/recommend_paintings');
+
+    Route::post('/admin/recommend_painting/add', [
+        'uses' => 'admin\RecommendProductController@Add'
+    ])->name('recommend_painting/add');
+    Route::post('/admin/recommend_product/delete', [
+        'uses' => 'admin\RecommendProductController@Delete'
+    ])->name('recommend_painting/delete');
 
     // // //comments
     Route::get('/admin/comments', [
@@ -341,18 +353,6 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\ContactController@Update'
     ])->name('admin/contacts/update');
 
-    // // //recommend products
-    Route::get('/admin/recommend_products', [
-        'uses' => 'admin\RecommendProductController@Page'
-    ])->name('admin/recommend_products');
-
-    Route::post('/admin/recommend_products/add', [
-        'uses' => 'admin\RecommendProductController@Add'
-    ])->name('recommend_products/add');
-    Route::post('/admin/recommend_products/delete', [
-        'uses' => 'admin\RecommendProductController@Delete'
-    ])->name('recommend_products/delete');
-
     // // //order
     Route::get('/admin/orders', [
         'uses' => 'admin\OrderController@Page'
@@ -367,13 +367,21 @@ Route::group(['middleware' => ['only-administration']], function() {
     Route::get('/admin/orders/print_pictures', [
         'uses' => 'admin\OrderPrintPictureController@Page',
     ])->name('admin/orders/print_pictures');
+    Route::get('/admin/order/print_picture/update/{id}', [
+        'uses' => 'admin\OrderPrintPictureController@PageUpdate',
+    ])->name('admin/order/print_picture/page_update');
     Route::get('/admin/orders/print_pictures/search', [
         'uses' => 'admin\OrderPrintPictureController@Search',
     ])->name('admin/orders/print_pictures/search');
-    Route::get('/admin/orders/print_pictures/delete/{id}', [
+    Route::get('/admin/order/print_picture/delete/{id}', [
         'uses' => 'admin\OrderPrintPictureController@Delete',
-    ])->name('admin/orders/print_pictures/delete');
+    ])->name('admin/order/print_picture/delete');
 
+    Route::post('/admin/order/print_picture/update', [
+        'uses' => 'admin\OrderPrintPictureController@Update',
+    ])->name('admin/order/print_picture/update');
+
+    // // //download files
     Route::get('/admin/download/{model}/{file_name}', [
         'uses' => 'admin\FileDownloadController@Run',
     ])->name('admin/download');

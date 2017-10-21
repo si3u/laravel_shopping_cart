@@ -65,7 +65,7 @@ class ProductController extends Controller {
             'tree' => Category::GetTree(null, 'select_multiple'),
             'products' => $products
         ];
-        return view('admin.product.main', ['page' => $data]);
+        return view('admin.items.painting.main', ['page' => $data]);
     }
 
     public function PageAdd() {
@@ -88,7 +88,7 @@ class ProductController extends Controller {
             'size' => $size,
             'color' => $filter_by_color
         ];
-        return view('admin.product.work_on', ['page' => $data]);
+        return view('admin.items.painting.work_on', ['page' => $data]);
     }
 
     public function PageUpdate($id) {
@@ -148,7 +148,7 @@ class ProductController extends Controller {
             'active_color' => $active_colors,
             'active_size' => $active_sizes,
         ];
-        return view('admin.product.work_on', ['page' => $data]);
+        return view('admin.items.painting.work_on', ['page' => $data]);
     }
 
     public function Add(AddOrUpdateRequest $request) {
@@ -281,6 +281,10 @@ class ProductController extends Controller {
         $this->key_cache = 'product_data';
         $this->ForgetItemInCache();
 
+        $this->tags_cache = ['product_categories', 'item', $request->item_id];
+        $this->key_cache = 'product_categories';
+        $this->ForgetItemInCache();
+
         Product::DeleteCategories($request->item_id);
         Product::DeleteFilterColors($request->item_id);
         Product::DeleteSizes($request->item_id);
@@ -318,7 +322,7 @@ class ProductController extends Controller {
             ['id' => 'required|integer|exists:products,id']
         );
         if ($validator->fails()) {
-            return redirect()->route('admin/products')->withErrors($validator);
+            return redirect()->route('admin/paintings')->withErrors($validator);
         }
 
         Product::DeleteData($id);
@@ -353,7 +357,7 @@ class ProductController extends Controller {
 
 
 
-        return redirect()->route('admin/products')->with('success', 'Товар успешно удален');
+        return redirect()->route('admin/paintings')->with('success', 'Товар успешно удален');
     }
 
     public function Search(SearchRequest $request) {
@@ -398,6 +402,6 @@ class ProductController extends Controller {
         if ($request->has('date_end')) {
             $data->old_date_end = $request->date_end;
         }
-        return view('admin.product.main', ['page' => $data]);
+        return view('admin.items.painting.main', ['page' => $data]);
     }
 }

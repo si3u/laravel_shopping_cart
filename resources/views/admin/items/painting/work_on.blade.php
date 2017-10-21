@@ -16,12 +16,12 @@
                             <h4 class="page-title">{{$page->title}}</h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
-                                    <a href="{{route('admin/products')}}">
+                                    <a href="{{route('admin/paintings')}}">
                                         <i class="dripicons-arrow-thin-left"></i> К товарам
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin/product/add_page')}}">
+                                    <a href="{{route('admin/painting/add_page')}}">
                                         <i class="mdi mdi-plus"></i> Добавить
                                     </a>
                                 </li>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="card-box">
-                            @if($page->route_name == 'admin/product/add_page')
+                            @if($page->route_name == 'admin/painting/add_page')
                             <form id="form_work_on" action="javascript:void(0);" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                                 <input type="hidden" name="item_id" value="">
                             @else
@@ -68,12 +68,12 @@
                                     @foreach($page->active_lang as $item)
                                         @if ($i == 0)
                                             <div class="tab-pane active" id="{{$item->lang}}">
-                                                <?php $path = 'admin.product.form_'.$item->lang; ?>
+                                                <?php $path = 'admin.items.painting.form_'.$item->lang; ?>
                                                 @include($path)
                                             </div>
                                         @else
                                             <div class="tab-pane" id="{{$item->lang}}">
-                                                <?php $path = 'admin.product.form_'.$item->lang; ?>
+                                                <?php $path = 'admin.items.painting.form_'.$item->lang; ?>
                                                 @include($path)
                                             </div>
                                         @endif
@@ -90,7 +90,7 @@
                                         <input @isset($page->product->vendor_code) value="{{$page->product->vendor_code}}" @endisset name="vendor_code" id="vendor_code" class="form-control" placeholder="Введите артикул">
                                     </div>
                                 </div>
-                                @if ($page->route_name == 'admin/product/add_page')
+                                @if ($page->route_name == 'admin/painting/add_page')
                                     <div class="form-group"
                                          id="group_now_image"
                                          style="display: none;">
@@ -175,7 +175,7 @@
                                     <div class="col-md-9">
                                         @if(count($page->size) > 0)
                                             <select id="size" name="size[]" class="form-control" multiple>
-                                                @if($page->route_name == 'admin/product/add_page')
+                                                @if($page->route_name == 'admin/painting/add_page')
                                                     @foreach($page->size as $item)
                                                         <option value="{{$item->id}}">{{$item->width}}x{{$item->height}}</option>
                                                     @endforeach
@@ -205,7 +205,7 @@
                                     <label for="color" class="control-label col-md-3">Фильтр по цвету</label>
                                     <div class="col-md-9">
                                         @if(count($page->color) > 0)
-                                            @if($page->route_name == 'admin/product/add_page')
+                                            @if($page->route_name == 'admin/painting/add_page')
                                                 <select id="color" name="color[]" class="form-control" multiple>
                                                     @foreach($page->color as $item)
                                                         <option value="{{$item->id}}">{{$item->name}}</option>
@@ -237,7 +237,7 @@
                                     <label for="status" class="control-label col-md-3">Отображение в категориях</label>
                                     <div class="col-md-9">
                                         <select id="status" name="status" class="form-control">
-                                            @if($page->route_name == 'admin/product/add_page')
+                                            @if($page->route_name == 'admin/painting/add_page')
                                                 <option value="1" selected>Да</option>
                                                 <option value="2">Нет</option>
                                             @else
@@ -276,7 +276,7 @@
                                     <label class="control-label col-md-2"></label>
                                     <div class="col-md-10">
                                         <div class="pull-right">
-                                            @if($page->route_name == 'admin/product/add_page')
+                                            @if($page->route_name == 'admin/painting/add_page')
                                                 <button type="submit" id="btn_submit" class="btn btn-success btn-lg">
                                                     Добавить @include('admin.includes.spinner')
                                                 </button>
@@ -298,8 +298,8 @@
             </div>
         </div>
     </div>
-    @if($page->route_name == 'admin/product/update_page')
-        @include('admin.product.modal_delete')
+    @if($page->route_name == 'admin/painting/update_page')
+        @include('admin.items.painting.modal_delete')
     @endif
 @endsection
 @section('my_scripts')

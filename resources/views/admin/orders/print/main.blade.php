@@ -89,10 +89,10 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group m-b-10">
-                                                    <a href="" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
+                                                    <a href="{{ route('admin/order/print_picture/page_update', ['id' => $order->id]) }}" type="button" class="btn btn-primary waves-effect waves-light btn-sm">
                                                         <i class="dripicons-pencil"></i>
                                                     </a>
-                                                    <button onclick="order_print.delete({{$order->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
+                                                    <button onclick="printPicture.delete({{$order->id}});" class="btn btn-danger waves-effect waves-light btn-sm">
                                                         <i class="dripicons-trash"></i>
                                                     </button>
                                                 </div>
@@ -123,5 +123,5 @@
     @include('admin.orders.print.modal_delete')
 @endsection
 @section('my_scripts')
-    {!! script_ts('/assets/admin/js/project/comment.js') !!}
+    {!! script_ts('/assets/admin/js/project/printPicture.js') !!}
 @endsection

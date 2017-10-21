@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use File;
 use App\Http\Controllers\Controller;
 
 class FileDownloadController extends Controller {

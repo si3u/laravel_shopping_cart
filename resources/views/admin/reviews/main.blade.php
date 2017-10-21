@@ -59,7 +59,7 @@
                                                 <img src="/assets/images/products/{{$review->product_image}}" alt="image" class="img-responsive thumb-md">
                                             </td>
                                             <td>
-                                                <a href="{{route('admin/product/update_page', ['id' => $review->product_id])}}">
+                                                <a href="{{route('admin/painting/update_page', ['id' => $review->product_id])}}" target="_blank">
                                                     {{$review->product_name}}
                                                 </a>
                                             </td>

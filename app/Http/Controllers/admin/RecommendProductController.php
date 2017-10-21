@@ -33,7 +33,7 @@ class RecommendProductController extends Controller {
 
         $i = 0;
         $count = count($products);
-        $this->model_cache = 'ProductCategory';        
+        $this->model_cache = 'ProductCategory';
         $this->method_cache = 'GetCategoriesItem';
         $this->key_cache = 'product_categories';
         while ($i < $count) {
@@ -47,7 +47,7 @@ class RecommendProductController extends Controller {
             'route_name' => $this->route_name,
             'products' => $products
         ];
-        return view('admin.product.main', ['page' => $data]);
+        return view('admin.items.painting.main', ['page' => $data]);
     }
 
     private function Check() {
@@ -63,7 +63,7 @@ class RecommendProductController extends Controller {
 
     public function Add(CommonRequest $request) {
         $this->Check();
-        
+
         RecommendProduct::CreateItems($request->check_products);
 
         $this->ForgetItems();
@@ -75,7 +75,7 @@ class RecommendProductController extends Controller {
 
     public function Delete(CommonRequest $request) {
         $this->Check();
-        
+
         RecommendProduct::DeleteItems($request->check_products);
 
         $this->ForgetItems();

@@ -28,6 +28,10 @@ class SettingOrderStatus extends Model
         return null;
     }
 
+    public static function GetItemsStatic() {
+        return SettingOrderStatus::orderBy('upon_receipt', 'desc')->get();
+    }
+
     protected function GetItems() {
         return SettingOrderStatus::orderBy('id', 'desc')->paginate(10);
     }

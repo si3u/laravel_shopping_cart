@@ -1,7 +1,7 @@
 var product = {
     'delete': function (id) {
         console.log(id);
-        $('#href_delete').attr('href', '/admin/product/delete/'+id);
+        $('#href_delete').attr('href', '/admin/painting/delete/'+id);
         $('#modal_product_delete').modal('show');
     }
 };
@@ -9,7 +9,7 @@ function checkProducts(option) {
     var form = $('#form_check');
     var action = '';
     if (option == 1) {
-        action = '/admin/recommend_products/add';
+        action = '/admin/recommend_painting/add';
     }
     $.ajax({
         method: "POST",
@@ -36,7 +36,7 @@ $(document).ready(function () {
         if (itemId.val().length === 0) {
             $.ajax({
                 method: "POST",
-                url: "/admin/product/add",
+                url: "/admin/painting/add",
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -76,7 +76,7 @@ $(document).ready(function () {
         else {
             $.ajax({
                 method: "POST",
-                url: "/admin/product/update",
+                url: "/admin/painting/update",
                 data: formData,
                 contentType: false,
                 processData: false,

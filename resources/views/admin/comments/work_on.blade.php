@@ -112,7 +112,7 @@
                                                 <dd>{{$page->comment->product_name}}</dd>
                                             </dl>
                                             <p class="text-right">
-                                                <a target="_blank" href="{{route('admin/product/update_page', ['id' => $page->comment->product_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
+                                                <a target="_blank" href="{{route('admin/painting/update_page', ['id' => $page->comment->product_id])}}" class="btn btn-lg btn-primary waves-effect waves-light" role="button">
                                                     Открыть товар
                                                 </a>
                                             </p>
