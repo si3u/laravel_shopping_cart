@@ -51,6 +51,23 @@
                                 <li><a href="{{route('admin/modular_images')}}">Модули</a></li>
                             </ul>
                         </li>
+
+                        <li>
+                            <a href="javascript: void(0);" aria-expanded="true">
+                                Фотообои
+                                @if($all_notifications_catalog > 0)
+                                    <span class="badge badge-success pull-right">
+                                        {{$all_notifications_catalog}}
+                                    </span>
+                                @else
+                                    <span class="menu-arrow"></span>
+                                @endif
+                            </a>
+                            <ul class="nav-third-level nav" aria-expanded="true">
+                                <li><a href="{{route('admin/wallpaper_categories')}}">Категории</a></li>
+                                <li><a href="{{route('admin/wallpapers')}}">Просмотреть</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li>

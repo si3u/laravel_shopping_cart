@@ -381,6 +381,87 @@ Route::group(['middleware' => ['only-administration']], function() {
         'uses' => 'admin\OrderPrintPictureController@Update',
     ])->name('admin/order/print_picture/update');
 
+    // // //wallpaper categories
+    Route::get('/admin/wallpaper_categories', [
+        'uses' => 'admin\WallpaperCategoryController@Page'
+    ])->name('admin/wallpaper_categories');
+    Route::get('/admin/wallpaper_categories/add', [
+        'uses' => 'admin\WallpaperCategoryController@PageAdd'
+    ])->name('admin/wallpaper_categories/add');
+    Route::get('/admin/wallpaper_categories/update/{id}', [
+        'uses' => 'admin\WallpaperCategoryController@PageUpdate'
+    ])->name('wallpaper_categories/update');
+
+    Route::post('/admin/wallpaper_category/add', [
+        'uses' => 'admin\WallpaperCategoryController@Add'
+    ])->name('admin/wallpaper_category/add');
+    Route::post('/admin/wallpaper_category/update', [
+        'uses' => 'admin\WallpaperCategoryController@Update'
+    ])->name('wallpaper_category/update');
+    Route::get('/admin/wallpaper_category/delete/{id}', [
+        'uses' => 'admin\WallpaperCategoryController@Delete'
+    ])->name('wallpaper_category/delete');
+
+    // // //wallpaper
+    Route::get('/admin/wallpapers', [
+        'uses' => 'admin\WallpaperController@Page'
+    ])->name('admin/wallpapers');
+    Route::get('/admin/wallpaper/add', [
+        'uses' => 'admin\WallpaperController@PageAdd'
+    ])->name('admin/wallpaper/add_page');
+    Route::get('/admin/wallpaper/update/{id}', [
+        'uses' => 'admin\WallpaperController@PageUpdate'
+    ])->name('admin/wallpaper/update_page');
+
+    Route::post('/admin/wallpaper/add', [
+        'uses' => 'admin\WallpaperController@Add'
+    ])->name('wallpaper/add');
+    Route::post('/admin/wallpaper/update', [
+        'uses' => 'admin\WallpaperController@Update'
+    ])->name('wallpaper/update');
+    Route::get('/admin/wallpaper/delete/{id}', [
+        'uses' => 'admin\WallpaperController@Delete'
+    ])->name('wallpaper/delete');
+    Route::get('/admin/wallpapers/search/', [
+        'uses' => 'admin\WallpaperController@Search'
+    ])->name('admin/wallpapers/search');
+
+    // // //wallpaper comments
+    Route::get('/admin/wallpaper/comments', [
+        'uses' => 'admin\WallpaperCommentController@Page'
+    ])->name('admin/wallpaper/comments');
+    Route::get('/admin/wallpaper/comment/{id}', [
+        'uses' => 'admin\WallpaperCommentController@PageUpdate'
+    ])->name('wallpaper/comment/page_update');
+
+    Route::post('/admin/wallpaper/comment/update', [
+        'uses' => 'admin\WallpaperCommentController@Update'
+    ])->name('wallpaper/comment/update');
+    Route::get('/admin/wallpaper/comment/delete/{id}', [
+        'uses' => 'admin\WallpaperCommentController@Delete'
+    ])->name('wallpaper/comment/delete');
+    Route::get('/admin/wallpaper/comments/search/', [
+        'uses' => 'admin\WallpaperCommentController@Search'
+    ])->name('wallpaper/comments/search');
+
+    // // //wallpaper eviews
+    Route::get('/admin/wallpaper/reviews/', [
+        'uses' => 'admin\WallpaperReviewController@Page'
+    ])->name('wallpaper/reviews');
+    Route::get('/admin/wallpaper/review/update/{id}', [
+        'uses' => 'admin\WallpaperReviewController@PageUpdate'
+    ])->name('wallpaper/review/page_update');
+
+    Route::post('/admin/wallpaper/review/update', [
+        'uses' => 'admin\WallpaperReviewController@Update'
+    ])->name('wallpaper/review/update');
+    Route::get('/admin/wallpaper/review/delete/{id}', [
+        'uses' => 'admin\WallpaperReviewController@Delete'
+    ])->name('wallpaper/review/delete');
+    Route::get('/admin/wallpaper/reviews/search', [
+        'uses' => 'admin\WallpaperReviewController@Search'
+    ])->name('wallpaper/reviews/search');
+
     // // //download files
     Route::get('/admin/download/{model}/{file_name}', [
         'uses' => 'admin\FileDownloadController@Run',

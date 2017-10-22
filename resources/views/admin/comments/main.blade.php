@@ -58,7 +58,7 @@
                                                 <img src="/assets/images/products/{{$comment->product_image}}" alt="image" class="img-responsive thumb-md">
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{route('comments/search', ['vendor_code' => $comment->product_vendor_code])}}">
+                                                <a href="{{route('comments/search', ['vendor_code' => $comment->vendor_code])}}">
                                                     {{$comment->product_name}}
                                                 </a>
                                             </td>

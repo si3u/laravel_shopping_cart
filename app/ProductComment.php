@@ -4,30 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\ProductComment
- *
- * @mixin \Eloquent
- * @property int $id
- * @property int $product_id
- * @property int $check_status
- * @property int $read_status
- * @property string $name
- * @property string $email
- * @property string $message
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereCheckStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment mainSelect()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ProductComment whereReadStatus($value)
- */
 class ProductComment extends Model
 {
     protected $primaryKey = 'id';

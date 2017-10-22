@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use Nestable\NestableTrait;
 use Illuminate\Database\Eloquent\Model;
 

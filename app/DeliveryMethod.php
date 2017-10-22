@@ -5,16 +5,6 @@ namespace App;
 use App\Traits\Models\DeliveryMethodTrait;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\DeliveryMethod
- *
- * @property int $id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\CommunicationDeliveryPayment[] $CommunicationWithPayment
- * @property-read \App\DataDeliveryMethod $DataLocal
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\DataDeliveryMethod[] $DataLocals
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DeliveryMethod whereId($value)
- * @mixin \Eloquent
- */
 class DeliveryMethod extends Model
 {
     public $timestamps = false;

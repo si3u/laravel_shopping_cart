@@ -4,27 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\DataNews
- *
- * @property int $news_id
- * @property int $lang_id
- * @property string $topic
- * @property string $text
- * @property string|null $meta_title
- * @property string|null $meta_description
- * @property string|null $meta_keywords
- * @property string|null $tags
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereLangId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereMetaDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereMetaKeywords($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereMetaTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereNewsId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereTags($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DataNews whereTopic($value)
- * @mixin \Eloquent
- */
 class DataNews extends Model
 {
     protected $primaryKey = 'news_id';

@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call('CreateAdmin');
-        $this->call('CreateDefaultCategory');
+        $this->call('CreateDefaultCategories');
         $this->call('CreateLocalization');
         $this->call('CreateTextPages');
         $this->call('CreatePrices');
@@ -44,7 +44,7 @@ class CreateAdmin extends Seeder {
     }
 }
 
-class CreateDefaultCategory extends Seeder {
+class CreateDefaultCategories extends Seeder {
     public function run() {
         DB::table('categories')->delete();
         DB::table('categories')->truncate();
@@ -69,6 +69,31 @@ class CreateDefaultCategory extends Seeder {
             ]
         ];
         DB::table('data_categories')->insert($data);
+
+        //wallpaper
+        DB::table('wallpaper_categories')->delete();
+        DB::table('wallpaper_categories')->truncate();
+
+        $data = [
+            [
+                'slug' => 'und-ru',
+                'parent_id' => 0,
+                'sorting_order' => 0,
+            ]
+        ];
+        DB::table('wallpaper_categories')->insert($data);
+
+        DB::table('data_wallpaper_categories')->delete();
+        DB::table('data_wallpaper_categories')->truncate();
+
+        $data = [
+            [
+                'category_id' => 1,
+                'name' => 'Корневая категория',
+                'lang_id' => 1,
+            ]
+        ];
+        DB::table('data_wallpaper_categories')->insert($data);
     }
 }
 

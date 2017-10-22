@@ -4,19 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\ActiveLocalization
- *
- * @property int $id
- * @property string $lang
- * @property string $name
- * @property int $status
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActiveLocalization whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActiveLocalization whereLang($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActiveLocalization whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActiveLocalization whereStatus($value)
- * @mixin \Eloquent
- */
 class ActiveLocalization extends Model
 {
     public $timestamps = false;

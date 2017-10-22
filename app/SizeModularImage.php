@@ -4,21 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\SizeModularImage
- *
- * @property int $id
- * @property int $modular_image_id
- * @property int $number
- * @property int $width
- * @property int $height
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SizeModularImage whereHeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SizeModularImage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SizeModularImage whereModularImageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SizeModularImage whereNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SizeModularImage whereWidth($value)
- * @mixin \Eloquent
- */
 class SizeModularImage extends Model
 {
     public $timestamps = false;

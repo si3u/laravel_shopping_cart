@@ -5,15 +5,6 @@ namespace App;
 use App\Traits\Models\PaymentMethodTrait;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\PaymentMethod
- *
- * @property int $id
- * @property-read \App\DataPaymentMethod $DataLocal
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\DataPaymentMethod[] $DataLocals
- * @method static \Illuminate\Database\Eloquent\Builder|\App\PaymentMethod whereId($value)
- * @mixin \Eloquent
- */
 class PaymentMethod extends Model
 {
     public $timestamps = false;

@@ -4,17 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\DefaultSize
- *
- * @property int $id
- * @property int $width
- * @property int $height
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DefaultSize whereHeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DefaultSize whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\DefaultSize whereWidth($value)
- * @mixin \Eloquent
- */
 class DefaultSize extends Model
 {
     protected $primaryKey = 'id';

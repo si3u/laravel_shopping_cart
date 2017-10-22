@@ -4,19 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\TextSection
- *
- * @property int $id
- * @property int $lang_id
- * @property int $section
- * @property string|null $value
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TextSection whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TextSection whereLangId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TextSection whereSection($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\TextSection whereValue($value)
- * @mixin \Eloquent
- */
 class TextSection extends Model
 {
     public $timestamps = false;

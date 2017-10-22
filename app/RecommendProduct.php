@@ -5,13 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-/**
- * App\RecommendProduct
- *
- * @mixin \Eloquent
- * @property int $product_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\RecommendProduct whereProductId($value)
- */
 class RecommendProduct extends Model
 {
     public $timestamps = false;

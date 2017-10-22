@@ -4,17 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\FilterByColor
- *
- * @mixin \Eloquent
- * @property int $id
- * @property string $name
- * @property string $hex
- * @method static \Illuminate\Database\Eloquent\Builder|\App\FilterByColor whereHex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\FilterByColor whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\FilterByColor whereName($value)
- */
 class FilterByColor extends Model
 {
     protected $primaryKey = 'id';

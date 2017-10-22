@@ -6,21 +6,6 @@ use App\Classes\Image;
 use App\Base\ModelBase;
 use Illuminate\Support\Facades\DB;
 
-/**
- * App\News
- *
- * @property int $id
- * @property string|null $image
- * @property string|null $image_preview
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereImagePreview($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\News whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class News extends ModelBase
 {
     public $primaryKey = 'id';

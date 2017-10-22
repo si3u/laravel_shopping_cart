@@ -5,21 +5,6 @@ namespace App;
 use App\Classes\Image;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\ModularImage
- *
- * @property int $id
- * @property string $image
- * @property string $preview_image
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModularImage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModularImage whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModularImage wherePreviewImage($value)
- * @mixin \Eloquent
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModularImage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModularImage whereUpdatedAt($value)
- */
 class ModularImage extends Model
 {
     protected $primaryKey = 'id';

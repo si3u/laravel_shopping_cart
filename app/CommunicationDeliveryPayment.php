@@ -4,15 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\CommunicationDeliveryPayment
- *
- * @property int $delivery_id
- * @property int $payment_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\CommunicationDeliveryPayment whereDeliveryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\CommunicationDeliveryPayment wherePaymentId($value)
- * @mixin \Eloquent
- */
 class CommunicationDeliveryPayment extends Model
 {
     public $timestamps = false;
